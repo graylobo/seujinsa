@@ -23,6 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div className="flex justify-center w-[800px]  ">
         <div>
           <RecoilRoot>
+            <Navigation />
             <Component {...pageProps} />
           </RecoilRoot>
         </div>

@@ -8,11 +8,8 @@ const Home: NextPage = () => {
   const [menu, setMenu] = useRecoilState(menuState);
   return (
     <div className="">
-      <header>
-        <Navigation />
-      </header>
       <main>
-        <div>{menu ? <Main /> : <More />}</div>
+        <div>{!menu ? <Main /> : <More />}</div>
       </main>
       <footer></footer>
     </div>
