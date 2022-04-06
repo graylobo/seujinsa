@@ -91,7 +91,12 @@ export default function LeftControl() {
             className="w-[300px] h-[50px] rounded-[3px] border-2 border-black  p-[10px]   outline-blue-600"
             ref={inputValue}
             onChange={(e) => {
-              setInputWord(e.target.value);
+              if (savedWord.length === 0) {
+                alert("입력할 키워드를 설정해야 합니다.");
+                inputValue.current.value = "";
+              } else {
+                setInputWord(e.target.value);
+              }
             }}
           />
           <div className="absolute right-[-120px] bottom-[10px]">
