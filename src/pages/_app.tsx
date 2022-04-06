@@ -2,7 +2,7 @@ import "../../styles/globals.css";
 import type { AppProps } from "next/app";
 import Navigation from "../common/components/Navigation";
 import Head from "next/head";
-
+import { RecoilRoot } from "recoil";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div className="flex justify-center  ">
@@ -20,10 +20,12 @@ function MyApp({ Component, pageProps }: AppProps) {
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
         />
       </Head>
-
-      <div className="w-[1000px]">
-        <Navigation />
-        <Component {...pageProps} />
+      <div className="flex justify-center w-[800px]  ">
+        <div>
+          <RecoilRoot>
+            <Component {...pageProps} />
+          </RecoilRoot>
+        </div>
       </div>
     </div>
   );
