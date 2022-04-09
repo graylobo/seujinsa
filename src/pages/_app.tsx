@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     setMenu(false);
   }, [router]);
   return (
-    <div className="flex justify-center  ">
+    <div>
       <Head>
         <title>스진사</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,14 +29,16 @@ function MyApp({ Component, pageProps }: AppProps) {
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
         />
       </Head>
-      <div className="flex justify-center w-[800px]  ">
-        <div>
-          <RecoilRoot>
+      <RecoilRoot>
+        <div className="flex flex-col ">
+          <div className=" w-full max-w-[700px] min-w-[180px] min-h-[50px] self-center">
             <Navigation setMenu={setMenu} />
+          </div>
+          <div className="self-center w-full max-w-[700px]">
             {!menu ? <Component {...pageProps} /> : <More />}
-          </RecoilRoot>
+          </div>
         </div>
-      </div>
+      </RecoilRoot>
     </div>
   );
 }
