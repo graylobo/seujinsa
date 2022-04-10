@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-
-interface OptionProp{
-    rate?:number,
-    pitch?:number,
-    lang:string
+import React, { useEffect, useRef, useState } from "react";
+import { useRecoilState } from "recoil";
+import { timerComponentCount } from "../recoil/states";
+import TimerComponent from "./TimerComponent";
+interface OptionProp {
+  rate?: number;
+  pitch?: number;
+  lang: string;
 }
 
 function speak(text: string, opt_prop: OptionProp) {
@@ -18,7 +20,6 @@ function speak(text: string, opt_prop: OptionProp) {
   window.speechSynthesis.cancel(); // 현재 읽고있다면 초기화
 
   const prop = opt_prop || {};
-
   const speechMsg = new SpeechSynthesisUtterance();
   speechMsg.rate = prop.rate || 1; // 속도: 0.1 ~ 10
   speechMsg.pitch = prop.pitch || 1; // 음높이: 0 ~ 2
@@ -29,25 +30,23 @@ function speak(text: string, opt_prop: OptionProp) {
   window.speechSynthesis.speak(speechMsg);
 }
 export default function BuildAlert() {
-  const [text, setText] = useState("");
   const [selectedLang, setLang] = useState("");
-  console.log(selectedLang);
+  const [state, setState] = useRecoilState(timerComponentCount);
+  const nextId: number = state.length > 0 ? state[state.length - 1].id + 1 : 0;
+
   return (
     <div>
-      <input
-        type="text"
-        className="w-[300px] h-[50px] border-2 border-black p-[10px] rounded-[3px] outline-blue-600"
-        onChange={(e) => {
-          setText(e.target.value);
-        }}
-      />
       <button
         onClick={() => {
-          speak(text, { lang: selectedLang });
+          setState([...state, { id: nextId, content: "" }]);
         }}
       >
-        시작
+        타이머 추가
       </button>
+      {state.map((e) => (
+        <TimerComponent id={e.id}></TimerComponent>
+      ))}
+      <button onClick={() => {}}>시작</button>
       <select
         id="select-lang"
         onChange={(e) => {
@@ -55,7 +54,6 @@ export default function BuildAlert() {
         }}
       >
         <option value="ko-KR">한국어</option>
-
         <option value="en-US">영어</option>
       </select>
     </div>

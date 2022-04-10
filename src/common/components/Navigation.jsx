@@ -1,7 +1,5 @@
 import Link from "next/link";
 import React from "react";
-import { useRecoilState } from "recoil";
-import { menuState } from "../recoil/menu-states";
 export default function Navigation({ setMenu }) {
   return (
     <div className=" relative">

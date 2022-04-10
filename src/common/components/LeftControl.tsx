@@ -29,7 +29,6 @@ export default function LeftControl() {
       }
     }
   }, [inputWord]);
-  console.log(comboUp);
   return (
     <div className="mt-[100px] flex justify-center  ">
       <div className="relative border-2 border-black-600 rounded-[30px]  p-[30px] h-[350px] w-[700px] flex justify-center flex-col items-center">
