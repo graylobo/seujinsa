@@ -1,5 +1,4 @@
 import { atom, DefaultValue, selector } from "recoil";
-import { DefaultProps } from "vue/types/options";
 import {OptionProp} from "../utils/tts"
 
 
@@ -36,22 +35,23 @@ const timerSelector = selector<ITimerProps[]>({
     return get(timerState);
   },
   set:({set},timer)=>{
+    let timerCopy =timer as ITimerProps[];
     set(timerState,(prev)=>{
-      timer = timer.map((e)=>{
-        if(e.hour>=24){
-          return {...e,hour:23}
+      timerCopy = timerCopy.map((e)=>{
+        if(Number(e.hour)>=24){
+          return {...e,hour:"23"}
         }
-        if(e.minute>=60){
-          return {...e,minute:59}
+        if(Number(e.minute)>=60){
+          return {...e,minute:"59"}
         }
-        if(e.second>=60){
-          return {...e,second:59}
+        if(Number(e.second)>=60){
+          return {...e,second:"59"}
         }
         else{
           return e
         }
       })
-      return [...timer]
+      return [...timerCopy]
     })
 
   }

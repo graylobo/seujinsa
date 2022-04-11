@@ -71,7 +71,7 @@ export default function TimerComponent({ id }: Props) {
             type="number"
             className={timerInputCSS}
             placeholder="H"
-            value={currentTimerInfo.hour}
+            value={currentTimerInfo.hour||''}
             onChange={(e) => {
               setTimer(
                 timer.map((t: ITimerProps) =>
@@ -84,7 +84,7 @@ export default function TimerComponent({ id }: Props) {
             type="number"
             className={timerInputCSS}
             placeholder="M"
-            value={currentTimerInfo.minute}
+            value={currentTimerInfo.minute||''}
             onChange={(e) => {
               setTimer(
                 timer.map((t: ITimerProps) =>
@@ -98,7 +98,7 @@ export default function TimerComponent({ id }: Props) {
             pattern="[0-9]+"
             className={timerInputCSS}
             placeholder="S"
-            value={currentTimerInfo.second}
+            value={currentTimerInfo.second||''}
             onChange={(e) => {
               setTimer(
                 timer.map((t: ITimerProps) =>
