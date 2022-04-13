@@ -31,10 +31,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <RecoilRoot>
         <div className="flex flex-col ">
-          <div className=" w-full max-w-[700px] min-w-[180px] min-h-[50px] self-center">
+          <div className=" w-full px-[30px] max-w-[700px] min-w-[300px] min-h-[50px] self-center">
             <Navigation setMenu={setMenu} />
           </div>
-          <div className="self-center w-full max-w-[700px]">
+          <div className="self-center w-full max-w-[700px] min-w-[300px]">
             {!menu ? <Component {...pageProps} /> : <More />}
           </div>
         </div>

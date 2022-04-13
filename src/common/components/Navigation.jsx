@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 export default function Navigation({ setMenu }) {
   return (
-    <div className=" relative">
+    <div className=" relative ">
       <Link href={"/"}>
         <span className="text-[30px] cursor-pointer subject absolute left-[0px] ">
           스<span className="text-[18px]">타에</span>진

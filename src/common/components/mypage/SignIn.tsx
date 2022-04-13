@@ -2,9 +2,9 @@ import React from "react";
 import MemberInput from "../shared/MemberInput";
 export default function SignIn() {
   return (
-    <div className="py-[60px] w-[700px] flex flex-col">
-      <div className="self-center">
-        <div className="mb-[24px]">
+    <div className="py-[60px] p-[30px] w-full max-w-[475px] flex flex-col overflow-y-auto mx-auto">
+      <div className="w-full mx-auto">
+        <div className="w-full mb-[24px] mx-auto ">
           <h1 className="text-[22px] font-bold mb-[24px]">로그인</h1>
           <div>
             <label className="text-[14px]">이메일</label>

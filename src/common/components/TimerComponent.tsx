@@ -17,7 +17,7 @@ const padNumber = (num: number, length: number) => {
 
 export default function TimerComponent({ id }: Props) {
   const [timer, setTimer] = useRecoilState<ITimerProps[]>(timerSelector);
-  const timerRunning = useRecoilValue(timerRunningState);
+  const [timerRunning, setTimerRunning] = useRecoilState(timerRunningState);
   const lang = useRecoilValue(buildAlertLanguage);
   const currentTimerInfo = timer.filter((e) => e.id === id)[0];
   const tempHour = currentTimerInfo.hour ? parseInt(currentTimerInfo.hour) : 0;
@@ -32,8 +32,8 @@ export default function TimerComponent({ id }: Props) {
   const [hour, setHour] = useState(padNumber(tempHour, 2));
   const [min, setMin] = useState(padNumber(tempMin, 2));
   const [sec, setSec] = useState(padNumber(tempSec, 2));
-  const timerInputCSS =
-    "w-[50px] mr-[5px] h-[50px] border-2 border-black p-[10px] rounded-[3px] outline-blue-600 box-border inline-block";
+  const timerInputCSS = `w-[50px] mr-[5px] border-2 border-gray-500 p-[10px] rounded-[3px] outline-blue-600 box-border inline-block
+  ${timerRunning ? "bg-gray-300" : ""}`;
   useEffect(() => {
     initialTime.current = tempHour * 60 * 60 + tempMin * 60 + tempSec;
     // 시작버튼 눌렀을때 input에 설정한 값을 표시하기 위해
@@ -55,6 +55,18 @@ export default function TimerComponent({ id }: Props) {
   useEffect(() => {
     if (initialTime.current <= 0) {
       clearInterval(interval.current);
+      let wholeTime = 0;
+      timer.map((e) => {
+        wholeTime +=
+          Number(e.hour || "0") +
+          Number(e.minute || "0") +
+          Number(e.second || "0");
+      });
+      console.log(wholeTime);
+
+      if (wholeTime <= 0) {
+        setTimerRunning(false);
+      }
       if (timerRunning) {
         speak(currentTimerInfo.content, lang);
       }
@@ -64,14 +76,14 @@ export default function TimerComponent({ id }: Props) {
     }
   }, [sec]);
   return (
-    <div>
+    <div className="h-[50px] text-center ">
       {!timerRunning ? (
-        <span className="mr-[10px] mb-[10px] inline-block ">
+        <span className="mr-[10px] mb-[10px] inline-block">
           <input
             type="number"
             className={timerInputCSS}
             placeholder="H"
-            value={currentTimerInfo.hour||''}
+            value={currentTimerInfo.hour || ""}
             onChange={(e) => {
               setTimer(
                 timer.map((t: ITimerProps) =>
@@ -84,7 +96,7 @@ export default function TimerComponent({ id }: Props) {
             type="number"
             className={timerInputCSS}
             placeholder="M"
-            value={currentTimerInfo.minute||''}
+            value={currentTimerInfo.minute || ""}
             onChange={(e) => {
               setTimer(
                 timer.map((t: ITimerProps) =>
@@ -98,7 +110,7 @@ export default function TimerComponent({ id }: Props) {
             pattern="[0-9]+"
             className={timerInputCSS}
             placeholder="S"
-            value={currentTimerInfo.second||''}
+            value={currentTimerInfo.second || ""}
             onChange={(e) => {
               setTimer(
                 timer.map((t: ITimerProps) =>
@@ -118,8 +130,11 @@ export default function TimerComponent({ id }: Props) {
 
       <input
         type="text"
-        className="w-[300px] h-[50px] border-2 border-black p-[10px] rounded-[3px] outline-blue-600"
+        className={`w-full max-w-[300px] h-[50px] mr-[10px] border-2 border-gray-500 p-[10px] rounded-[3px] outline-blue-600 ${
+          timerRunning ? "bg-gray-300" : ""
+        }`}
         value={currentTimerInfo.content}
+        readOnly={timerRunning}
         onChange={(e) => {
           setTimer(
             timer.map((t: ITimerProps) =>
@@ -129,6 +144,7 @@ export default function TimerComponent({ id }: Props) {
         }}
       />
       <button
+        disabled={timerRunning}
         onClick={() => {
           setTimer(timer.filter((e: ITimerProps) => e.id !== id));
         }}

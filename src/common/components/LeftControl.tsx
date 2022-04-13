@@ -37,13 +37,13 @@ export default function LeftControl() {
   }, [isSaved]);
 
   return (
-    <div className="mt-[100px] border-2 border-black-600 rounded-[30px] h-[350px] min-w-[600px] flex flex-col">
-      <div className="relative p-[30px] self-center  flex flex-col ">
-        <div className="relative self-center mb-[10px]">
+    <div className="mt-[50px]  h-[350px]  flex flex-col ">
+      <div className="relative p-[30px] self-center  flex flex-col w-full max-w-[550px] ">
+        <div className="relative self-center  w-full ">
           <div className="">키워드 입력 (30/{keyword.length}자)</div>
           <input
             type="text"
-            className={`w-[300px] h-[50px] border-2 border-black p-[10px] rounded-[3px] outline-blue-600 ${
+            className={` h-[50px] border-2 border-black p-[10px] w-full max-w-[500px] rounded-[3px] outline-blue-600 ${
               isSaved ? " bg-gray-400" : ""
             }`}
             placeholder="왼손 생산할 키워드 입력"
@@ -59,8 +59,10 @@ export default function LeftControl() {
               }
             }}
           />
+        </div>
+        <div className="mb-[10px]">
           <button
-            className="absolute right-[-45px] bottom-[15px]"
+            className="float-right"
             onClick={() => {
               if (
                 keywordValue.current.value.length < 6 ||
@@ -77,10 +79,10 @@ export default function LeftControl() {
             {isSaved ? "수정" : "저장"}
           </button>
         </div>
-        <div className="relative self-center ">
+        <div className="relative self-center w-full ">
           <input
             type="text"
-            className={`w-[300px] h-[50px] rounded-[3px] border-2 border-black  p-[10px] outline-blue-600 ${
+            className={` h-[50px] rounded-[3px] border-2 border-black w-full max-w-[500px]  p-[10px] outline-blue-600 ${
               !isSaved ? "bg-gray-400" : ""
             }`}
             ref={inputValue}
@@ -97,7 +99,9 @@ export default function LeftControl() {
               }
             }}
           />
-          <div className="absolute right-[-120px] bottom-[10px]">
+        </div>
+        <div>
+          <div className="float-right">
             <input
               type="checkbox"
               id="checkbox"
@@ -111,7 +115,7 @@ export default function LeftControl() {
             </label>
           </div>
         </div>
-        <div className="text-[24px] h-[80px] self-center ">
+        <div className="text-[24px] h-[80px] self-center mt-[30px]">
           {savedWord}
           <div>
             {inputWord.split("").map((e, i) => {
@@ -142,9 +146,7 @@ export default function LeftControl() {
       </div>
 
       <style jsx>{`
-      .active{
-        transition:0.05s all
-      }
+      
         }
       `}</style>
     </div>
