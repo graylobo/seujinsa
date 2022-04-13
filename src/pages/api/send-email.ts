@@ -21,7 +21,7 @@ const emailContent = (number:number) => `<!DOCTYPE html>
 
 
 type Data = {
-  name: string
+    authNum: number
 }
 let generateRandom = function (min:number, max:number) {
     var ranNum = Math.floor(Math.random() * (max - min + 1)) + min;
