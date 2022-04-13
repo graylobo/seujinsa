@@ -43,7 +43,7 @@ MongoClient.connect(
 );
 
 type Data = {
-  name: string
+  name: string|string[]
 }
 
 export default function handler(
