@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import MemberInput from "../shared/MemberInput";
 export default function SignIn() {
@@ -22,7 +23,9 @@ export default function SignIn() {
         </button>
         <div className="mt-[24px] border-t border-gray-40 pt-[24px] flex justify-around text-gray-70 pb-[48px]">
           <span className="text-[14px] cursor-pointer">비밀번호 재설정</span>
-          <span className="text-[14px] cursor-pointer">회원가입</span>
+          <Link href={"/signup"}>
+            <span className="text-[14px] cursor-pointer">회원가입</span>
+          </Link>
         </div>
       </div>
     </div>
