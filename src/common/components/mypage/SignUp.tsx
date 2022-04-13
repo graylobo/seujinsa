@@ -7,12 +7,9 @@ export default function SignUp() {
   async function sendEmail(e: any) {
     e.preventDefault();
     const data = {
-      //현재의 email state값을 data객체로 감쌌다
       email: email,
     };
-
-    const res = await fetch("http://localhost:3000/api/send-email", {
-      //sendEmail 라우터로 보내버리기
+    const res = await fetch("https://seujinsa.netlify.app/api/send-email", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
