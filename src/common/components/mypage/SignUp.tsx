@@ -1,6 +1,7 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import MemberInput from "../shared/MemberInput";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export function isEmail(val: string): string {
   if (val.length === 0) {
@@ -38,6 +39,9 @@ export default function SignUp() {
   const [passwordValidateText, setPasswordValidateText] = useState("");
   const [emailValidate, setEmailValidate] = useState(false);
   const [passwordValidate, setPasswordValidate] = useState(false);
+  const [certificationNumber, setCertificationNumber] = useState("");
+  const [returnAuthNumber, setAuthNumber] = useState("");
+  const router = useRouter();
   useEffect(() => {
     setAgeCheck(acceptAll);
     setServiceTermCheck(acceptAll);
@@ -62,12 +66,13 @@ export default function SignUp() {
     const data = {
       email: email,
     };
-    const res = await fetch("https://seujinsa.netlify.app/api/send-email", {
+    const res = await fetch("http://localhost:3000/api/send-email", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
     const json = await res.json();
+    setAuthNumber(String(json.authNum));
   }
   function resendEmail() {
     setCanReSendEmail(false);
@@ -169,6 +174,7 @@ export default function SignUp() {
           onClick={(e) => {
             setJoinClicked(true);
             resendEmail();
+            sendEmail(e);
           }}
           className="mb-[10px] h-[48px] w-full py-[12px] rounded-[8px] outline-none transition-colors bg-red-600 hover:bg-red-800 disabled:bg-gray-500 text-white"
         >
@@ -194,7 +200,28 @@ export default function SignUp() {
             <input
               className="border-2  border-blue-600 px-[10px] rounded-[10px] ml-[10px]"
               type="text"
+              onChange={(e) => {
+                setCertificationNumber(e.target.value);
+              }}
             />
+            <button
+              className="ml-[10px]"
+              onClick={() => {
+                if (certificationNumber === returnAuthNumber) {
+                  if (certificationNumber !== "" && returnAuthNumber !== "") {
+                    alert("인증번호가 입력되지 않았습니다.");
+                  } else {
+                    router.push("/auth-success");
+                  }
+                } else {
+                  console.log(certificationNumber, "-", returnAuthNumber);
+
+                  alert("이메일 인증번호가 틀립니다.");
+                }
+              }}
+            >
+              확인
+            </button>
           </div>
         </div>
       )}
