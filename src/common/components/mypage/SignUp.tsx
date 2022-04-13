@@ -214,8 +214,6 @@ export default function SignUp() {
                     router.push("/auth-success");
                   }
                 } else {
-                  console.log(certificationNumber, "-", returnAuthNumber);
-
                   alert("이메일 인증번호가 틀립니다.");
                 }
               }}

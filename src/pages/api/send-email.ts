@@ -36,22 +36,22 @@ export default async function handler(
   const number = generateRandom(111111, 999999);
   // 메일발송 함수
   let transporter = nodemailer.createTransport({
-    service: "gmail", //사용하고자 하는 서비스
+    service: "gmail",
     port: 587,
     host: "smtp.gmail.com",
     secure: false,
     requireTLS: true,
     auth: {
-      user: "seujinsa@gmail.com", //gmail주소입력
-      pass: "tmwlstk7102!", //gmail패스워드 입력
+      user: "seujinsa@gmail.com", 
+      pass: "tmwlstk7102!", 
     },
   });
 
   let info = await transporter.sendMail({
-    from: "seujinsa@gmail.com", //보내는 주소 입력
-    to: user_email, //위에서 선언해준 받는사람 이메일
-    subject: "[스진사] 이메일 계정 인증", //메일 제목
-    html: emailContent(number), //내용
+    from: "seujinsa@gmail.com", 
+    to: user_email, 
+    subject: "[스진사] 이메일 계정 인증", 
+    html: emailContent(number), 
   });
 
   res.status(200).json({ authNum: number });
