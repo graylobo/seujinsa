@@ -38,7 +38,9 @@ export default function More() {
           빌드알리미
         </p>
       </Link>
-      <p className="cursor-pointer p-2.5 border-b border-gray-60">계급표</p>
+      <Link href={"/tier"}>
+        <p className="cursor-pointer p-2.5 border-b border-gray-60">계급표</p>
+      </Link>
       <p className="cursor-pointer p-2.5 border-b border-gray-60">
         {loginState.isLogin ? (
           <span
