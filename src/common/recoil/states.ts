@@ -9,6 +9,13 @@ export interface ITimerProps{
   minute?:string,
   second?:string
 }
+
+interface ILoginInfo{
+  isLogin:boolean,
+  userEmail?:string,
+  userNickName?:string,
+}
+
 const menuState = atom<boolean>({
   key: "menuState",
   default: false,
@@ -17,6 +24,11 @@ const menuState = atom<boolean>({
 const timerRunningState = atom<boolean>({
   key:"timerRunningState",
   default:false
+})
+
+const loginInfo = atom<ILoginInfo>({
+  key:"loginInfoState",
+  default:{isLogin:false}
 })
 
 const buildAlertLanguage=atom<OptionProp>({
@@ -56,4 +68,4 @@ const timerSelector = selector<ITimerProps[]>({
 
   }
 })
-export { menuState, timerState,timerRunningState,buildAlertLanguage,timerSelector };
+export { menuState, timerState,timerRunningState,buildAlertLanguage,timerSelector,loginInfo };

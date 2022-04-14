@@ -2,10 +2,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import MemberInput from "../shared/MemberInput";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRecoilState } from "recoil";
+import { loginInfo } from "../../recoil/states";
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useRecoilState(loginInfo);
   const router = useRouter();
   // https://seujinsa.herokuapp.com/login
   async function login(e: any) {
@@ -25,16 +29,21 @@ export default function SignIn() {
       .json()
       .then((e) => {
         if (e.msg === "인증완료") {
-          setLoginSuccess(true);
+          console.log(e);
+          setLoginSuccess({ isLogin: true, userEmail: e.id });
           router.push("/");
         }
       })
       .catch((e) => {
-        console.log(e);
+        toast.error("계정정보가 올바르지 않습니다.", {
+          autoClose: 1000,
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   }
   return (
     <div className="py-[60px] p-[30px] w-full max-w-[475px] flex flex-col overflow-y-auto mx-auto">
+      <ToastContainer />
       <div className="w-full mx-auto">
         <div className="w-full mb-[24px] mx-auto ">
           <h1 className="text-[22px] font-bold mb-[24px]">로그인</h1>
