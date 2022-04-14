@@ -207,14 +207,14 @@ export default function SignUp() {
             <button
               className="ml-[10px]"
               onClick={() => {
-                if (certificationNumber === returnAuthNumber) {
-                  if (certificationNumber !== "" && returnAuthNumber !== "") {
-                    alert("인증번호가 입력되지 않았습니다.");
-                  } else {
+                if (certificationNumber !== "" && returnAuthNumber !== "") {
+                  if (certificationNumber === returnAuthNumber) {
                     router.push("/auth-success");
+                  } else {
+                    alert("이메일 인증번호가 틀립니다.");
                   }
                 } else {
-                  alert("이메일 인증번호가 틀립니다.");
+                  alert("인증번호가 입력되지 않았습니다.");
                 }
               }}
             >
