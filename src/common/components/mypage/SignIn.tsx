@@ -17,7 +17,7 @@ export default function SignIn() {
       id: email,
       pw: password,
     };
-    const res = await fetch("https://seujinsa.herokuapp.com/login/login", {
+    const res = await fetch("https://seujinsa.herokuapp.com/login", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
