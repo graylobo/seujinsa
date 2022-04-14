@@ -1,8 +1,14 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import React, {
+  MutableRefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import MemberInput from "../shared/MemberInput";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
+import Loading from "../shared/Loading";
 export function isEmail(val: string): string {
   if (val.length === 0) {
     return "이메일을 입력해주세요.";
@@ -41,6 +47,7 @@ export default function SignUp() {
   const [passwordValidate, setPasswordValidate] = useState(false);
   const [certificationNumber, setCertificationNumber] = useState("");
   const [returnAuthNumber, setAuthNumber] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   useEffect(() => {
     setAgeCheck(acceptAll);
@@ -66,7 +73,7 @@ export default function SignUp() {
     const data = {
       email: email,
     };
-    const res = await fetch("http://localhost:3000/api/send-email", {
+    const res = await fetch("https://seujinsa.herokuapp.com/send-email", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -74,13 +81,48 @@ export default function SignUp() {
     const json = await res.json();
     setAuthNumber(String(json.authNum));
   }
+  async function checkID(): Promise<any> {
+    setLoading(true);
+    const data = {
+      id: email,
+    };
+    const res = await fetch("https://seujinsa.herokuapp.com/check-id", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const json = await res.json();
+    setLoading(false);
+    return json;
+  }
+
+  useLayoutEffect(() => {
+    if (loading) {
+      document.body.style.backgroundColor = "#aca8a8";
+    }
+    if (!loading) {
+      document.body.style.backgroundColor = "white";
+    }
+  }, [loading]);
+  async function memberJoin(e: any) {
+    e.preventDefault();
+    const data = {
+      id: email,
+      pw: password,
+    };
+    const res = await fetch("https://seujinsa.herokuapp.com/join", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const json = await res.json();
+  }
   function resendEmail() {
     setCanReSendEmail(false);
     setTimeout(() => {
       setCanReSendEmail(true);
     }, 1000 * 300);
   }
-
   return (
     <div className="py-[60px] h-full px-[20px] mx-auto max-w-[500px]">
       <div className="mb-[16px]">
@@ -98,7 +140,7 @@ export default function SignUp() {
           <MemberInput
             type="email"
             placeholder="이메일을 입력해주세요"
-            content={setEmail}
+            onChange={setEmail}
           />
           <div className="text-red-600 mt-[3px] ml-[10px] text-[15px]">
             {emailValidateText}
@@ -109,7 +151,7 @@ export default function SignUp() {
           <MemberInput
             type="password"
             placeholder="비밀번호를 입력해주세요"
-            content={setPassword}
+            onChange={setPassword}
           />
           <div className="text-red-600 mt-[3px] ml-[10px] text-[15px]">
             {passwordValidateText}
@@ -166,15 +208,21 @@ export default function SignUp() {
           </span>
         </div>
       </div>
+      {loading && <Loading message="Check ID..."></Loading>}
       {!isJoinClicked ? (
         <button
           disabled={
             !(ageCheck && serviceTermCheck && emailValidate && passwordValidate)
           }
-          onClick={(e) => {
-            setJoinClicked(true);
-            resendEmail();
-            sendEmail(e);
+          onClick={async (e) => {
+            const res = await checkID();
+            if (res.exist) {
+              alert(res.msg);
+            } else {
+              setJoinClicked(true);
+              resendEmail();
+              sendEmail(e);
+            }
           }}
           className="mb-[10px] h-[48px] w-full py-[12px] rounded-[8px] outline-none transition-colors bg-red-600 hover:bg-red-800 disabled:bg-gray-500 text-white"
         >
@@ -188,6 +236,7 @@ export default function SignUp() {
                 alert("3분후에 재발송 가능합니다.");
               } else {
                 alert("메일이 재발송 되었습니다");
+                sendEmail(e);
                 resendEmail();
               }
             }}
@@ -198,7 +247,7 @@ export default function SignUp() {
           <div className="flex justify-center">
             <span>인증번호 입력: </span>
             <input
-              className="border-2  border-blue-600 px-[10px] rounded-[10px] ml-[10px]"
+              className="border-2  border-blue-500 px-[10px] rounded-[10px] ml-[10px]"
               type="text"
               onChange={(e) => {
                 setCertificationNumber(e.target.value);
@@ -206,10 +255,11 @@ export default function SignUp() {
             />
             <button
               className="ml-[10px]"
-              onClick={() => {
+              onClick={(e) => {
                 if (certificationNumber !== "" && returnAuthNumber !== "") {
                   if (certificationNumber === returnAuthNumber) {
                     router.push("/auth-success");
+                    memberJoin(e)
                   } else {
                     alert("이메일 인증번호가 틀립니다.");
                   }
