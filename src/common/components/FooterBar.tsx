@@ -19,10 +19,14 @@ export default function FooterBar() {
         <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] "></div>
         <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] "></div>
         {loginState.isLogin ? (
-          <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] ">
-            <span className="material-icons-outlined text-[19px]">person</span>
-            <span className="text-[12px]">마이페이지</span>
-          </div>
+          <Link href={"/mypage"}>
+            <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] ">
+              <span className="material-icons-outlined text-[19px]">
+                person
+              </span>
+              <span className="text-[12px]">마이페이지</span>
+            </div>
+          </Link>
         ) : (
           <Link href={"/signin"}>
             <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] ">

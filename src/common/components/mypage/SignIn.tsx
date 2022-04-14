@@ -11,14 +11,13 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [loginSuccess, setLoginSuccess] = useRecoilState(loginInfo);
   const router = useRouter();
-  // https://seujinsa.herokuapp.com/login
   async function login(e: any) {
     e.preventDefault();
     const data = {
       id: email,
       pw: password,
     };
-    const res = await fetch("http://localhost:3003/login", {
+    const res = await fetch("https://seujinsa.herokuapp.com/login/login", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
