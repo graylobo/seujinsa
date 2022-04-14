@@ -1,23 +1,37 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import MemberInput from "../shared/MemberInput";
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const router = useRouter();
+  // https://seujinsa.herokuapp.com/login
   async function login(e: any) {
     e.preventDefault();
     const data = {
       id: email,
       pw: password,
     };
-    const res = await fetch("https://seujinsa.herokuapp.com/login", {
+    const res = await fetch("http://localhost:3003/login", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify(data),
     });
-    const json = await res.json();
-    console.log(json);
+
+    res
+      .json()
+      .then((e) => {
+        if (e.msg === "인증완료") {
+          setLoginSuccess(true);
+          router.push("/");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
   return (
     <div className="py-[60px] p-[30px] w-full max-w-[475px] flex flex-col overflow-y-auto mx-auto">
