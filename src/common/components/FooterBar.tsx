@@ -2,9 +2,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { loginInfo } from "../recoil/states";
+import { userInfoState } from "../recoil/states";
 export default function FooterBar() {
-  const loginState = useRecoilValue(loginInfo);
+  const userState = useRecoilValue(userInfoState);
   const router = useRouter();
   return (
     <div className="h-[56px] bg-gray-200 fixed w-full justify-center flex  bottom-0  shadow-2xl ">
@@ -18,7 +18,7 @@ export default function FooterBar() {
 
         <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] "></div>
         <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] "></div>
-        {loginState.isLogin ? (
+        {userState.isLogin ? (
           <Link href={"/mypage"}>
             <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] ">
               <span className="material-icons-outlined text-[19px]">

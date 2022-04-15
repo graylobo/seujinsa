@@ -5,18 +5,22 @@ import MemberInput from "../shared/MemberInput";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRecoilState } from "recoil";
-import { loginInfo } from "../../recoil/states";
+import { userInfoState } from "../../recoil/states";
+import Loading from "../shared/Loading";
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginSuccess, setLoginSuccess] = useRecoilState(loginInfo);
+  const [userState, setUserState] = useRecoilState(userInfoState);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   async function login(e: any) {
+    setIsLoading(true);
     e.preventDefault();
     const data = {
       id: email,
       pw: password,
     };
+    //https://seujinsa.herokuapp.com
     const res = await fetch("https://seujinsa.herokuapp.com/login", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -28,8 +32,8 @@ export default function SignIn() {
       .json()
       .then((e) => {
         if (e.msg === "인증완료") {
-          console.log(e);
-          setLoginSuccess({ isLogin: true, userEmail: e.id });
+          console.log("asdasdasd", e);
+          setUserState({ isLogin: true, ...e });
           router.push("/");
         }
       })
@@ -39,10 +43,12 @@ export default function SignIn() {
           position: toast.POSITION.TOP_CENTER,
         });
       });
+    setIsLoading(false);
   }
   return (
     <div className="py-[60px] p-[30px] w-full max-w-[475px] flex flex-col overflow-y-auto mx-auto">
       <ToastContainer />
+      {isLoading && <Loading message="Check ID..."></Loading>}
       <div className="w-full mx-auto">
         <div className="w-full mb-[24px] mx-auto ">
           <h1 className="text-[22px] font-bold mb-[24px]">로그인</h1>

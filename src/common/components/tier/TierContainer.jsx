@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { css, Global, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 import TierComponent from "./TierComponent";
+import { useRecoilValue } from "recoil";
+import { gamerState } from "../../recoil/states";
 const Wrapper = styled.div`
   .container {
     display: grid;
@@ -17,27 +18,13 @@ const Wrapper = styled.div`
     width: 100%;
     max-width: 300px;
     height: 100%;
-    max-height: 300px;
+    max-height: 350px;
     border-radius: 5px;
   }
   .gamer-name {
     letter-spacing: 3px;
   }
 `;
-
-const tierList = [
-  "주(기둥)",
-  "갑",
-  "을",
-  "병",
-  "정",
-  "무",
-  "기",
-  "경",
-  "신",
-  "임",
-  "계",
-];
 
 function MiddleContainer({ tierName, gamerList }) {
   const defaultCSS =
@@ -60,108 +47,106 @@ export default function TierContainer() {
   const [sixTier, setSixTier] = useState([]);
   const [sevenTier, setSevenTier] = useState([]);
   const [eightTier, setEightTier] = useState([]);
-  const [nineTIer, setNineTier] = useState([]);
+  const [nineTier, setNineTier] = useState([]);
   const [tenTier, setTenTier] = useState([]);
-  let gamerList = [
-    { name: "김지성", point: { zero: 2, one: 1, two: 2 } },
-    { name: "유영진", point: { zero: 0, one: 2, two: 1 } },
-    { name: "이재호", point: { zero: 1, one: 0, two: 2 } },
-    { name: "홍구", point: { zero: 0, one: 1, two: 2 } },
-    { name: "송병구", point: { zero: 0, one: 1, two: 2 } },
-    { name: "최호선", point: { zero: 3, one: 1, two: 2 } },
-  ];
+  const gamerInfo = useRecoilValue(gamerState);
+
   useEffect(() => {
-    const sortedGamerList = gamerList.map((e) => {
-      let sortable = [];
-      for (const key in e.point) {
-        sortable.push([key, e.point[key]]);
-      }
-      sortable.sort((a, b) => {
-        if (a[1] === b[1]) {
-          return -1;
-        } else {
-          return b[1] - a[1];
+    async function getGamerList() {
+      const res = await fetch("https://seujinsa.herokuapp.com/gamer-list");
+      const json = await res.json();
+      const sortedGamerList = json.map((e) => {
+        let sortable = [];
+        for (const key in e.point) {
+          sortable.push([key, e.point[key]]);
+        }
+        sortable.sort((a, b) => {
+          if (a[1] === b[1]) {
+            return -1;
+          } else {
+            return b[1] - a[1];
+          }
+        });
+        // 해당 게이머의 계급포인트중에서 가장 높은 포인트를 가진 계급 찾기
+        return { name: e._id, tier: sortable[0][0] };
+      });
+
+      let zeroTemp = [];
+      let oneTemp = [];
+      let twoTemp = [];
+      let threeTemp = [];
+      let fourTemp = [];
+      let fiveTemp = [];
+      let sixTemp = [];
+      let sevenTemp = [];
+      let eightTemp = [];
+      let nineTemp = [];
+      let tenTemp = [];
+
+      sortedGamerList.map((e) => {
+        switch (e.tier) {
+          case "zero":
+            zeroTemp.push(e.name);
+            break;
+          case "one":
+            oneTemp.push(e.name);
+            break;
+          case "two":
+            twoTemp.push(e.name);
+            break;
+          case "three":
+            threeTemp.push(e.name);
+            break;
+          case "four":
+            fourTemp.push(e.name);
+            break;
+          case "five":
+            fiveTemp.push(e.name);
+            break;
+          case "six":
+            sixTemp.push(e.name);
+            break;
+          case "seven":
+            sevenTemp.push(e.name);
+            break;
+          case "eight":
+            eightTemp.push(e.name);
+            break;
+          case "nine":
+            nineTemp.push(e.name);
+            break;
+          case "ten":
+            tenTemp.push(e.name);
+            break;
         }
       });
-      return { name: e.name, tier: sortable[0][0] };
-    });
-    console.log(sortedGamerList);
-
-    let zeroTemp = [];
-    let oneTemp = [];
-    let twoTemp = [];
-    let threeTemp = [];
-    let fourTemp = [];
-    let fiveTemp = [];
-    let sixTemp = [];
-    let sevenTemp = [];
-    let eightTemp = [];
-    let nineTemp = [];
-    let tenTemp = [];
-
-    sortedGamerList.map((e) => {
-      switch (e.tier) {
-        case "zero":
-          zeroTemp.push(e.name);
-          break;
-        case "one":
-          oneTemp.push(e.name);
-          break;
-        case "two":
-          twoTemp.push(e.name);
-          break;
-        case "three":
-          threeTemp.push(e.name);
-          break;
-        case "four":
-          fourTemp.push(e.name);
-          break;
-        case "five":
-          fiveTemp.push(e.name);
-          break;
-        case "six":
-          sixTemp.push(e.name);
-          break;
-        case "seven":
-          sevenTemp.push(e.name);
-          break;
-        case "eight":
-          eightTemp.push(e.name);
-          break;
-        case "nine":
-          nineTemp.push(e.name);
-          break;
-        case "ten":
-          tenTemp.push(e.name);
-          break;
-      }
-    });
-
-    setZeroTier(zeroTemp);
-    setOneTier(oneTemp);
-    setTwoTier(twoTemp);
-    setThreeTier(threeTemp);
-    serFourTier(fourTemp);
-    setFiveTier(fiveTemp);
-    setSixTier(sixTemp);
-    setSevenTier(sevenTemp);
-    setEightTier(eightTemp);
-    setNineTier(nineTemp);
-    setTenTier(tenTemp);
-  }, []);
+      setZeroTier(zeroTemp);
+      setOneTier(oneTemp);
+      setTwoTier(twoTemp);
+      setThreeTier(threeTemp);
+      serFourTier(fourTemp);
+      setFiveTier(fiveTemp);
+      setSixTier(sixTemp);
+      setSevenTier(sevenTemp);
+      setEightTier(eightTemp);
+      setNineTier(nineTemp);
+      setTenTier(tenTemp);
+    }
+    getGamerList();
+  }, [gamerInfo]);
   return (
     <Wrapper className="">
       <MiddleContainer tierName={"주(기둥)"} gamerList={zeroTier} />
       <MiddleContainer tierName={"갑"} gamerList={oneTier} />
       <MiddleContainer tierName={"을"} gamerList={twoTier} />
-      <MiddleContainer tierName={"병"} gamerList={zeroTier} />
-      <MiddleContainer tierName={"정"} gamerList={zeroTier} />
-      <MiddleContainer tierName={"무"} gamerList={zeroTier} />
-      <MiddleContainer tierName={"기"} gamerList={zeroTier} />
-      <MiddleContainer tierName={"경"} gamerList={zeroTier} />
-      <MiddleContainer tierName={"신"} gamerList={zeroTier} />
-      <MiddleContainer tierName={"임"} gamerList={zeroTier} />
-      <MiddleContainer tierName={"계"} gamerList={zeroTier} />
+      <MiddleContainer tierName={"병"} gamerList={threeTier} />
+      <MiddleContainer tierName={"정"} gamerList={fourTier} />
+      <MiddleContainer tierName={"무"} gamerList={fiveTier} />
+      <MiddleContainer tierName={"기"} gamerList={sixTier} />
+      <MiddleContainer tierName={"경"} gamerList={sevenTier} />
+      <MiddleContainer tierName={"신"} gamerList={eightTier} />
+      <MiddleContainer tierName={"임"} gamerList={nineTier} />
+      <MiddleContainer tierName={"계"} gamerList={tenTier} />
     </Wrapper>
   );
 }

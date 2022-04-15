@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
-import { loginInfo } from "../../recoil/states";
+import { userInfoState } from "../../recoil/states";
 export default function MyPage() {
-  const [loginState, setLoginState] = useRecoilState(loginInfo);
-  return <div>{loginState.userEmail}</div>;
+  const [userState, setUserState] = useRecoilState(userInfoState);
+  return <div>{userState._id}</div>;
 }

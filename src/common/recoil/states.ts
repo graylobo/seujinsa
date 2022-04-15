@@ -10,14 +10,15 @@ export interface ITimerProps{
   second?:string
 }
 
-interface ILoginInfo{
+interface IUserInfo{
   isLogin:boolean,
-  userEmail?:string,
+  _id?:string,
+  votePoint:any
   userNickName?:string,
 }
 export interface IGamerInfo {
-  _id?: string;
-  point?: { zero: number,one:number,two:number,three:number,four:number,five:number };
+  _id: string;
+  point?: { zero: number,one:number,two:number,three:number,four:number,five:number,six:number,seven:number,eight:number,nine:number,ten:number };
 }
 const menuState = atom<boolean>({
   key: "menuState",
@@ -29,9 +30,9 @@ const timerRunningState = atom<boolean>({
   default:false
 })
 
-const loginInfo = atom<ILoginInfo>({
-  key:"loginInfoState",
-  default:{isLogin:false}
+const userInfoState = atom<IUserInfo>({
+  key:"userInfoState",
+  default:{_id:"",votePoint:{}, isLogin:false}
 })
 
 const buildAlertLanguage=atom<OptionProp>({
@@ -46,7 +47,7 @@ const timerState = atom<ITimerProps[]>({
 
 const gamerState = atom<IGamerInfo>({
   key:"gamerState",
-  default:{}
+  default:{_id:""}
 })
 
 const timerSelector = selector<ITimerProps[]>({
@@ -76,4 +77,4 @@ const timerSelector = selector<ITimerProps[]>({
 
   }
 })
-export { menuState, timerState,timerRunningState,buildAlertLanguage,timerSelector,loginInfo,gamerState };
+export { menuState, timerState,timerRunningState,buildAlertLanguage,timerSelector,userInfoState,gamerState };
