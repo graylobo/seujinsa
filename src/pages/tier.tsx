@@ -1,8 +1,8 @@
 import React from 'react'
-import TierComponent from '../common/components/tier/TierComponent'
+import TierContainer from '../common/components/tier/TierContainer'
 
 export default function tier() {
   return (
-    <TierComponent></TierComponent>
+    <TierContainer></TierContainer>
   )
 }

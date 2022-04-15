@@ -13,7 +13,7 @@ export default function ZeroTier({ gamerList }: any) {
         return (
           <div>
             <img src={`/images/gamer/${e}.png`} alt="" />
-            {e}
+            <span>{e}</span>
           </div>
         );
       })}

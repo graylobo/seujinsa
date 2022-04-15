@@ -15,7 +15,10 @@ interface ILoginInfo{
   userEmail?:string,
   userNickName?:string,
 }
-
+export interface IGamerInfo {
+  _id?: string;
+  point?: { zero: number,one:number,two:number,three:number,four:number,five:number };
+}
 const menuState = atom<boolean>({
   key: "menuState",
   default: false,
@@ -40,6 +43,11 @@ const timerState = atom<ITimerProps[]>({
   key: "timerState",
   default: [],
 });
+
+const gamerState = atom<IGamerInfo>({
+  key:"gamerState",
+  default:{}
+})
 
 const timerSelector = selector<ITimerProps[]>({
   key:"timerSelector",
@@ -68,4 +76,4 @@ const timerSelector = selector<ITimerProps[]>({
 
   }
 })
-export { menuState, timerState,timerRunningState,buildAlertLanguage,timerSelector,loginInfo };
+export { menuState, timerState,timerRunningState,buildAlertLanguage,timerSelector,loginInfo,gamerState };

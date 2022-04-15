@@ -1,26 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { css, Global, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
-import ZeroTier from "./level/ZeroTier";
-import OneTier from "./level/OneTier";
-import TwoTier from "./level/TwoTier";
-import ThreeTier from "./level/ThreeTier";
-import FourTier from "./level/FourTier";
-import FiveTier from "./level/FiveTier";
-import SixTier from "./level/SixTier";
-import SevenTier from "./level/SevenTier";
-import EightTier from "./level/EightTier";
-import NineTier from "./level/NineTier";
-import TenTier from "./level/TenTier";
-
+import TierComponent from "./TierComponent";
 const Wrapper = styled.div`
   .container {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-gap: 10px;
   }
+  .info-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #d8d2af;
+    width: 100%;
+    max-width: 300px;
+    height: 100%;
+    max-height: 300px;
+    border-radius: 5px;
+  }
+  .gamer-name {
+    letter-spacing: 3px;
+  }
 `;
-export default function TierComponent() {
+
+const tierList = [
+  "주(기둥)",
+  "갑",
+  "을",
+  "병",
+  "정",
+  "무",
+  "기",
+  "경",
+  "신",
+  "임",
+  "계",
+];
+
+function MiddleContainer({ tierName, gamerList }) {
+  const defaultCSS =
+    "flex flex-col items-center p-[30px] bg-blue-100 mb-[30px]";
+  return (
+    <div className={`${defaultCSS} `}>
+      <div className="mb-[10px] text-[20px] font-semibold">{tierName}</div>
+      <TierComponent gamerList={gamerList}></TierComponent>
+    </div>
+  );
+}
+
+export default function TierContainer() {
   const [zeroTier, setZeroTier] = useState([]);
   const [oneTier, setOneTier] = useState([]);
   const [twoTier, setTwoTier] = useState([]);
@@ -119,43 +149,19 @@ export default function TierComponent() {
     setNineTier(nineTemp);
     setTenTier(tenTemp);
   }, []);
-
   return (
-    <Wrapper>
-      <div>
-        주(기둥)
-        <ZeroTier gamerList={zeroTier}></ZeroTier>
-      </div>
-      <div>
-        갑<OneTier gamerList={oneTier}></OneTier>
-      </div>
-      <div>
-        을<TwoTier gamerList={twoTier}></TwoTier>
-      </div>
-      <div>
-        병<ThreeTier gamerList={zeroTier}></ThreeTier>
-      </div>
-      <div>
-        정<FourTier gamerList={zeroTier}></FourTier>
-      </div>
-      <div>
-        무<FiveTier gamerList={zeroTier}></FiveTier>
-      </div>
-      <div>
-        기<SixTier gamerList={zeroTier}></SixTier>
-      </div>
-      <div>
-        경<SevenTier gamerList={zeroTier}></SevenTier>
-      </div>
-      <div>
-        신<EightTier gamerList={zeroTier}></EightTier>
-      </div>
-      <div>
-        임<NineTier gamerList={zeroTier}></NineTier>
-      </div>
-      <div>
-        계<TenTier gamerList={zeroTier}></TenTier>
-      </div>
+    <Wrapper className="">
+      <MiddleContainer tierName={"주(기둥)"} gamerList={zeroTier} />
+      <MiddleContainer tierName={"갑"} gamerList={oneTier} />
+      <MiddleContainer tierName={"을"} gamerList={twoTier} />
+      <MiddleContainer tierName={"병"} gamerList={zeroTier} />
+      <MiddleContainer tierName={"정"} gamerList={zeroTier} />
+      <MiddleContainer tierName={"무"} gamerList={zeroTier} />
+      <MiddleContainer tierName={"기"} gamerList={zeroTier} />
+      <MiddleContainer tierName={"경"} gamerList={zeroTier} />
+      <MiddleContainer tierName={"신"} gamerList={zeroTier} />
+      <MiddleContainer tierName={"임"} gamerList={zeroTier} />
+      <MiddleContainer tierName={"계"} gamerList={zeroTier} />
     </Wrapper>
   );
 }
