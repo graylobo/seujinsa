@@ -44,6 +44,7 @@ export default function More() {
       <p className="cursor-pointer p-2.5 border-b border-gray-60">
         {userState.isLogin ? (
           <span
+            className="w-full inline-block"
             onClick={() => {
               setUserState({ isLogin: false, votePoint: -1 });
             }}
@@ -52,6 +53,7 @@ export default function More() {
           </span>
         ) : (
           <span
+            className="w-full inline-block"
             onClick={() => {
               router.push("/signin");
             }}

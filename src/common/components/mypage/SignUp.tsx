@@ -73,7 +73,7 @@ export default function SignUp() {
     const data = {
       email: email,
     };
-    const res = await fetch("https://seujinsa.herokuapp.com/send-email", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/send-email`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -86,7 +86,7 @@ export default function SignUp() {
     const data = {
       id: email,
     };
-    const res = await fetch("https://seujinsa.herokuapp.com/check-id", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/check-id`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -110,7 +110,7 @@ export default function SignUp() {
       id: email,
       pw: password,
     };
-    const res = await fetch("https://seujinsa.herokuapp.com/join", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/join`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

@@ -49,11 +49,12 @@ export default function TierContainer() {
   const [eightTier, setEightTier] = useState([]);
   const [nineTier, setNineTier] = useState([]);
   const [tenTier, setTenTier] = useState([]);
+  const [elevenTier, setElevenTier] = useState([]);
   const gamerInfo = useRecoilValue(gamerState);
 
   useEffect(() => {
     async function getGamerList() {
-      const res = await fetch("https://seujinsa.herokuapp.com/gamer-list");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-list`);
       const json = await res.json();
       const sortedGamerList = json.map((e) => {
         let sortable = [];
@@ -82,6 +83,7 @@ export default function TierContainer() {
       let eightTemp = [];
       let nineTemp = [];
       let tenTemp = [];
+      let elevenTemp = [];
 
       sortedGamerList.map((e) => {
         switch (e.tier) {
@@ -118,6 +120,9 @@ export default function TierContainer() {
           case "ten":
             tenTemp.push(e.name);
             break;
+          case "eleven":
+            elevenTemp.push(e.name);
+            break;
         }
       });
       setZeroTier(zeroTemp);
@@ -131,6 +136,7 @@ export default function TierContainer() {
       setEightTier(eightTemp);
       setNineTier(nineTemp);
       setTenTier(tenTemp);
+      setElevenTier(elevenTemp);
     }
     getGamerList();
   }, [gamerInfo]);
@@ -147,6 +153,7 @@ export default function TierContainer() {
       <MiddleContainer tierName={"신"} gamerList={eightTier} />
       <MiddleContainer tierName={"임"} gamerList={nineTier} />
       <MiddleContainer tierName={"계"} gamerList={tenTier} />
+      <MiddleContainer tierName={"배치"} gamerList={elevenTier} />
     </Wrapper>
   );
 }

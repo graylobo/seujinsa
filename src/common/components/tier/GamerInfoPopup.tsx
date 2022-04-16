@@ -43,40 +43,51 @@ export default function GamerInfoPopup({ setShowInfo }: any) {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   function SubTier({ tier, name, point }: any) {
     async function vote() {
-      await fetch(
-        `https://seujinsa.herokuapp.com/decrease-point/${
-          userInfo._id
-        }/${name}/${convertTierName(tier)}`
-      );
-      await fetch(
-        `https://seujinsa.herokuapp.com/vote/${name}/${convertTierName(tier)}`
-      );
-      let res = await fetch(`https://seujinsa.herokuapp.com/user-info/${userInfo._id}`);
-      let json = await res.json();
-      setUserInfo({ isLogin: true, ...json });
+      console.log(process.env.NEXT_PUBLIC_DB_URL);
+      if (userInfo.isLogin) {
+        await fetch(
+          `${process.env.NEXT_PUBLIC_DB_URL}/decrease-point/${
+            userInfo._id
+          }/${name}/${convertTierName(tier)}`
+        );
+        await fetch(
+          `${process.env.NEXT_PUBLIC_DB_URL}/vote/${name}/${convertTierName(
+            tier
+          )}`
+        );
+        let res = await fetch(
+          `${process.env.NEXT_PUBLIC_DB_URL}/user-info/${userInfo._id}`
+        );
+        let json = await res.json();
+        setUserInfo({ isLogin: true, ...json });
 
-      res = await fetch(`https://seujinsa.herokuapp.com/gamer-info/${name}`);
-      json = await res.json();
-      setGamerInfo(json);
+        res = await fetch(
+          `${process.env.NEXT_PUBLIC_DB_URL}/gamer-info/${name}`
+        );
+        json = await res.json();
+        setGamerInfo(json);
+      }
     }
 
     async function cancelVote() {
       await fetch(
-        `https://seujinsa.herokuapp.com/increase-point/${
+        `${process.env.NEXT_PUBLIC_DB_URL}/increase-point/${
           userInfo._id
         }/${name}/${convertTierName(tier)}`
       );
       await fetch(
-        `https://seujinsa.herokuapp.com/cancel-vote/${userInfo._id}/${
+        `${process.env.NEXT_PUBLIC_DB_URL}/cancel-vote/${userInfo._id}/${
           userInfo.votePoint[gamerInfo._id][1]
         }}`
       );
 
-      let res = await fetch(`https://seujinsa.herokuapp.com/user-info/${userInfo._id}`);
+      let res = await fetch(
+        `${process.env.NEXT_PUBLIC_DB_URL}/user-info/${userInfo._id}`
+      );
       let json = await res.json();
       setUserInfo({ isLogin: true, ...json });
 
-      res = await fetch(`https://seujinsa.herokuapp.com/gamer-info/${name}`);
+      res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-info/${name}`);
       json = await res.json();
       setGamerInfo(json);
     }

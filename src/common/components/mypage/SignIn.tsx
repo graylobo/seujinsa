@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import MemberInput from "../shared/MemberInput";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,6 +13,21 @@ export default function SignIn() {
   const [userState, setUserState] = useRecoilState(userInfoState);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const handleKeyPress = useCallback(
+    (e: any) => {
+      if (e.keyCode === 13) {
+        login(e);
+      }
+    },
+    [email, password]
+  );
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress, false);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress, false);
+    };
+  }, [handleKeyPress]);
+
   async function login(e: any) {
     setIsLoading(true);
     e.preventDefault();
@@ -20,8 +35,8 @@ export default function SignIn() {
       id: email,
       pw: password,
     };
-    //https://seujinsa.herokuapp.com
-    const res = await fetch("https://seujinsa.herokuapp.com/login", {
+    console.log(email, password);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/login`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

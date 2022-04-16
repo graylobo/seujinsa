@@ -7,12 +7,12 @@ export default function TierComponent({ gamerList }: any) {
   const [gamerInfo, setGamerInfo] = useRecoilState(gamerState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   async function getGamerInfo(gamer: string) {
-    let res = await fetch(`https://seujinsa.herokuapp.com/gamer-info/${gamer}`);
+    let res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-info/${gamer}`);
     let json = await res.json();
     setGamerInfo(json);
 
     if (userInfo._id) {
-      res = await fetch(`https://seujinsa.herokuapp.com/user-info/${userInfo._id}`);
+      res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/user-info/${userInfo._id}`);
       json = await res.json();
       setUserInfo({...json,isLogin:true});
     }
