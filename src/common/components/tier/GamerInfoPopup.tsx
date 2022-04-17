@@ -38,12 +38,11 @@ function convertTierName(tier: string): string {
   return val;
 }
 
-export default function GamerInfoPopup({ setShowInfo }: any) {
+ function GamerInfoPopup({ setShowInfo }: any) {
   const [gamerInfo, setGamerInfo] = useRecoilState(gamerState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   function SubTier({ tier, name, point }: any) {
     async function vote() {
-      console.log(process.env.NEXT_PUBLIC_DB_URL);
       if (userInfo.isLogin) {
         await fetch(
           `${process.env.NEXT_PUBLIC_DB_URL}/decrease-point/${
@@ -97,7 +96,7 @@ export default function GamerInfoPopup({ setShowInfo }: any) {
           {tier}: {point || 0}
           <button
             onClick={() => {
-              if (!userInfo) {
+              if (!userInfo.isLogin) {
                 alert("로그인 상태에서만 투표가 가능합니다.");
               } else {
                 vote();
@@ -117,7 +116,6 @@ export default function GamerInfoPopup({ setShowInfo }: any) {
       </div>
     );
   }
-  console.log(userInfo);
 
   return (
     <div className="info-popup flex flex-col items-center relative">
@@ -169,3 +167,4 @@ export default function GamerInfoPopup({ setShowInfo }: any) {
     </div>
   );
 }
+export default React.memo(GamerInfoPopup)
