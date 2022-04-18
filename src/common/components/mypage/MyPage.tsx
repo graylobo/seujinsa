@@ -14,12 +14,6 @@ const menuList: ObjType = {
   2: <Withdrawal />,
 };
 
-// const menuList = [
-//   <ProfileManagement />,
-//   <PersonalInfoManagement />,
-//   <Withdrawal />,
-// ];
-
 export default function MyPage() {
   const [selectedMenuIndex, setMenuIndex] = useState<number>(0);
   const menu = ["프로필 관리", "개인정보 관리", "회원탈퇴"];

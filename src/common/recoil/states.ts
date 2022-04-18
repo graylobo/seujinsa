@@ -14,7 +14,8 @@ interface IUserInfo{
   isLogin:boolean,
   _id?:string,
   votePoint:any
-  userNickName?:string,
+  nickName?:string,
+  introduction?:string
 }
 export interface IGamerInfo {
   _id: string;
