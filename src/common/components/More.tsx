@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userInfoState } from "../recoil/states";
+
 export default function More() {
   // const [sessionInfo, setSessionInfo] = useState({ result: "" });
   const router = useRouter();
@@ -46,7 +47,9 @@ export default function More() {
           <span
             className="w-full inline-block"
             onClick={() => {
+              
               setUserState({ isLogin: false, votePoint: -1 });
+              router.push("/");
             }}
           >
             로그아웃
