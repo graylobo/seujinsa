@@ -72,14 +72,17 @@ export default function TierContainer() {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log("옴");
     async function getGamerList() {
       setLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-list`);
       const json = await res.json();
       const sortedGamerList = json.map((e) => {
+        let totalPoint = 0;
         let sortable = [];
         for (const key in e.point) {
           sortable.push([key, e.point[key]]);
+          totalPoint += e.point[key];
         }
         sortable.sort((a, b) => {
           if (a[1] === b[1]) {
@@ -89,7 +92,45 @@ export default function TierContainer() {
           }
         });
         // 해당 게이머의 계급포인트중에서 가장 높은 포인트를 가진 계급 찾기
-        return { name: e._id, tier: sortable[0][0], level: e.level };
+        let currentTier = sortable[0][0];
+
+        // totalPoint 조건별로 티어결정하는 로직
+        // let index = 1;
+        // let find = false;
+        // while (!find) {
+        //   console.log("무한");
+        //   switch (currentTier) {
+        //     case "one":
+        //       if (totalPoint <= 5) {
+        //         currentTier = sortable[index++][0];
+        //         continue;
+        //       }
+        //       find = true;
+        //       break;
+        //     case "two":
+        //       if (totalPoint <= 3) {
+        //         currentTier = sortable[index++][0];
+        //         continue;
+        //       }
+        //       find = true;
+        //       break;
+        //     case "three":
+        //       if (totalPoint <= 1) {
+        //         currentTier = sortable[index++][0];
+        //         continue;
+        //       }
+        //       find = true;
+        //       break;
+        //     default:
+        //       find = true;
+        //   }
+        // }
+        return {
+          name: e._id,
+          tier: currentTier,
+          level: e.level,
+          totalPoint,
+        };
       });
 
       let zeroTemp = [];
@@ -104,8 +145,9 @@ export default function TierContainer() {
       let nineTemp = [];
       let tenTemp = [];
       let elevenTemp = [];
-
+      console.log(sortedGamerList);
       sortedGamerList.map((e) => {
+        // 투표순으로 결정
         if (e.level && tierList.includes(e.level)) {
           switch (e.level) {
             case "zero":
@@ -145,7 +187,9 @@ export default function TierContainer() {
               elevenTemp.push(e.name);
               break;
           }
-        } else {
+        }
+        // 지정한 티어로 결정
+        else {
           switch (e.tier) {
             case "zero":
               zeroTemp.push(e.name);
