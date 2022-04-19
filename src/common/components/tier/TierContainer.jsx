@@ -7,7 +7,7 @@ import Loading from "../shared/Loading";
 const Wrapper = styled.div`
   .container {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     grid-gap: 10px;
   }
   .info-popup {
@@ -32,7 +32,7 @@ const MemoizedMiddleContainer = React.memo(function MiddleContainer({
   gamerList,
 }) {
   const defaultCSS =
-    "flex flex-col items-center p-[30px] bg-blue-100 mb-[30px]";
+    "flex flex-col items-center  p-[30px] bg-blue-100 mb-[30px]";
   return (
     <div className={`${defaultCSS} `}>
       <div className="mb-[10px] text-[20px] font-semibold">{tierName}</div>
@@ -72,7 +72,6 @@ export default function TierContainer() {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log("옴");
     async function getGamerList() {
       setLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-list`);
@@ -93,8 +92,11 @@ export default function TierContainer() {
         });
         // 해당 게이머의 계급포인트중에서 가장 높은 포인트를 가진 계급 찾기
         let currentTier = sortable[0][0];
+        if (e.level) {
+          currentTier = e.level;
+        }
 
-        // totalPoint 조건별로 티어결정하는 로직
+        //#region totalPoint 조건별로 티어결정하는 로직
         // let index = 1;
         // let find = false;
         // while (!find) {
@@ -125,11 +127,14 @@ export default function TierContainer() {
         //       find = true;
         //   }
         // }
+        //#endregion
         return {
-          name: e._id,
+          _id: e._id,
           tier: currentTier,
-          level: e.level,
+          race: e.race,
+          university: e.university,
           totalPoint,
+          nickName: e.nickName,
         };
       });
 
@@ -145,109 +150,70 @@ export default function TierContainer() {
       let nineTemp = [];
       let tenTemp = [];
       let elevenTemp = [];
-      console.log(sortedGamerList);
+
       sortedGamerList.map((e) => {
-        // 투표순으로 결정
-        if (e.level && tierList.includes(e.level)) {
-          switch (e.level) {
-            case "zero":
-              zeroTemp.push(e.name);
-              break;
-            case "one":
-              oneTemp.push(e.name);
-              break;
-            case "two":
-              twoTemp.push(e.name);
-              break;
-            case "three":
-              threeTemp.push(e.name);
-              break;
-            case "four":
-              fourTemp.push(e.name);
-              break;
-            case "five":
-              fiveTemp.push(e.name);
-              break;
-            case "six":
-              sixTemp.push(e.name);
-              break;
-            case "seven":
-              sevenTemp.push(e.name);
-              break;
-            case "eight":
-              eightTemp.push(e.name);
-              break;
-            case "nine":
-              nineTemp.push(e.name);
-              break;
-            case "ten":
-              tenTemp.push(e.name);
-              break;
-            case "eleven":
-              elevenTemp.push(e.name);
-              break;
-          }
-        }
-        // 지정한 티어로 결정
-        else {
+        if (tierList.includes(e.tier)) {
           switch (e.tier) {
             case "zero":
-              zeroTemp.push(e.name);
+              zeroTemp.push({
+                ...e,
+              });
               break;
             case "one":
-              oneTemp.push(e.name);
+              oneTemp.push({ ...e });
               break;
             case "two":
-              twoTemp.push(e.name);
+              twoTemp.push({ ...e });
               break;
             case "three":
-              threeTemp.push(e.name);
+              threeTemp.push({ ...e });
               break;
             case "four":
-              fourTemp.push(e.name);
+              fourTemp.push({ ...e });
               break;
             case "five":
-              fiveTemp.push(e.name);
+              fiveTemp.push({ ...e });
               break;
             case "six":
-              sixTemp.push(e.name);
+              sixTemp.push({ ...e });
               break;
             case "seven":
-              sevenTemp.push(e.name);
+              sevenTemp.push({ ...e });
               break;
             case "eight":
-              eightTemp.push(e.name);
+              eightTemp.push({ ...e });
               break;
             case "nine":
-              nineTemp.push(e.name);
+              nineTemp.push({ ...e });
               break;
             case "ten":
-              tenTemp.push(e.name);
+              tenTemp.push({ ...e });
               break;
             case "eleven":
-              elevenTemp.push(e.name);
+              elevenTemp.push({ ...e });
               break;
           }
         }
       });
-      setZeroTier(zeroTemp);
-      setOneTier(oneTemp);
-      setTwoTier(twoTemp);
-      setThreeTier(threeTemp);
-      serFourTier(fourTemp);
-      setFiveTier(fiveTemp);
-      setSixTier(sixTemp);
-      setSevenTier(sevenTemp);
-      setEightTier(eightTemp);
-      setNineTier(nineTemp);
-      setTenTier(tenTemp);
-      setElevenTier(elevenTemp);
+      setZeroTier([...zeroTemp]);
+      setOneTier([...oneTemp]);
+      setTwoTier([...twoTemp]);
+      setThreeTier([...threeTemp]);
+      serFourTier([...fourTemp]);
+      setFiveTier([...fiveTemp]);
+      setSixTier([...sixTemp]);
+      setSevenTier([...sevenTemp]);
+      setEightTier([...eightTemp]);
+      setNineTier([...nineTemp]);
+      setTenTier([...tenTemp]);
+      setElevenTier([...elevenTemp]);
       setLoading(false);
     }
     getGamerList();
   }, [gamerInfo]);
+
   return (
-    <Wrapper className="">
+    <Wrapper>
       {isLoading && <Loading />}
       <MemoizedMiddleContainer tierName={"주(기둥)"} gamerList={zeroTier} />
       <MemoizedMiddleContainer tierName={"갑"} gamerList={oneTier} />

@@ -17,9 +17,13 @@ interface IUserInfo{
   nickName?:string,
   introduction?:string
 }
-export interface IGamerInfo {
+export type GamerInfoType= {
   _id: string;
   point?: { zero: number,one:number,two:number,three:number,four:number,five:number,six:number,seven:number,eight:number,nine:number,ten:number };
+  race?:string,
+  university?:string,
+  totalPoint?:number,
+  nickName?:string
 }
 const menuState = atom<boolean>({
   key: "menuState",
@@ -46,7 +50,7 @@ const timerState = atom<ITimerProps[]>({
   default: [],
 });
 
-const gamerState = atom<IGamerInfo>({
+const gamerState = atom<GamerInfoType>({
   key:"gamerState",
   default:{_id:""}
 })
