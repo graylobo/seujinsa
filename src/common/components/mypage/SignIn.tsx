@@ -35,7 +35,6 @@ export default function SignIn() {
       id: email,
       pw: password,
     };
-    console.log(email, password);
     const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/login`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -47,7 +46,7 @@ export default function SignIn() {
       .json()
       .then((e) => {
         if (e.msg === "인증완료") {
-          console.log("asdasdasd", e);
+          console.log("asd", e);
           setUserState({ isLogin: true, ...e });
           router.push("/");
         }

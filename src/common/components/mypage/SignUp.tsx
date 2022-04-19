@@ -115,7 +115,6 @@ export default function SignUp() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    const json = await res.json();
   }
   function resendEmail() {
     setCanReSendEmail(false);
@@ -259,7 +258,7 @@ export default function SignUp() {
                 if (certificationNumber !== "" && returnAuthNumber !== "") {
                   if (certificationNumber === returnAuthNumber) {
                     router.push("/auth-success");
-                    memberJoin(e)
+                    memberJoin(e);
                   } else {
                     alert("이메일 인증번호가 틀립니다.");
                   }

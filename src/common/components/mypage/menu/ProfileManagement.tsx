@@ -1,21 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { userInfoState } from "../../../recoil/states";
-import { IProps } from "../../../hooks/utils";
 import ConfirmButton from "../../shared/ConfirmButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 export default function ProfileManagement() {
   const [userState, setUserState] = useRecoilState(userInfoState);
   const [image, setImage] = useState<any>(null);
   const [profile, setProfile] = useState("");
   const [nickName, setNickName] = useState<any>("");
   const [introduction, setIntroduction] = useState<any>("");
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+
+  function checkTextValid(str: string) {
+    const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자 체크
+    if (!pattern_spc.test(str)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   const onChange = (e: any) => {
     setImage(e.target.files[0]);
   };
+
+  const subjectCSS = "mb-[10px] text-[15px]";
   const inputCSS =
-    "outline-none w-full rounded-[10px] bg-gray-100  border border-gray-40 px-[12px] focus:bg-gray-10 focus:border-gray-70 focus:border-2 focus:outline-none focus:text-gray-70 appearance-none";
+    "focus:bg-white focus:border-gray-300 outline-none w-full rounded-[10px] bg-gray-100  border border-gray-40 px-[12px] focus:bg-gray-10 focus:border-gray-70 focus:border-2 focus:outline-none focus:text-gray-70 appearance-none";
   useEffect(() => {
     const onClick = async () => {
       if (userState._id) {
@@ -42,30 +54,28 @@ export default function ProfileManagement() {
 
   useEffect(() => {
     if (!userState.nickName) {
-      setNickName(userState._id);
+      setNickName(userState._id?.split("@")[0]);
     } else {
       setNickName(userState.nickName);
     }
     setIntroduction(userState.introduction);
-    console.log(userState);
   }, []);
 
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  async function updateUserInfo(obj: IProps) {
+  async function updateUserInfo() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/user-info`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        _id: obj._id,
-        nickName: obj.nickName,
-        introduction: obj.introduction,
+        _id: userState._id,
+        nickName: nickName.trim(),
+        introduction: introduction,
       }),
     });
     if (res.status === 200) {
       setUserInfo({
         ...userInfo,
-        nickName: obj.nickName,
-        introduction: obj.introduction,
+        nickName: nickName.trim(),
+        introduction: introduction,
       });
       toast.success("정보가 수정되었습니다.", {
         autoClose: 1500,
@@ -74,10 +84,13 @@ export default function ProfileManagement() {
     }
   }
 
+  console.log(profile ? "참" : "거짓");
+  console.log(profile);
+
   return (
     <div className="relative h-full w-full max-w-[428px] self-center flex flex-col">
       <ToastContainer />
-      <div>프로필 이미지</div>
+      <div className={subjectCSS}>프로필 이미지</div>
       <div className="relative mb-[30px] w-[100px]">
         <label htmlFor="file-input" className="">
           <img
@@ -98,33 +111,63 @@ export default function ProfileManagement() {
           />
         </label>
       </div>
-      <div>닉네임</div>
+      <div className={subjectCSS}>닉네임</div>
       <input
         type="text"
-        className={`${inputCSS} h-[48px] mb-[30px]`}
+        className={`${inputCSS} h-[48px] `}
         value={nickName}
+        maxLength={8}
+        placeholder={"닉네임을 입력해주세요"}
         onChange={(e) => {
           setNickName(e.target.value);
         }}
       />
-      <div>소개글</div>
-      <input
-        type="text"
-        className={`${inputCSS} h-[90px] mb-[30px]`}
+      <div>
+        <span className="text-[12px] text-gray-70 float-right">
+          {nickName.length}/8
+        </span>
+      </div>
+      <div className={subjectCSS}>소개글</div>
+      <textarea
+        maxLength={100}
+        className={`${inputCSS} h-[100px] resize-none `}
         value={introduction}
+        placeholder={"소개글을 입력해주세요"}
         onChange={(e) => {
           setIntroduction(e.target.value);
         }}
       />
-
+      <div>
+        <span className="text-[12px] text-gray-70 float-right">
+          {introduction.length}/100
+        </span>
+      </div>
       <ConfirmButton
         text="수정"
         onClick={() => {
-          updateUserInfo({
-            _id: userState._id,
-            nickName: nickName,
-            introduction: introduction,
-          });
+          if (nickName == null || nickName.trim() === "") {
+            toast.error("닉네임은 한글자 이상으로 설정할 수 있습니다.", {
+              autoClose: 1500,
+              position: toast.POSITION.TOP_CENTER,
+            });
+            return;
+          }
+          if (!checkTextValid(nickName)) {
+            toast.error("닉네임에 특수문자를 설정할 수 없습니다.", {
+              autoClose: 1500,
+              position: toast.POSITION.TOP_CENTER,
+            });
+            return;
+          }
+          if (/([^가-힣a-z\x20])/i.test(nickName)) {
+            toast.error("닉네임에 자음모음을 설정할 수 없습니다.", {
+              autoClose: 1500,
+              position: toast.POSITION.TOP_CENTER,
+            });
+            return;
+          }
+
+          updateUserInfo();
         }}
       />
     </div>
