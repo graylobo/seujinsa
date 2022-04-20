@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { gamerState, userInfoState, GamerInfoType } from "../../recoil/states";
 import GamerInfoPopup from "./GamerInfoPopup";
@@ -20,12 +20,11 @@ export default function TierComponent({ gamerList }: any) {
       json = await res.json();
       setUserInfo({ ...json, isLogin: true });
     }
-
     setShowInfo(true);
   }
-  console.log("zz ", gamerList);
+
   return (
-    <div className="container">
+    <div className="container ">
       {showInfo && <GamerInfoPopup setShowInfo={setShowInfo} />}
       {gamerList.map((gamer: GamerInfoType) => {
         let raceColor = "";
@@ -46,8 +45,8 @@ export default function TierComponent({ gamerList }: any) {
         return (
           <div
             className="cursor-pointer w-[83px] h-[113px]"
-            onClick={async () => {
-              await getGamerInfo(gamer._id);
+            onClick={() => {
+              getGamerInfo(gamer._id);
             }}
             key={gamer._id}
           >
@@ -65,6 +64,7 @@ export default function TierComponent({ gamerList }: any) {
           </div>
         );
       })}
+
       <style jsx>{`
         .img-container {
           box-shadow: 0 0 0 2px black;

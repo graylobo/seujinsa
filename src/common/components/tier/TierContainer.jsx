@@ -3,7 +3,8 @@ import styled from "@emotion/styled";
 import TierComponent from "./TierComponent";
 import { useRecoilValue } from "recoil";
 import { gamerState } from "../../recoil/states";
-import Loading from "../shared/Loading";
+import { PacmanLoader } from "react-spinners";
+
 const Wrapper = styled.div`
   .container {
     display: grid;
@@ -214,7 +215,6 @@ export default function TierContainer() {
 
   return (
     <Wrapper>
-      {isLoading && <Loading />}
       <MemoizedMiddleContainer tierName={"주(기둥)"} gamerList={zeroTier} />
       <MemoizedMiddleContainer tierName={"갑"} gamerList={oneTier} />
       <MemoizedMiddleContainer tierName={"을"} gamerList={twoTier} />

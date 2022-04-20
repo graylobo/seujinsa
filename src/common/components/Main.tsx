@@ -4,11 +4,11 @@ import { userInfoState, logoutState } from "../recoil/states";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import YouTube from "react-youtube";
-
 export default function Main() {
   const userInfo = useRecoilValue(userInfoState);
   const [logout, setLogout] = useRecoilState(logoutState);
-  const [isMute, setMute] = useState(false);
+  const [isMute, setMute] = useState(true);
+  const [videoLoad, setVideoLoad] = useState(false);
   const muteRef = useRef<any>();
   // const [width, setWidth] = useState<number>(window.innerWidth);
 
@@ -36,6 +36,7 @@ export default function Main() {
   const opts = {
     width: "100%",
     height: "100%",
+
     playerVars: {
       controls: 0,
       autoplay: 1,
@@ -44,10 +45,19 @@ export default function Main() {
     },
   };
 
+  useEffect(() => {
+    if (videoLoad) {
+      setTimeout(() => {
+        muteRef.current.playVideo();
+        console.log(muteRef.current);
+      }, 3000);
+    }
+  }, [videoLoad]);
+
   return (
     <div className="mt-[30px]">
       <ToastContainer />
-      <div className="absolute w-full h-full top-0 left-0 ">
+      <div className="absolute w-full h-[90%] top-[10%] left-0 ">
         <div className="absolute   w-full h-full top-0 left-0 "></div>
         <YouTube
           videoId="A5AmE_b68cg"
@@ -55,8 +65,10 @@ export default function Main() {
           // containerStyle={styles.promAlert}
           containerClassName={"h-full"}
           onReady={(e) => {
+            e.target.mute();
             e.target.playVideo();
             muteRef.current = e.target;
+            setVideoLoad(true);
           }}
         />
         {/* <img src="/star-cat.jpg" alt="" /> */}
