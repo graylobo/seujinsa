@@ -2,10 +2,19 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { gamerState, userInfoState, GamerInfoType } from "../../recoil/states";
 import GamerInfoPopup from "./GamerInfoPopup";
+import { PacmanLoader } from "react-spinners";
 export default function TierComponent({ gamerList }: any) {
   const [showInfo, setShowInfo] = useState(false);
   const [gamerInfo, setGamerInfo] = useRecoilState(gamerState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [loading, setLoading] = useState(true);
+
+  function onAllImageLoad(i: number) {
+    if (i === gamerList.length - 1) {
+      console.log("전체로드완료!");
+      setLoading(false);
+    }
+  }
   async function getGamerInfo(gamer: string) {
     let res = await fetch(
       `${process.env.NEXT_PUBLIC_DB_URL}/gamer-info/${gamer}`
@@ -24,9 +33,12 @@ export default function TierComponent({ gamerList }: any) {
   }
 
   return (
-    <div className="container ">
+    <div className="container relative ">
       {showInfo && <GamerInfoPopup setShowInfo={setShowInfo} />}
-      {gamerList.map((gamer: GamerInfoType) => {
+      <div className="loader ">
+        {loading && <PacmanLoader size={20} color="gray" />}
+      </div>
+      {gamerList.map((gamer: GamerInfoType, index: number) => {
         let raceColor = "";
         switch (gamer.race) {
           case "zerg":
@@ -54,7 +66,9 @@ export default function TierComponent({ gamerList }: any) {
               <img
                 className="gamer-image w-full h-full "
                 src={`/images/gamer/${gamer._id}.png`}
-                alt=""
+                onLoad={() => {
+                  onAllImageLoad(index);
+                }}
               />
             </div>
 
@@ -68,6 +82,13 @@ export default function TierComponent({ gamerList }: any) {
       <style jsx>{`
         .img-container {
           box-shadow: 0 0 0 2px black;
+        }
+        .loader {
+          width: 40px;
+          margin-top: 10px;
+          position: absolute;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       `}</style>
     </div>

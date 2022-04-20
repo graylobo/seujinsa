@@ -33,7 +33,7 @@ const MemoizedMiddleContainer = React.memo(function MiddleContainer({
   gamerList,
 }) {
   const defaultCSS =
-    "flex flex-col items-center  p-[30px] bg-blue-100 mb-[30px]";
+    "flex flex-col items-center  p-[30px] bg-blue-100 mb-[30px]  min-h-[150px]";
   return (
     <div className={`${defaultCSS} `}>
       <div className="mb-[10px] text-[20px] font-semibold">{tierName}</div>
