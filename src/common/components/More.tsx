@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { userInfoState } from "../recoil/states";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { userInfoState, logoutState } from "../recoil/states";
 
 export default function More() {
   // const [sessionInfo, setSessionInfo] = useState({ result: "" });
   const router = useRouter();
   const [userState, setUserState] = useRecoilState(userInfoState);
+  const setLogout = useSetRecoilState(logoutState);
 
   // 컴포넌트 로드시마다 세션정보를 api호출하는 비용이 오버스펙이라 판단하여 recoil 상태로 확인하는것으로 수정
   // useEffect(() => {
@@ -47,8 +48,8 @@ export default function More() {
           <span
             className="w-full inline-block"
             onClick={() => {
-              
               setUserState({ isLogin: false, votePoint: -1 });
+              setLogout(true);
               router.push("/");
             }}
           >
