@@ -11,7 +11,7 @@ import FooterBar from "../common/components/FooterBar";
 function MyApp({ Component, pageProps }: AppProps) {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
-  
+
   useEffect(() => {
     setMenu(false);
   }, [router]);
@@ -20,6 +20,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>스진사</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          name="naver-site-verification"
+          content="fce13107c51b22bb838ea06ae37d5531c60ed48a"
+        />
+        <meta
+          name="google-site-verification"
+          content="CHA780ClBXdq8NB9A7TUy6iISn-kvimrkWCcyZ1f4y8"
+        />
         <link rel="icon" href="/staricon.ico" />
         <link
           href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
