@@ -1,29 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { userInfoState, logoutState } from "../recoil/states";
+import { useRecoilState } from "recoil";
+import { logoutState } from "../recoil/states";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import YouTube from "react-youtube";
 export default function Main() {
-  const userInfo = useRecoilValue(userInfoState);
   const [logout, setLogout] = useRecoilState(logoutState);
   const [isMute, setMute] = useState(true);
   const [videoLoad, setVideoLoad] = useState(false);
   const muteRef = useRef<any>();
-  // const [width, setWidth] = useState<number>(window.innerWidth);
 
-  // 모바일 사이즈인지 체크하는 함수
-  // function handleWindowSizeChange() {
-  //   setWidth(window.innerWidth);
-  // }
-  // useEffect(() => {
-  //   window.addEventListener("resize", handleWindowSizeChange);
-  //   return () => {
-  //     window.removeEventListener("resize", handleWindowSizeChange);
-  //   };
-  // }, []);
-
-  // const isMobile = width <= 768;
   useEffect(() => {
     if (logout) {
       toast.info("로그아웃 되었습니다.", {
@@ -49,7 +35,6 @@ export default function Main() {
     if (videoLoad) {
       setTimeout(() => {
         muteRef.current.playVideo();
-        console.log(muteRef.current);
       }, 3000);
     }
   }, [videoLoad]);

@@ -1,10 +1,25 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { isMobileState } from "../recoil/states";
 export default function Navigation({ setMenu }) {
+
+  const [isMobile,setIsMobile]= useRecoilState(isMobileState)
+  //모바일 사이즈여부 체크
+  function handleWindowSizeChange() {
+    setIsMobile(window.innerWidth<=768)
+  }
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowSizeChange);
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange);
+    };
+  }, []);
+
   return (
     <div className=" relative ">
       <Link href={"/"}>
-        <span className="text-[30px] cursor-pointer subject absolute top-[10px] left-[0px] ">
+        <span className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}>
           스<span className="text-[18px]">타에</span>진
           <span className="text-[18px]">심인</span>사
           <span className="text-[18px]">이트</span>

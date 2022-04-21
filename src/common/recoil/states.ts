@@ -40,6 +40,10 @@ const menuState = atom<boolean>({
   key: "menuState",
   default: false,
 });
+const isMobileState = atom<boolean>({
+  key: "isMobileState",
+  default: false,
+});
 
 const timerRunningState = atom<boolean>({
   key: "timerRunningState",
@@ -105,4 +109,5 @@ export {
   userInfoState,
   gamerState,
   logoutState,
+  isMobileState
 };

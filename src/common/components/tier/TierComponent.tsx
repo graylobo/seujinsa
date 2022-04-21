@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { gamerState, userInfoState, GamerInfoType } from "../../recoil/states";
 import GamerInfoPopup from "./GamerInfoPopup";
@@ -8,13 +8,19 @@ export default function TierComponent({ gamerList }: any) {
   const [gamerInfo, setGamerInfo] = useRecoilState(gamerState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [loading, setLoading] = useState(true);
-
   function onAllImageLoad(i: number) {
     if (i === gamerList.length - 1) {
-      console.log("전체로드완료!");
+      console.log("gamerList");
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    // 처음 랜더링시에 gamerList Props
+    if (gamerList.length === 0) {
+      setLoading(false);
+    }
+  }, [gamerList]);
   async function getGamerInfo(gamer: string) {
     let res = await fetch(
       `${process.env.NEXT_PUBLIC_DB_URL}/gamer-info/${gamer}`
@@ -62,14 +68,22 @@ export default function TierComponent({ gamerList }: any) {
             }}
             key={gamer._id}
           >
-            <div className="img-container w-full h-[83px] shadow  border-red">
-              <img
-                className="gamer-image w-full h-full "
-                src={`/images/gamer/${gamer._id}.png`}
-                onLoad={() => {
-                  onAllImageLoad(index);
-                }}
-              />
+            <div
+              className={`${
+                gamer._id === undefined ? "" : "img-container"
+              } w-full h-[83px]`}
+            >
+              {gamer._id === undefined ? (
+                <div></div>
+              ) : (
+                <img
+                  className="gamer-image w-full h-full "
+                  src={`/images/gamer/${gamer._id}.png`}
+                  onLoad={() => {
+                    onAllImageLoad(index);
+                  }}
+                />
+              )}
             </div>
 
             <span className={`inline-block w-full text-center ${raceColor}`}>

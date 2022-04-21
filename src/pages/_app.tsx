@@ -7,9 +7,11 @@ import More from "../common/components/More";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import FooterBar from "../common/components/FooterBar";
+
 function MyApp({ Component, pageProps }: AppProps) {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
+  
   useEffect(() => {
     setMenu(false);
   }, [router]);

@@ -3,13 +3,15 @@ import styled from "@emotion/styled";
 import TierComponent from "./TierComponent";
 import { useRecoilValue } from "recoil";
 import { gamerState } from "../../recoil/states";
-import { PacmanLoader } from "react-spinners";
 
 const Wrapper = styled.div`
   .container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     grid-gap: 10px;
+  }
+  .top-div {
+    margin-top: 30px;
   }
   .info-popup {
     position: fixed;
@@ -34,6 +36,7 @@ const MemoizedMiddleContainer = React.memo(function MiddleContainer({
 }) {
   const defaultCSS =
     "flex flex-col items-center  p-[30px] bg-blue-100 mb-[30px]  min-h-[150px]";
+
   return (
     <div className={`${defaultCSS} `}>
       <div className="mb-[10px] text-[20px] font-semibold">{tierName}</div>
@@ -57,24 +60,22 @@ const tierList = [
   "eleven",
 ];
 export default function TierContainer() {
-  const [zeroTier, setZeroTier] = useState([]);
-  const [oneTier, setOneTier] = useState([]);
-  const [twoTier, setTwoTier] = useState([]);
-  const [threeTier, setThreeTier] = useState([]);
-  const [fourTier, serFourTier] = useState([]);
-  const [fiveTier, setFiveTier] = useState([]);
-  const [sixTier, setSixTier] = useState([]);
-  const [sevenTier, setSevenTier] = useState([]);
-  const [eightTier, setEightTier] = useState([]);
-  const [nineTier, setNineTier] = useState([]);
-  const [tenTier, setTenTier] = useState([]);
-  const [elevenTier, setElevenTier] = useState([]);
+  const [zeroTier, setZeroTier] = useState([{}]);
+  const [oneTier, setOneTier] = useState([{}]);
+  const [twoTier, setTwoTier] = useState([{}]);
+  const [threeTier, setThreeTier] = useState([{}]);
+  const [fourTier, serFourTier] = useState([{}]);
+  const [fiveTier, setFiveTier] = useState([{}]);
+  const [sixTier, setSixTier] = useState([{}]);
+  const [sevenTier, setSevenTier] = useState([{}]);
+  const [eightTier, setEightTier] = useState([{}]);
+  const [nineTier, setNineTier] = useState([{}]);
+  const [tenTier, setTenTier] = useState([{}]);
+  const [elevenTier, setElevenTier] = useState([{}]);
   const gamerInfo = useRecoilValue(gamerState);
-  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getGamerList() {
-      setLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-list`);
       const json = await res.json();
       const sortedGamerList = json.map((e) => {
@@ -208,24 +209,24 @@ export default function TierContainer() {
       setNineTier([...nineTemp]);
       setTenTier([...tenTemp]);
       setElevenTier([...elevenTemp]);
-      setLoading(false);
     }
     getGamerList();
   }, [gamerInfo]);
 
   return (
     <Wrapper>
-      <MemoizedMiddleContainer tierName={"주(기둥)"} gamerList={zeroTier} />
-      <MemoizedMiddleContainer tierName={"갑"} gamerList={oneTier} />
-      <MemoizedMiddleContainer tierName={"을"} gamerList={twoTier} />
-      <MemoizedMiddleContainer tierName={"병"} gamerList={threeTier} />
-      <MemoizedMiddleContainer tierName={"정"} gamerList={fourTier} />
-      <MemoizedMiddleContainer tierName={"무"} gamerList={fiveTier} />
-      <MemoizedMiddleContainer tierName={"기"} gamerList={sixTier} />
-      <MemoizedMiddleContainer tierName={"경"} gamerList={sevenTier} />
-      <MemoizedMiddleContainer tierName={"신"} gamerList={eightTier} />
-      <MemoizedMiddleContainer tierName={"임"} gamerList={nineTier} />
-      <MemoizedMiddleContainer tierName={"계"} gamerList={tenTier} />
+      <div className="top-div"></div>
+      <MemoizedMiddleContainer tierName={"주(柱)"} gamerList={zeroTier} />
+      <MemoizedMiddleContainer tierName={"갑(甲)"} gamerList={oneTier} />
+      <MemoizedMiddleContainer tierName={"을(乙)"} gamerList={twoTier} />
+      <MemoizedMiddleContainer tierName={"병(丙)"} gamerList={threeTier} />
+      <MemoizedMiddleContainer tierName={"정(丁)"} gamerList={fourTier} />
+      <MemoizedMiddleContainer tierName={"무(戊)"} gamerList={fiveTier} />
+      <MemoizedMiddleContainer tierName={"기(己)"} gamerList={sixTier} />
+      <MemoizedMiddleContainer tierName={"경(庚)"} gamerList={sevenTier} />
+      <MemoizedMiddleContainer tierName={"신(辛)"} gamerList={eightTier} />
+      <MemoizedMiddleContainer tierName={"임(壬)"} gamerList={nineTier} />
+      <MemoizedMiddleContainer tierName={"계(癸)"} gamerList={tenTier} />
       <MemoizedMiddleContainer tierName={"배치"} gamerList={elevenTier} />
     </Wrapper>
   );
