@@ -47,7 +47,6 @@ export default function Main() {
         <YouTube
           videoId="A5AmE_b68cg"
           opts={opts}
-          // containerStyle={styles.promAlert}
           containerClassName={"h-full"}
           onReady={(e) => {
             e.target.mute();

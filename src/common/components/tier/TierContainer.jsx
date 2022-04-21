@@ -24,6 +24,7 @@ const Wrapper = styled.div`
     height: 100%;
     max-height: 350px;
     border-radius: 5px;
+    z-index: 1;
   }
   .gamer-name {
     letter-spacing: 3px;

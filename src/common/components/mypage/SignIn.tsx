@@ -38,8 +38,8 @@ export default function SignIn() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/login`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
       body: JSON.stringify(data),
+      credentials: "include",
     });
 
     res

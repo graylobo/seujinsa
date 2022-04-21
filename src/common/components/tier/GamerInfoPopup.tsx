@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { gamerState, userInfoState } from "../../recoil/states";
+import { getUserInfo, getGamerInfo } from "../../utils/api-util";
 function convertTierName(tier: string): string {
   let val = "";
   switch (tier) {
@@ -38,23 +39,31 @@ function convertTierName(tier: string): string {
   return val;
 }
 
- function GamerInfoPopup({ setShowInfo }: any) {
+function GamerInfoPopup({ setShowInfo }: any) {
   const [gamerInfo, setGamerInfo] = useRecoilState(gamerState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   function SubTier({ tier, name, point }: any) {
     async function vote() {
       if (userInfo.isLogin) {
-        await fetch(
-          `${process.env.NEXT_PUBLIC_DB_URL}/decrease-point/${
-            userInfo._id
-          }/${name}/${convertTierName(tier)}`
+        let res = await fetch(
+          `${process.env.NEXT_PUBLIC_DB_URL}/decrease-point`,
+          {
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              _id: userInfo._id,
+              name: name,
+              tier: convertTierName(tier),
+              date: Date.now(),
+            }),
+          }
         );
         await fetch(
           `${process.env.NEXT_PUBLIC_DB_URL}/vote/${name}/${convertTierName(
             tier
           )}`
         );
-        let res = await fetch(
+        res = await fetch(
           `${process.env.NEXT_PUBLIC_DB_URL}/user-info/${userInfo._id}`
         );
         let json = await res.json();
@@ -68,28 +77,6 @@ function convertTierName(tier: string): string {
       }
     }
 
-    async function cancelVote() {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_DB_URL}/increase-point/${
-          userInfo._id
-        }/${name}/${convertTierName(tier)}`
-      );
-      await fetch(
-        `${process.env.NEXT_PUBLIC_DB_URL}/cancel-vote/${userInfo._id}/${
-          userInfo.votePoint[gamerInfo._id][1]
-        }}`
-      );
-
-      let res = await fetch(
-        `${process.env.NEXT_PUBLIC_DB_URL}/user-info/${userInfo._id}`
-      );
-      let json = await res.json();
-      setUserInfo({ isLogin: true, ...json });
-
-      res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-info/${name}`);
-      json = await res.json();
-      setGamerInfo(json);
-    }
     return (
       <div className=" w-full flex justify-center">
         <div className="relative mb-[3px]">
@@ -99,13 +86,11 @@ function convertTierName(tier: string): string {
               if (!userInfo.isLogin) {
                 alert("로그인 상태에서만 투표가 가능합니다.");
               } else {
-                vote();
-
-                // if (userInfo.votePoint[gamerInfo._id][0] <= 0) {
-                //   alert("잔여 투표 포인트가 없습니다.");
-                // } else {
-                //   vote();
-                // }
+                if (userInfo.votePoint[gamerInfo._id][0] <= 0) {
+                  alert("잔여 투표 포인트가 없습니다.");
+                } else {
+                  vote();
+                }
               }
             }}
             className="absolute right-[-40px] text-[13px] p-[2px] border-[1px] rounded-[2px] border-blue-800"
@@ -116,7 +101,31 @@ function convertTierName(tier: string): string {
       </div>
     );
   }
-
+  async function cancelVote() {
+    let json = await getUserInfo(userInfo._id);
+    const votedTier = userInfo.votePoint[gamerInfo._id][1];
+    let res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/cancel-vote`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        _id: gamerInfo._id,
+        tier: votedTier,
+      }),
+    });
+    json = await getGamerInfo(gamerInfo._id);
+    setGamerInfo({ ...gamerInfo, ...json });
+    await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/increase-point`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        _id: userInfo._id,
+        name: gamerInfo._id,
+        tier: votedTier,
+      }),
+    });
+    json = await getUserInfo(userInfo._id);
+    setUserInfo({ ...userInfo, ...json, isLogin: true });
+  }
   return (
     <div className="info-popup flex flex-col items-center relative">
       <span
@@ -152,11 +161,15 @@ function convertTierName(tier: string): string {
       <SubTier tier={"계"} name={gamerInfo._id} point={gamerInfo.point?.ten} />
       {userInfo.isLogin ? (
         <div>
-          {" "}
           {userInfo.votePoint[gamerInfo._id][0] > 0 ? (
             <span>투표가능: 1</span>
           ) : (
-            <span className="cursor-pointer" onClick={() => {}}>
+            <span
+              className="cursor-pointer"
+              onClick={() => {
+                cancelVote();
+              }}
+            >
               투표취소
             </span>
           )}
@@ -167,4 +180,4 @@ function convertTierName(tier: string): string {
     </div>
   );
 }
-export default React.memo(GamerInfoPopup)
+export default React.memo(GamerInfoPopup);
