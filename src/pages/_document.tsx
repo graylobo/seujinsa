@@ -10,7 +10,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <title>스진s사z</title>
+          <title>스진사</title>
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"
@@ -33,6 +33,11 @@ class MyDocument extends Document {
             type="text/css"
             href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
           />
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1544015487048934"
+            crossOrigin="anonymous"
+          ></script>
           <body>
             <Main />
             <NextScript />
