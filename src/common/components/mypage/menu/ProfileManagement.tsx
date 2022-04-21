@@ -88,7 +88,7 @@ export default function ProfileManagement() {
   console.log(profile);
 
   return (
-    <div className="relative h-full w-full max-w-[428px] self-center flex flex-colF">
+    <div className="relative h-full w-full max-w-[428px] self-center flex flex-col">
       <ToastContainer />
       <div className={subjectCSS}>프로필 이미지</div>
       <div className="relative mb-[30px] w-[100px]">
