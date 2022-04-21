@@ -17,7 +17,7 @@ export default function Navigation({ setMenu }) {
   }, []);
 
   return (
-    <div className=" relative ">
+    <nav className=" relative ">
       <Link href={"/"}>
         <span className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}>
           스<span className="text-[18px]">타에</span>진
@@ -34,6 +34,6 @@ export default function Navigation({ setMenu }) {
       >
         more_horiz
       </span>
-    </div>
+    </nav>
   );
 }

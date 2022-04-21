@@ -40,7 +40,7 @@ export default function Main() {
   }, [videoLoad]);
 
   return (
-    <div className="mt-[30px]">
+    <main className="mt-[30px]">
       <ToastContainer />
       <div className="absolute w-full h-[90%] top-[10%] left-0 ">
         <div className="absolute   w-full h-full top-0 left-0 "></div>
@@ -82,6 +82,6 @@ export default function Main() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }

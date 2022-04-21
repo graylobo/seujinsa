@@ -7,7 +7,7 @@ export default function FooterBar() {
   const userState = useRecoilValue(userInfoState);
   const router = useRouter();
   return (
-    <div className="h-[56px] bg-gray-200 fixed w-full justify-center flex  bottom-0  shadow-2xl ">
+    <footer className="h-[56px] bg-gray-200 fixed w-full justify-center flex  bottom-0  shadow-2xl ">
       <div className="max-w-[700px] flex items-center w-full justify-around">
         <Link href={"/"}>
           <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] ">
@@ -36,6 +36,6 @@ export default function FooterBar() {
           </Link>
         )}
       </div>
-    </div>
+    </footer>
   );
 }
