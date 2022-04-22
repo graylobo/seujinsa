@@ -165,7 +165,7 @@ export default function ProfileManagement() {
             });
             return;
           }
-          if (/([^가-힣a-z\x20])/i.test(nickName)) {
+          if (/([^가-힣\x20])/i.test(nickName)) {
             toast.error("닉네임에 자음모음을 설정할 수 없습니다.", {
               autoClose: 1500,
               position: toast.POSITION.TOP_CENTER,

@@ -6,21 +6,31 @@ import { userInfoState } from "../recoil/states";
 export default function FooterBar() {
   const userState = useRecoilValue(userInfoState);
   const router = useRouter();
+  const iconContainerCSS =
+    "mt-4 flex flex-col items-center cursor-pointer w-[56px] ";
   return (
     <footer className="h-[56px] bg-gray-200 fixed w-full justify-center flex  bottom-0  shadow-2xl ">
       <div className="max-w-[700px] flex items-center w-full justify-around">
         <Link href={"/"}>
-          <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] ">
+          <div className={iconContainerCSS}>
             <span className="material-icons-outlined text-[19px]">home</span>
             <span className="text-[12px]">홈</span>
           </div>
         </Link>
 
-        <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] "></div>
-        <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] "></div>
+        <div className={iconContainerCSS}>
+          <span className="material-icons-outlined text-[19px]">search</span>
+          <span className="text-[12px]">검색</span>
+        </div>
+        <Link href={"/qna"}>
+          <div className={iconContainerCSS}>
+            <span className="material-icons-outlined text-[19px]">sms</span>
+            <span className="text-[12px]">건의사항</span>
+          </div>
+        </Link>
         {userState.isLogin ? (
           <Link href={"/mypage"}>
-            <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] ">
+            <div className={iconContainerCSS}>
               <span className="material-icons-outlined text-[19px]">
                 person
               </span>
@@ -29,7 +39,7 @@ export default function FooterBar() {
           </Link>
         ) : (
           <Link href={"/signin"}>
-            <div className="mt-4 flex flex-col items-center cursor-pointer w-[56px] ">
+            <div className={iconContainerCSS}>
               <span className="material-icons-outlined text-[19px]">login</span>
               <span className="text-[12px]">로그인</span>
             </div>
