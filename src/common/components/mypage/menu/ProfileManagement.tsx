@@ -13,6 +13,17 @@ export default function ProfileManagement() {
   const [introduction, setIntroduction] = useState<any>("");
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
+  async function checkNickNameExist(nickName: string) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/member`);
+    const userList = await res.json();
+
+    for (const user of userList) {
+      if (user.nickName === nickName) {
+        return true;
+      }
+    }
+    return false;
+  }
   function checkTextValid(str: string) {
     const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자 체크
     if (!pattern_spc.test(str)) {
@@ -150,7 +161,7 @@ export default function ProfileManagement() {
       </div>
       <ConfirmButton
         text="수정"
-        onClick={() => {
+        onClick={async () => {
           if (nickName == null || nickName.trim() === "") {
             toast.error("닉네임은 한글자 이상으로 설정할 수 있습니다.", {
               autoClose: 1500,
@@ -165,8 +176,8 @@ export default function ProfileManagement() {
             });
             return;
           }
-          if (/([^가-힣\x20])/i.test(nickName)) {
-            toast.error("닉네임에 자음모음을 설정할 수 없습니다.", {
+          if (await checkNickNameExist(nickName.trim())) {
+            toast.error("이미 존재하는 닉네임 입니다.", {
               autoClose: 1500,
               position: toast.POSITION.TOP_CENTER,
             });
