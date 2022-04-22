@@ -1,5 +1,4 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
-
 class MyDocument extends Document {
   static async getInitialProps(ctx: any) {
     const initialProps = await Document.getInitialProps(ctx);
@@ -10,7 +9,6 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <title>스진사</title>
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"
@@ -25,7 +23,7 @@ class MyDocument extends Document {
           />
           <link rel="icon" href="/staricon.ico" />
           <link
-            href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+            href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp&display=optional"
             rel="stylesheet"
           ></link>
           <link
@@ -37,9 +35,7 @@ class MyDocument extends Document {
             href="//cdn.jsdelivr.net/npm/katex@0.13.3/dist/katex.min.css"
             rel="stylesheet"
           />
-          <script src="//cdn.jsdelivr.net/npm/katex@0.13.3/dist/katex.min.js"></script>
-          <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/highlight.min.js"></script>
-          <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+          
           <link
             rel="stylesheet"
             href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/styles/default.min.css"
@@ -53,6 +49,7 @@ class MyDocument extends Document {
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1544015487048934"
             crossOrigin="anonymous"
           ></script>
+
           <body>
             <Main />
             <NextScript />
