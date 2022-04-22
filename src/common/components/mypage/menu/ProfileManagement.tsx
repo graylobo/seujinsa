@@ -31,18 +31,27 @@ export default function ProfileManagement() {
   useEffect(() => {
     const onClick = async () => {
       if (userState._id) {
+        let res = null;
+        let json = null;
         if (image) {
           const formData = new FormData();
           formData.append("profile", image, `${userState._id}.png`);
-          await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/profile-image`, {
+          res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/profile-image`, {
             method: "post",
             body: formData,
           });
+          if (res.status === 500) {
+            json = await res.json();
+            toast.error(json.msg, {
+              autoClose: 1500,
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
         }
-        let res = await fetch(
+        res = await fetch(
           `${process.env.NEXT_PUBLIC_DB_URL}/image/${userState._id}.png`
         );
-        if (res.status !== 500) {
+        if (res.status === 200) {
           setProfile(
             `${process.env.NEXT_PUBLIC_DB_URL}/image/${userState._id}.png`
           );
@@ -83,9 +92,6 @@ export default function ProfileManagement() {
       });
     }
   }
-
-  console.log(profile ? "참" : "거짓");
-  console.log(profile);
 
   return (
     <div className="relative h-full w-full max-w-[428px] self-center flex flex-col">
