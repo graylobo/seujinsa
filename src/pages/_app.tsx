@@ -21,7 +21,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>스진사</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
         <meta
           name="naver-site-verification"
           content="fce13107c51b22bb838ea06ae37d5531c60ed48a"
@@ -32,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <link rel="icon" href="/staricon.ico" />
         <link
-          href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp&display=optional"
+          href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
           rel="stylesheet"
         ></link>
         <link

@@ -9,6 +9,17 @@ import MemberInput from "../shared/MemberInput";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Loading from "../shared/Loading";
+import { checkNickNameExist } from "../../utils/api-util";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+function checkSpace(str: string) {
+  if (str.search(/\s/) != -1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 export function isEmail(val: string): string {
   if (val.length === 0) {
     return "이메일을 입력해주세요.";
@@ -17,6 +28,23 @@ export function isEmail(val: string): string {
     /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
   if (!regExp.test(val)) {
     return "영문, 숫자만 사용 가능합니다.";
+  }
+
+  return "";
+}
+export function isNickName(val: string): string {
+  if (val.length === 0) {
+    return "닉네임을 입력해주세요.";
+  }
+  if (val.length < 3 || val.length > 8) {
+    return "닉네임은 3자이상 8자이하로 설정해주세요.";
+  }
+  var regExp = /[`~!@#$%^&*(){}[\]<>_+|\\\'\";:\/?\-\=,.]/gi;
+  if (regExp.test(val)) {
+    return "특수문자는 사용할 수 없습니다.";
+  }
+  if (checkSpace(val)) {
+    return "공백은 사용할 수 없습니다.";
   }
 
   return "";
@@ -36,14 +64,17 @@ export function isPassword(val: string): string {
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [nickName, setNickName] = useState("");
   const [isJoinClicked, setJoinClicked] = useState(false);
   const [canReSendEmail, setCanReSendEmail] = useState(false);
   const [acceptAll, setAcceptAll] = useState<any>(false);
   const [ageCheck, setAgeCheck] = useState<any>(false);
   const [serviceTermCheck, setServiceTermCheck] = useState<any>(false);
   const [emailValidateText, setEmailValidateText] = useState("");
+  const [nickNameValidateText, setNickNameValidateText] = useState("");
   const [passwordValidateText, setPasswordValidateText] = useState("");
   const [emailValidate, setEmailValidate] = useState(false);
+  const [nickNameValidate, setNickNameValidate] = useState(false);
   const [passwordValidate, setPasswordValidate] = useState(false);
   const [certificationNumber, setCertificationNumber] = useState("");
   const [returnAuthNumber, setAuthNumber] = useState("");
@@ -58,13 +89,27 @@ export default function SignUp() {
     setEmailValidateText(val);
     if (val === "") {
       setEmailValidate(true);
+    } else {
+      setEmailValidate(false);
     }
   }, [email]);
+  useEffect(() => {
+    console.log(nickNameValidate);
+    const val = isNickName(nickName);
+    setNickNameValidateText(val);
+    if (val === "") {
+      setNickNameValidate(true);
+    } else {
+      setNickNameValidate(false);
+    }
+  }, [nickName]);
   useEffect(() => {
     const val = isPassword(password);
     setPasswordValidateText(val);
     if (val === "") {
       setPasswordValidate(true);
+    } else {
+      setPasswordValidate(false);
     }
   }, [password]);
 
@@ -124,6 +169,7 @@ export default function SignUp() {
   }
   return (
     <div className="py-[60px] h-full px-[20px] mx-auto max-w-[500px]">
+      <ToastContainer />
       <div className="mb-[16px]">
         <h1 className="text-[22px] font-bold mb-[8px]">회원가입</h1>
         <span className="text-[14px] mr-[16px]">
@@ -143,6 +189,18 @@ export default function SignUp() {
           />
           <div className="text-red-600 mt-[3px] ml-[10px] text-[15px]">
             {emailValidateText}
+          </div>
+        </div>
+        <div className="mb-[15px]">
+          <label className="text-[14px] inline-block w-full">닉네임</label>
+          <MemberInput
+            type="text"
+            placeholder="닉네임을 입력해주세요"
+            onChange={setNickName}
+            maxLength={8}
+          />
+          <div className="text-red-600 mt-[3px] ml-[10px] text-[15px]">
+            {nickNameValidateText}
           </div>
         </div>
         <div className="mb-[16px]">
@@ -211,17 +269,38 @@ export default function SignUp() {
       {!isJoinClicked ? (
         <button
           disabled={
-            !(ageCheck && serviceTermCheck && emailValidate && passwordValidate)
+            !(
+              ageCheck &&
+              serviceTermCheck &&
+              emailValidate &&
+              passwordValidate &&
+              nickNameValidate
+            )
           }
           onClick={async (e) => {
             const res = await checkID();
             if (res.exist) {
-              alert(res.msg);
-            } else {
-              setJoinClicked(true);
-              resendEmail();
-              sendEmail(e);
+              toast.error(res.msg, {
+                autoClose: 1500,
+                position: toast.POSITION.TOP_CENTER,
+              });
+              return;
             }
+            if (await checkNickNameExist(nickName.trim())) {
+              toast.error("이미 존재하는 닉네임 입니다.", {
+                autoClose: 1500,
+                position: toast.POSITION.TOP_CENTER,
+              });
+              return;
+            }
+
+            setJoinClicked(true);
+            resendEmail();
+            sendEmail(e);
+            toast.info("인증메일이 발송되었습니다.", {
+              autoClose: 1500,
+              position: toast.POSITION.TOP_CENTER,
+            });
           }}
           className="mb-[10px] h-[48px] w-full py-[12px] rounded-[8px] outline-none transition-colors bg-red-600 hover:bg-red-800 disabled:bg-gray-500 text-white"
         >

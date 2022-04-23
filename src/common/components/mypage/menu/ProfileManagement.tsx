@@ -4,6 +4,8 @@ import { userInfoState } from "../../../recoil/states";
 import ConfirmButton from "../../shared/ConfirmButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import path from "path";
+import {checkNickNameExist} from "../../../utils/api-util"
 
 export default function ProfileManagement() {
   const [userState, setUserState] = useRecoilState(userInfoState);
@@ -13,17 +15,7 @@ export default function ProfileManagement() {
   const [introduction, setIntroduction] = useState<any>("");
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
-  async function checkNickNameExist(nickName: string) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/member`);
-    const userList = await res.json();
 
-    for (const user of userList) {
-      if (user.nickName === nickName) {
-        return true;
-      }
-    }
-    return false;
-  }
   function checkTextValid(str: string) {
     const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자 체크
     if (!pattern_spc.test(str)) {
@@ -44,7 +36,19 @@ export default function ProfileManagement() {
       if (userState._id) {
         let res = null;
         let json = null;
+        console.log("여기", image);
         if (image) {
+          let ext = path.extname(image.name).toLowerCase();
+          console.log("들옴,", image);
+          if (ext !== ".jpg" && ext !== ".png" && ext !== ".jpeg") {
+            alert("jpg, png, jpeg 형식의 이미지만 업로드 가능합니다.");
+            return;
+          }
+          if (image.size > 5 * 1024 * 1024) {
+            alert("5MB 이하 이미지만 업로드 할 수 있습니다.");
+            return;
+          }
+          console.log("ㅁㄴㅇ");
           const formData = new FormData();
           formData.append("profile", image, `${userState._id}.png`);
           res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/profile-image`, {

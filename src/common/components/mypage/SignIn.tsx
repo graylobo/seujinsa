@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRecoilState } from "recoil";
 import { userInfoState } from "../../recoil/states";
 import Loading from "../shared/Loading";
-export default function SignIn() {
+export default function ignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userState, setUserState] = useRecoilState(userInfoState);

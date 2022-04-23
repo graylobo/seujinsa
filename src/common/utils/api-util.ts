@@ -12,4 +12,16 @@ async function getGamerInfo(name?: string) {
   const json = await res.json();
   return json;
 }
-export { getUserInfo, getGamerInfo };
+
+async function checkNickNameExist(nickName: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/member`);
+  const userList = await res.json();
+
+  for (const user of userList) {
+    if (user.nickName === nickName) {
+      return true;
+    }
+  }
+  return false;
+}
+export { getUserInfo, getGamerInfo,checkNickNameExist };
