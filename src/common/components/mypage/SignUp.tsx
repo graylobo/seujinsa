@@ -154,6 +154,7 @@ export default function SignUp() {
     const data = {
       id: email,
       pw: password,
+      nickName: nickName,
     };
     const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/join`, {
       method: "post",
