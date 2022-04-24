@@ -5,8 +5,7 @@ import { userInfoState } from "../../recoil/states";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
-import Image from "next/image";
-
+import { SyncLoader } from "react-spinners";
 type QnAProps = {
   emailID: string;
   nickName: string;
@@ -39,9 +38,8 @@ export default function QNA() {
   const [modalOpen, setModalOpen] = useState(false);
   const [canUpload, setCanUpload] = useState(false); // 건의사항 누르면 나오는 등록버튼 활성화 여부
   const [qnaList, setQnaList] = useState([]);
-  const router = useRouter();
   const userInfo = useRecoilValue(userInfoState);
-  const [imgError, setImgError] = useState(false);
+  const [loading, setLoading] = useState(false);
   getDateFormat();
 
   async function postQNA() {
@@ -78,22 +76,20 @@ export default function QNA() {
   }
 
   useEffect(() => {
+    if (!modalOpen) {
+      setBody("");
+    }
     async function getQNA() {
+      setLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna`);
-      console.log(res);
       if (res.status === 200) {
         const json = await res.json();
         setQnaList(json);
       }
+      setLoading(false);
     }
 
     getQNA();
-  }, [modalOpen]);
-
-  useEffect(() => {
-    if (!modalOpen) {
-      setBody("");
-    }
   }, [modalOpen]);
 
   useEffect(() => {
@@ -103,7 +99,6 @@ export default function QNA() {
       setCanUpload(false);
     }
   }, [title, body]);
-  console.log(",,,",process.env.NEXT_PUBLIC_DB_URL)
   return (
     <section>
       <ToastContainer />
@@ -119,6 +114,12 @@ export default function QNA() {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-[20px] py-[20px] max-w-[700px] w-full mx-auto">
+          {loading && (
+            <div className="mt-[30px] justify-self-center">
+              {<SyncLoader size={10} color={"gray"} />}
+            </div>
+          )}
+
           {qnaList.map((e: QnAProps) => (
             <div className="w-full bg-[#E9E9E9] rounded-[10px] p-[16px] last:mb-[56px] cursor-pointer">
               <p className="font-bold">{e.title}</p>
@@ -128,7 +129,6 @@ export default function QNA() {
                     src={`${process.env.NEXT_PUBLIC_DB_URL}/image/${e.emailID}.png`}
                     className={"rounded-[100%] w-full h-full"}
                     onError={(e: any) => {
-                      console.log("하한");
                       e.target.onerror = null;
                       e.target.src = "/default-profile.png";
                     }}
