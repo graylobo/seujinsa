@@ -17,8 +17,10 @@ interface IUserInfo {
   introduction?: string;
 }
 export type GamerInfoType = {
+
   _id: string;
   point?: {
+   [index:string]:number;
     zero: number;
     one: number;
     two: number;

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { gamerState, userInfoState } from "../../recoil/states";
+import { GamerInfoType, gamerState, userInfoState } from "../../recoil/states";
 import { getUserInfo, getGamerInfo } from "../../utils/api-util";
 function convertTierName(tier: string): string {
   let val = "";
@@ -42,6 +42,9 @@ function convertTierName(tier: string): string {
 function GamerInfoPopup({ setShowInfo }: any) {
   const [gamerInfo, setGamerInfo] = useRecoilState(gamerState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [totalPoint, setTotalPoint] = useState(0)
+
+  //#region SubTier 컴포넌트 시작
   function SubTier({ tier, name, point }: any) {
     async function vote() {
       if (userInfo.isLogin) {
@@ -79,7 +82,7 @@ function GamerInfoPopup({ setShowInfo }: any) {
 
     return (
       <div className=" w-full flex justify-center">
-        <div className="relative mb-[3px]">
+        <div className="mb-[3px]">
           {tier}: {point || 0}
           <button
             onClick={() => {
@@ -93,7 +96,7 @@ function GamerInfoPopup({ setShowInfo }: any) {
                 }
               }
             }}
-            className="absolute right-[-40px] text-[13px] p-[2px] border-[1px] rounded-[2px] border-blue-800"
+            className="absolute right-[90px] text-[13px] p-[2px] border-[1px] rounded-[2px] border-blue-800"
           >
             투표
           </button>
@@ -101,6 +104,7 @@ function GamerInfoPopup({ setShowInfo }: any) {
       </div>
     );
   }
+  //#endregion
   async function cancelVote() {
     let json = await getUserInfo(userInfo._id);
     const votedTier = userInfo.votePoint[gamerInfo._id][1];
@@ -126,6 +130,14 @@ function GamerInfoPopup({ setShowInfo }: any) {
     json = await getUserInfo(userInfo._id);
     setUserInfo({ ...userInfo, ...json, isLogin: true });
   }
+
+  useEffect(() => {
+    let totalCount = 0;
+    for (const key in gamerInfo.point) {
+      totalCount += gamerInfo.point[key];
+    }
+    setTotalPoint(totalCount)
+  })
   return (
     <div className="info-popup flex flex-col items-center relative">
       <span
@@ -137,6 +149,14 @@ function GamerInfoPopup({ setShowInfo }: any) {
         x
       </span>
       <div className="mt-[10px] gamer-name">{gamerInfo._id}</div>
+      <div className="w-full max-w-[80px]">
+        <div className="float-left">
+          종족: {gamerInfo.race}</div>
+      </div>
+      <div className="w-full max-w-[80px]">
+        <div className="float-left">
+        대학: {gamerInfo.university}</div>
+      </div>
       <SubTier tier={"갑"} name={gamerInfo._id} point={gamerInfo.point?.one} />
       <SubTier tier={"을"} name={gamerInfo._id} point={gamerInfo.point?.two} />
       <SubTier
@@ -159,6 +179,8 @@ function GamerInfoPopup({ setShowInfo }: any) {
       />
       <SubTier tier={"임"} name={gamerInfo._id} point={gamerInfo.point?.nine} />
       <SubTier tier={"계"} name={gamerInfo._id} point={gamerInfo.point?.ten} />
+      <div className="">총 득표수: {totalPoint}</div>
+
       {userInfo.isLogin ? (
         <div>
           {userInfo.votePoint[gamerInfo._id][0] > 0 ? (

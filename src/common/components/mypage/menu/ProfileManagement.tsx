@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { userInfoState } from "../../../recoil/states";
+import { useRecoilState,useRecoilValue } from "recoil";
+import { userInfoState,isMobileState } from "../../../recoil/states";
 import ConfirmButton from "../../shared/ConfirmButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,6 +14,7 @@ export default function ProfileManagement() {
   const [nickName, setNickName] = useState<any>("");
   const [introduction, setIntroduction] = useState<any>("");
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const isMobile = useRecoilValue(isMobileState)
 
 
   function checkTextValid(str: string) {
@@ -27,7 +28,6 @@ export default function ProfileManagement() {
   const onChange = (e: any) => {
     setImage(e.target.files[0]);
   };
-
   const subjectCSS = "mb-[10px] text-[15px]";
   const inputCSS =
     "focus:bg-white focus:border-gray-300 outline-none w-full rounded-[10px] bg-gray-100  border border-gray-40 px-[12px] focus:bg-gray-10 focus:border-gray-70 focus:border-2 focus:outline-none focus:text-gray-70 appearance-none";
@@ -36,10 +36,8 @@ export default function ProfileManagement() {
       if (userState._id) {
         let res = null;
         let json = null;
-        console.log("여기", image);
         if (image) {
           let ext = path.extname(image.name).toLowerCase();
-          console.log("들옴,", image);
           if (ext !== ".jpg" && ext !== ".png" && ext !== ".jpeg") {
             alert("jpg, png, jpeg 형식의 이미지만 업로드 가능합니다.");
             return;
@@ -48,7 +46,6 @@ export default function ProfileManagement() {
             alert("5MB 이하 이미지만 업로드 할 수 있습니다.");
             return;
           }
-          console.log("ㅁㄴㅇ");
           const formData = new FormData();
           formData.append("profile", image, `${userState._id}.png`);
           res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/profile-image`, {
@@ -108,8 +105,10 @@ export default function ProfileManagement() {
     }
   }
 
+  console.log("모바일?",isMobile)
+
   return (
-    <div className="relative h-full w-full max-w-[428px] self-center flex flex-col">
+    <div className={`relative h-full w-full max-w-[428px] self-center flex flex-col ${isMobile &&"p-[20px]"}`}>
       <ToastContainer />
       <div className={subjectCSS}>프로필 이미지</div>
       <div className="relative mb-[30px] w-[100px]">
@@ -180,13 +179,16 @@ export default function ProfileManagement() {
             });
             return;
           }
-          if (await checkNickNameExist(nickName.trim())) {
-            toast.error("이미 존재하는 닉네임 입니다.", {
-              autoClose: 1500,
-              position: toast.POSITION.TOP_CENTER,
-            });
-            return;
+          if(userInfo.nickName!==nickName){
+            if (await checkNickNameExist(nickName.trim())) {
+              toast.error("이미 존재하는 닉네임 입니다.", {
+                autoClose: 1500,
+                position: toast.POSITION.TOP_CENTER,
+              });
+              return;
+            }
           }
+          
 
           updateUserInfo();
         }}

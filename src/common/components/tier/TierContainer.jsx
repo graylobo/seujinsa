@@ -18,13 +18,14 @@ const Wrapper = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #d8d2af;
-    width: 100%;
-    max-width: 300px;
+    background-color: black;
+    color:white;
+    width: 300px;
     height: 100%;
-    max-height: 350px;
+    max-height: 400px;
     border-radius: 5px;
     z-index: 1;
+    opacity:90%
   }
   .gamer-name {
     letter-spacing: 3px;
@@ -36,7 +37,7 @@ const MemoizedMiddleContainer = React.memo(function MiddleContainer({
   gamerList,
 }) {
   const defaultCSS =
-    "flex flex-col items-center  p-[30px] bg-blue-100 mb-[30px]  min-h-[150px]";
+    "flex flex-col items-center  p-[30px] bg-gray-100 rounded-[10px] mb-[30px]  min-h-[150px]";
 
   return (
     <div className={`${defaultCSS} `}>

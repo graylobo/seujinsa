@@ -43,8 +43,9 @@ export default function More() {
       <Link href={"/tier"}>
         <p className="cursor-pointer p-2.5 border-b border-gray-60">계급표</p>
       </Link>
-      <p className="cursor-pointer p-2.5 border-b border-gray-60">
-        {userState.isLogin ? (
+
+      {userState.isLogin ? <Link href={"/"}>
+        <p className="cursor-pointer p-2.5 border-b border-gray-60">
           <span
             className="w-full inline-block"
             onClick={() => {
@@ -55,7 +56,10 @@ export default function More() {
           >
             로그아웃
           </span>
-        ) : (
+        </p>
+
+      </Link> : <Link href={"/signin"}>
+        <p className="cursor-pointer p-2.5 border-b border-gray-60">
           <span
             className="w-full inline-block"
             onClick={() => {
@@ -64,8 +68,9 @@ export default function More() {
           >
             로그인
           </span>
-        )}
-      </p>
+        </p>
+      </Link>}
+
     </div>
   );
 }
