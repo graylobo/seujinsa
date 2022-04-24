@@ -103,7 +103,7 @@ export default function QNA() {
       setCanUpload(false);
     }
   }, [title, body]);
-
+  console.log(",,,",process.env.NEXT_PUBLIC_DB_URL)
   return (
     <section>
       <ToastContainer />
