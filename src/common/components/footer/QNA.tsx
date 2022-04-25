@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { SyncLoader } from "react-spinners";
 import QnAContent from "../modal/QnAContent";
 export type QnAProps = {
+  _id: string;
   emailID: string;
   nickName: string;
   date: string;
@@ -22,7 +23,6 @@ function getDateFormat(): string {
   let hour = date.getHours();
   let minute = date.getMinutes();
   let second = date.getSeconds();
-  console.log(day);
   month = month >= 10 ? month : "0" + month;
   day = day >= 10 ? day : "0" + day;
   hour = hour >= 10 ? hour : "0" + hour;
@@ -43,8 +43,6 @@ export default function QNA() {
   const [loading, setLoading] = useState(false);
   const [isQnaClick, setQnaClick] = useState(false);
   const [qnaInfo, setQnaInfo] = useState<QnAProps>();
-  getDateFormat();
-
   async function postQNA() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna`, {
       method: "post",
@@ -63,7 +61,6 @@ export default function QNA() {
         position: toast.POSITION.TOP_CENTER,
       });
       setModalOpen(false);
-      const json = res.json();
     }
   }
 
@@ -77,21 +74,19 @@ export default function QNA() {
       });
     }
   }
-
+  async function getQNA() {
+    setLoading(true);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna`);
+    if (res.status === 200) {
+      const json = await res.json();
+      setQnaList(json);
+    }
+    setLoading(false);
+  }
   useEffect(() => {
     if (!modalOpen) {
       setBody("");
     }
-    async function getQNA() {
-      setLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna`);
-      if (res.status === 200) {
-        const json = await res.json();
-        setQnaList(json);
-      }
-      setLoading(false);
-    }
-
     getQNA();
   }, [modalOpen]);
 
@@ -103,11 +98,14 @@ export default function QNA() {
     }
   }, [title, body]);
 
+  useEffect(() => {
+    getQNA();
+  }, [isQnaClick]);
+
   function qnaClickHandler(qnaInfo: QnAProps) {
     setQnaClick(true);
     setQnaInfo(qnaInfo);
   }
-  console.log(isQnaClick);
   return (
     <section>
       <ToastContainer />
@@ -131,6 +129,7 @@ export default function QNA() {
 
           {qnaList.map((e: QnAProps) => (
             <div
+              key={e._id}
               className="w-full bg-[#E9E9E9] rounded-[10px] p-[16px] last:mb-[56px] cursor-pointer"
               onClick={() => {
                 qnaClickHandler(e);

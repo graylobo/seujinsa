@@ -33,11 +33,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link
           href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
           rel="stylesheet"
+          crossOrigin="anonymous"
         ></link>
         <link
           rel="stylesheet"
           type="text/css"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+          crossOrigin="anonymous"
         />
         <link
           href="//cdn.jsdelivr.net/npm/katex@0.13.3/dist/katex.min.css"

@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { QnAProps } from "../footer/QNA";
 import ConfirmModal from "./ConfirmModal";
+import { useRecoilValue } from "recoil";
+import { userInfoState } from "../../recoil/states";
 export default function QnAContent({ qnaInfo, setQnaClick }: any) {
-  const [onDelete, setDelete] = useState(false);
+  const userInfo = useRecoilValue(userInfoState);
+  const [confirm, setConfirm] = useState(false);
+
   return (
     <div className="fixed w-screen h-device inset-0 z-50 flex items-center justify-center bg-gray-700 bg-opacity-[90%] p-[20px]">
-      <ConfirmModal setQnaClick={setQnaClick} />
+      {confirm && <ConfirmModal qnaInfo={qnaInfo} setQnaClick={setQnaClick} />}
       <div className="bg-gray-100 rounded-[10px] relative py-[28px] px-[20px] max-w-[700px] w-full z-20 overflow-y-hidden min-h-[400px]  max-h-[[90%]%] flex flex-col">
         <div
           onClick={() => {
@@ -34,12 +37,19 @@ export default function QnAContent({ qnaInfo, setQnaClick }: any) {
               <span className="font-bold text-14 mx-8">{qnaInfo.nickName}</span>
               <span className="text-13 text-gray-70">{qnaInfo.date}</span>
             </div>
-            <div className="text-[14px] text-red-600 flex items-center">
-              <span className="mr-[12px] cursor-pointer">수정</span>
-              <span className="cursor-pointer" onClick={() => {}}>
-                삭제
-              </span>
-            </div>
+            {qnaInfo.emailID === userInfo._id && (
+              <div className="text-[14px] text-red-600 flex items-center">
+                <span className="mr-[12px] cursor-pointer">수정</span>
+                <span
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setConfirm(true);
+                  }}
+                >
+                  삭제
+                </span>
+              </div>
+            )}
           </div>
         </div>
         <div className="qna-content overflow-y-scroll max-h-[400px]">

@@ -8,4 +8,16 @@ function success(msg, autoClose = 1500) {
   });
 }
 
-export { success };
+function fail(msg, autoClose = 1500) {
+  toast.fail(msg, {
+    autoClose: autoClose,
+    position: toast.POSITION.TOP_CENTER,
+  });
+}
+function info(msg, autoClose = 1500) {
+  toast.info(msg, {
+    autoClose: autoClose,
+    position: toast.POSITION.TOP_CENTER,
+  });
+}
+export { success,fail,info };

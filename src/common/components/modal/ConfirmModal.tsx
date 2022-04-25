@@ -1,9 +1,15 @@
-import { useRouter } from "next/router";
 import React from "react";
-import { success } from "../../utils/toast";
-export default function ConfirmModal({ setQnaClick }: any) {
+import { success, fail } from "../../utils/toast";
+export default function ConfirmModal({ qnaInfo, setQnaClick }: any) {
   async function deleteQnaPost() {
-    const res = await fetch("");
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_DB_URL}/qna/${qnaInfo._id}`,
+      {
+        method: "delete",
+      }
+    );
+
+    return res;
   }
   return (
     <div className="fixed w-screen h-device inset-0 z-50 flex items-center justify-center bg-gray-700 bg-opacity-[90%] p-[20px]">
@@ -22,8 +28,13 @@ export default function ConfirmModal({ setQnaClick }: any) {
             아니오
           </button>
           <button
-            onClick={() => {
-              success("게시글이 삭제되었습니다.");
+            onClick={async () => {
+              const res = await deleteQnaPost();
+              if (res.status === 200) {
+                success("게시글이 삭제되었습니다.");
+              } else {
+                fail(await res.text());
+              }
               setQnaClick(false);
             }}
             className=" h-[48px] w-full py-[12px] rounded-[8px] outline-none transition-colors bg-red-600 hover:bg-red-800 disabled:bg-gray-500 text-gray-100"
