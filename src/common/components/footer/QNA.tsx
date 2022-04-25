@@ -4,9 +4,9 @@ import { useRecoilValue } from "recoil";
 import { userInfoState } from "../../recoil/states";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useRouter } from "next/router";
 import { SyncLoader } from "react-spinners";
-type QnAProps = {
+import QnAContent from "../modal/QnAContent";
+export type QnAProps = {
   emailID: string;
   nickName: string;
   date: string;
@@ -41,6 +41,8 @@ export default function QNA() {
   const [qnaList, setQnaList] = useState([]);
   const userInfo = useRecoilValue(userInfoState);
   const [loading, setLoading] = useState(false);
+  const [isQnaClick, setQnaClick] = useState(false);
+  const [qnaInfo, setQnaInfo] = useState<QnAProps>();
   getDateFormat();
 
   async function postQNA() {
@@ -100,6 +102,12 @@ export default function QNA() {
       setCanUpload(false);
     }
   }, [title, body]);
+
+  function qnaClickHandler(qnaInfo: QnAProps) {
+    setQnaClick(true);
+    setQnaInfo(qnaInfo);
+  }
+  console.log(isQnaClick);
   return (
     <section>
       <ToastContainer />
@@ -122,7 +130,12 @@ export default function QNA() {
           )}
 
           {qnaList.map((e: QnAProps) => (
-            <div className="w-full bg-[#E9E9E9] rounded-[10px] p-[16px] last:mb-[56px] cursor-pointer">
+            <div
+              className="w-full bg-[#E9E9E9] rounded-[10px] p-[16px] last:mb-[56px] cursor-pointer"
+              onClick={() => {
+                qnaClickHandler(e);
+              }}
+            >
               <p className="font-bold">{e.title}</p>
               <div className="flex items-center mt-[16px] mb-[8px]">
                 <div className="w-[24px] h-[24px] ">
@@ -140,7 +153,7 @@ export default function QNA() {
                 </span>
                 <span className="text-[13px] text-gray-700">{e.date}</span>
               </div>
-              <div className="whitespace-pre-line w-full py-[20px] outline-none bg-gray-200 text-[14px] cursor-pointer">
+              <div className="whitespace-pre-line w-full py-[20px] outline-none text-[14px] cursor-pointer">
                 <div
                   dangerouslySetInnerHTML={{ __html: e.body }}
                   className="w-full py-[20px] outline-none custom-editor"
@@ -151,6 +164,7 @@ export default function QNA() {
           ))}
         </div>
       </div>
+      {isQnaClick && <QnAContent qnaInfo={qnaInfo} setQnaClick={setQnaClick} />}
 
       <div className="max-w-700 mx-auto fixed left-0 right-0 bottom-[56px] w-full px-[20px] z-10 py-[12px] flex justify-center">
         <button
@@ -161,7 +175,6 @@ export default function QNA() {
         >
           건의 등록
         </button>
-
         {/* 모달시작 */}
         {modalOpen && (
           <div className="modal-box">
