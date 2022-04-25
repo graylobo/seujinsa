@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ConfirmModal from "./ConfirmModal";
 import { useRecoilValue } from "recoil";
 import { userInfoState } from "../../recoil/states";
-export default function QnAContent({ qnaInfo, setQnaClick }: any) {
+import qna from "../../../pages/qna";
+export default function QnAContent({
+  qnaInfo,
+  setQnaInfo,
+  setQnaClick,
+  setEditorModalOpen,
+  setTitle,
+  setBody,
+  setIsEdit,
+}: any) {
   const userInfo = useRecoilValue(userInfoState);
   const [confirm, setConfirm] = useState(false);
 
@@ -39,7 +48,18 @@ export default function QnAContent({ qnaInfo, setQnaClick }: any) {
             </div>
             {qnaInfo.emailID === userInfo._id && (
               <div className="text-[14px] text-red-600 flex items-center">
-                <span className="mr-[12px] cursor-pointer">수정</span>
+                <span
+                  onClick={() => {
+                    setEditorModalOpen(true);
+                    setTitle(qnaInfo.title);
+                    setBody(qnaInfo.body);
+                    setIsEdit(true);
+
+                  }}
+                  className="mr-[12px] cursor-pointer"
+                >
+                  수정
+                </span>
                 <span
                   className="cursor-pointer"
                   onClick={() => {

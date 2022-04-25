@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
 import QuillEditor from "../shared/QuillEditor";
-import { useRecoilValue } from "recoil";
-import { userInfoState } from "../../recoil/states";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { userInfoState, QnAProps, qnaInfoState } from "../../recoil/states";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SyncLoader } from "react-spinners";
 import QnAContent from "../modal/QnAContent";
-export type QnAProps = {
-  _id: string;
-  emailID: string;
-  nickName: string;
-  date: string;
-  title: string;
-  body: string;
-};
 
 function getDateFormat(): string {
   let date: any = new Date();
@@ -36,13 +28,14 @@ export default function QNA() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState(""); // Quill 에디터의 innerHTML을 담는 state
   const [mountBody, setMountBody] = useState(false); // 리렌더링 용도 state
-  const [modalOpen, setModalOpen] = useState(false);
+  const [editorModalOpen, setEditorModalOpen] = useState(false);
   const [canUpload, setCanUpload] = useState(false); // 건의사항 누르면 나오는 등록버튼 활성화 여부
   const [qnaList, setQnaList] = useState([]);
   const userInfo = useRecoilValue(userInfoState);
   const [loading, setLoading] = useState(false);
   const [isQnaClick, setQnaClick] = useState(false);
-  const [qnaInfo, setQnaInfo] = useState<QnAProps>();
+  const [qnaInfo, setQnaInfo] = useRecoilState(qnaInfoState);
+  const [isEdit, setIsEdit] = useState(false);
   async function postQNA() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna`, {
       method: "post",
@@ -60,13 +53,45 @@ export default function QNA() {
         autoClose: 1500,
         position: toast.POSITION.TOP_CENTER,
       });
-      setModalOpen(false);
+      setEditorModalOpen(false);
+    }
+  }
+
+  async function editQNA() {
+    const data: QnAProps = {
+      _id: qnaInfo._id,
+      emailID: userInfo._id,
+      nickName: userInfo.nickName,
+      date: getDateFormat(),
+      title: title,
+      body: body,
+    };
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna-edit`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (res.status === 200) {
+      setEditorModalOpen(false);
+      setIsEdit(false);
+      setTitle("");
+      setBody("");
+      setQnaInfo(data);
+      toast.success("게시글이 수정되었습니다.", {
+        autoClose: 1500,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else {
+      toast.success(await res.text(), {
+        autoClose: 1500,
+        position: toast.POSITION.TOP_CENTER,
+      });
     }
   }
 
   function onModalOpen() {
     if (userInfo.isLogin) {
-      setModalOpen(true);
+      setEditorModalOpen(true);
     } else {
       toast.error("로그인 상태에서 등록이 가능합니다.", {
         autoClose: 1500,
@@ -84,16 +109,16 @@ export default function QNA() {
     setLoading(false);
   }
   useEffect(() => {
-    if (!modalOpen) {
+    if (!editorModalOpen) {
       setBody("");
     }
     getQNA();
-  }, [modalOpen]);
+  }, [editorModalOpen]);
 
   useEffect(() => {
     if (title.trim().length !== 0 && body.trim().length !== 0) {
       setCanUpload(true);
-    } else if (title.trim().length === 0 || body.trim() === "<p><br></p>") {
+    } else if (title.trim().length === 0) {
       setCanUpload(false);
     }
   }, [title, body]);
@@ -109,7 +134,7 @@ export default function QNA() {
   return (
     <section>
       <ToastContainer />
-      <div className={modalOpen ? "modal-background" : ""}></div>
+      <div className={editorModalOpen ? "modal-background" : ""}></div>
       <div className="px-[20px] pt-[24px] h-full flex flex-col">
         <div className="max-w-[700px] w-full mx-auto">
           <h1 className="font-bold text-[22px] mb-[8px]">건의 사항</h1>
@@ -163,7 +188,17 @@ export default function QNA() {
           ))}
         </div>
       </div>
-      {isQnaClick && <QnAContent qnaInfo={qnaInfo} setQnaClick={setQnaClick} />}
+      {isQnaClick && (
+        <QnAContent
+          qnaInfo={qnaInfo}
+          setQnaInfo={setQnaInfo}
+          setQnaClick={setQnaClick}
+          setEditorModalOpen={setEditorModalOpen}
+          setTitle={setTitle}
+          setBody={setBody}
+          setIsEdit={setIsEdit}
+        />
+      )}
 
       <div className="max-w-700 mx-auto fixed left-0 right-0 bottom-[56px] w-full px-[20px] z-10 py-[12px] flex justify-center">
         <button
@@ -174,46 +209,59 @@ export default function QNA() {
         >
           건의 등록
         </button>
-        {/* 모달시작 */}
-        {modalOpen && (
-          <div className="modal-box">
-            <div
-              className="cursor-pointer absolute right-[16px] top-[16px]"
-              onClick={() => {
-                setModalOpen(false);
+      </div>
+      {/* 모달시작 */}
+      {editorModalOpen && (
+        <div className="modal-box ">
+          <div
+            className="cursor-pointer absolute right-[16px] top-[16px]"
+            onClick={() => {
+              setEditorModalOpen(false);
+            }}
+          >
+            x
+          </div>
+          <div className="mb-[16px]">
+            <label htmlFor="" className="text-[14px] mb-[8px] inline-block">
+              제목
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
               }}
+              className=" outline-none w-full rounded-[10px] bg-gray-200 h-[48px] border border-gray-400 px-[12px] focus:bg-gray-100 focus:border-gray-700 focus:border-[2px] focus:outline-none focus:text-gray-700 appearance-none"
+            />
+          </div>
+          <p className="text-[14px]">내용</p>
+          <div className="w-full rounded-[10px] resize-none pb-[40px] h-[300px] text-gray-800 my-[16px] outline-none">
+            <QuillEditor
+              body={body}
+              handleQuillChange={setBody}
+              mountBody={mountBody}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-8">
+            <button
+              onClick={() => {
+                setEditorModalOpen(false);
+              }}
+              className=" h-[48px] w-full py-[12px] rounded-[8px] outline-none transition-colors hover:border-0 bg-gray-100 hover:bg-red-100 border border-red-600 text-red-600"
             >
-              x
-            </div>
-            <div className="mb-[16px]">
-              <label htmlFor="" className="text-[14px] mb-[8px] inline-block">
-                제목
-              </label>
-              <input
-                type="text"
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                }}
-                className=" outline-none w-full rounded-[10px] bg-gray-200 h-[48px] border border-gray-400 px-[12px] focus:bg-gray-100 focus:border-gray-700 focus:border-[2px] focus:outline-none focus:text-gray-700 appearance-none"
-              />
-            </div>
-            <p className="text-[14px]">내용</p>
-            <div className="w-full rounded-[10px] resize-none pb-[40px] h-[300px] text-gray-800 my-[16px] outline-none">
-              <QuillEditor
-                body={body}
-                handleQuillChange={setBody}
-                mountBody={mountBody}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-8">
+              취소
+            </button>
+            {isEdit ? (
               <button
+                disabled={!canUpload}
                 onClick={() => {
-                  setModalOpen(false);
+                  editQNA();
                 }}
-                className=" h-[48px] w-full py-[12px] rounded-[8px] outline-none transition-colors hover:border-0 bg-gray-100 hover:bg-red-100 border border-red-600 text-red-600"
+                className=" h-[48px] w-full py-[12px] rounded-[8px] outline-none transition-colors bg-red-600 hover:bg-red-800 disabled:bg-gray-500 text-gray-100"
               >
-                취소
+                수정
               </button>
+            ) : (
               <button
                 disabled={!canUpload}
                 onClick={() => {
@@ -223,13 +271,12 @@ export default function QNA() {
               >
                 등록
               </button>
-            </div>
+            )}
           </div>
-        )}
+        </div>
+      )}
 
-        {/* 모달종료 */}
-      </div>
-
+      {/* 모달종료 */}
       <style jsx>{`
         .modal-background {
           position: fixed;
@@ -244,8 +291,8 @@ export default function QNA() {
           position: fixed;
           top: 50%;
           left: 50%;
-          /* bring your own prefixes */
           transform: translate(-50%, -50%);
+          z-index:50;
           background-color: white;
           display: flex;
           border-radius: 10px;

@@ -17,10 +17,9 @@ interface IUserInfo {
   introduction?: string;
 }
 export type GamerInfoType = {
-
   _id: string;
   point?: {
-   [index:string]:number;
+    [index: string]: number;
     zero: number;
     one: number;
     two: number;
@@ -38,6 +37,16 @@ export type GamerInfoType = {
   totalPoint?: number;
   nickName?: string;
 };
+
+export type QnAProps = {
+  _id: string;
+  emailID?: string;
+  nickName?: string;
+  date: string;
+  title: string;
+  body: string;
+};
+
 const menuState = atom<boolean>({
   key: "menuState",
   default: false,
@@ -77,6 +86,18 @@ const logoutState = atom<boolean>({
   default: false,
 });
 
+const qnaInfoState = atom<QnAProps>({
+  key: "qnaInfoState",
+  default: {
+    _id: "",
+    emailID: "",
+    nickName: "",
+    date: "",
+    title: "",
+    body: "",
+  },
+});
+
 const timerSelector = selector<ITimerProps[]>({
   key: "timerSelector",
   get: ({ get }) => {
@@ -111,5 +132,6 @@ export {
   userInfoState,
   gamerState,
   logoutState,
-  isMobileState
+  isMobileState,
+  qnaInfoState,
 };
