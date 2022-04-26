@@ -19,13 +19,27 @@ const Wrapper = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: black;
-    color:white;
+    color: white;
     width: 300px;
     height: 100%;
     max-height: 400px;
     border-radius: 5px;
     z-index: 1;
-    opacity:90%
+    opacity: 90%;
+  }
+  .info-background {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: black;
+    color: white;
+    width: 300px;
+    height: 100%;
+    max-height: 400px;
+    border-radius: 5px;
+    z-index: 3;
+    opacity: 90%;
   }
   .gamer-name {
     letter-spacing: 3px;

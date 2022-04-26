@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ConfirmModal from "./ConfirmModal";
 import { useRecoilValue } from "recoil";
 import { userInfoState } from "../../recoil/states";
-import qna from "../../../pages/qna";
 export default function QnAContent({
   qnaInfo,
   setQnaInfo,

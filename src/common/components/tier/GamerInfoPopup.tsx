@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { GamerInfoType, gamerState, userInfoState } from "../../recoil/states";
 import { getUserInfo, getGamerInfo } from "../../utils/api-util";
+import { SyncLoader } from "react-spinners";
 function convertTierName(tier: string): string {
   let val = "";
   switch (tier) {
@@ -42,11 +43,13 @@ function convertTierName(tier: string): string {
 function GamerInfoPopup({ setShowInfo }: any) {
   const [gamerInfo, setGamerInfo] = useRecoilState(gamerState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const [totalPoint, setTotalPoint] = useState(0)
+  const [totalPoint, setTotalPoint] = useState(0);
+  const [disabled, setDisabled] = useState(false);
 
   //#region SubTier 컴포넌트 시작
   function SubTier({ tier, name, point }: any) {
     async function vote() {
+      setDisabled(true);
       if (userInfo.isLogin) {
         let res = await fetch(
           `${process.env.NEXT_PUBLIC_DB_URL}/decrease-point`,
@@ -77,11 +80,12 @@ function GamerInfoPopup({ setShowInfo }: any) {
         );
         json = await res.json();
         setGamerInfo(json);
+        setDisabled(false);
       }
     }
 
     return (
-      <div className=" w-full flex justify-center">
+      <div className={`w-full flex justify-center`}>
         <div className="mb-[3px]">
           {tier}: {point || 0}
           <button
@@ -106,6 +110,8 @@ function GamerInfoPopup({ setShowInfo }: any) {
   }
   //#endregion
   async function cancelVote() {
+    setDisabled(true);
+
     let json = await getUserInfo(userInfo._id);
     const votedTier = userInfo.votePoint[gamerInfo._id][1];
     let res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/cancel-vote`, {
@@ -129,6 +135,7 @@ function GamerInfoPopup({ setShowInfo }: any) {
     });
     json = await getUserInfo(userInfo._id);
     setUserInfo({ ...userInfo, ...json, isLogin: true });
+    setDisabled(false);
   }
 
   useEffect(() => {
@@ -136,10 +143,18 @@ function GamerInfoPopup({ setShowInfo }: any) {
     for (const key in gamerInfo.point) {
       totalCount += gamerInfo.point[key];
     }
-    setTotalPoint(totalCount)
-  })
+    setTotalPoint(totalCount);
+  });
+  console.log(disabled);
   return (
-    <div className="info-popup flex flex-col items-center relative">
+    <div className={`info-popup flex flex-col items-center relative`}>
+      {disabled && (
+        <div className="info-background flex justify-center items-center">
+          <div>
+            <SyncLoader color="white" />
+          </div>
+        </div>
+      )}
       <span
         className="absolute right-3 cursor-pointer text-[20px]"
         onClick={() => {
@@ -150,12 +165,10 @@ function GamerInfoPopup({ setShowInfo }: any) {
       </span>
       <div className="mt-[10px] gamer-name">{gamerInfo._id}</div>
       <div className="w-full max-w-[80px]">
-        <div className="float-left">
-          종족: {gamerInfo.race}</div>
+        <div className="float-left">종족: {gamerInfo.race}</div>
       </div>
       <div className="w-full max-w-[80px]">
-        <div className="float-left">
-        대학: {gamerInfo.university}</div>
+        <div className="float-left">대학: {gamerInfo.university}</div>
       </div>
       <SubTier tier={"갑"} name={gamerInfo._id} point={gamerInfo.point?.one} />
       <SubTier tier={"을"} name={gamerInfo._id} point={gamerInfo.point?.two} />
