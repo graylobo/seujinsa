@@ -12,6 +12,8 @@ import Loading from "../shared/Loading";
 import { checkNickNameExist } from "../../utils/api-util";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRecoilValue } from "recoil";
+import { isMobileState } from "../../recoil/states";
 function checkSpace(str: string) {
   if (str.search(/\s/) != -1) {
     return true;
@@ -79,6 +81,7 @@ export default function SignUp() {
   const [certificationNumber, setCertificationNumber] = useState("");
   const [returnAuthNumber, setAuthNumber] = useState("");
   const [loading, setLoading] = useState(false);
+  const isMobile = useRecoilValue(isMobileState);
   const router = useRouter();
   useEffect(() => {
     setAgeCheck(acceptAll);
@@ -260,6 +263,7 @@ export default function SignUp() {
         </div>
       </div>
       {loading && <Loading message="Check ID..."></Loading>}
+
       {!isJoinClicked ? (
         <button
           disabled={
@@ -316,17 +320,23 @@ export default function SignUp() {
           >
             이메일 재발송
           </button>
-          <div className="flex justify-center">
-            <span>인증번호 입력: </span>
+          <div className={!isMobile ? "flex justify-center" : ""}>
+            <div className={!isMobile ? "w-[100px]" : "w-full text-center"}>
+              인증번호 입력:{" "}
+            </div>
             <input
-              className="border-2  border-blue-500 px-[10px] rounded-[10px] ml-[10px]"
+              className={
+                !isMobile
+                  ? "border-2  border-blue-500 px-[10px] rounded-[10px] ml-[10px]"
+                  : "border-2 w-full border-blue-500 px-[10px] rounded-[10px] "
+              }
               type="text"
               onChange={(e) => {
                 setCertificationNumber(e.target.value);
               }}
             />
             <button
-              className="ml-[10px]"
+              className={!isMobile ? "ml-[10px]" : "w-full  text-center"}
               onClick={(e) => {
                 if (certificationNumber !== "" && returnAuthNumber !== "") {
                   if (certificationNumber === returnAuthNumber) {
