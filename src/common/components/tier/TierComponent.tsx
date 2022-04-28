@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { gamerState, userInfoState, GamerInfoType } from "../../recoil/states";
 import GamerInfoPopup from "./GamerInfoPopup";
-import { PacmanLoader } from "react-spinners";
+import { PacmanLoader, BeatLoader } from "react-spinners";
 export default function TierComponent({ gamerList }: any) {
   const [showInfo, setShowInfo] = useState(false);
   const [gamerInfo, setGamerInfo] = useRecoilState(gamerState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [loading, setLoading] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(false);
   function onAllImageLoad(i: number) {
     if (i === gamerList.length - 1) {
-      console.log("gamerList");
+      console.log("zzz");
       setLoading(false);
     }
   }
@@ -20,8 +21,10 @@ export default function TierComponent({ gamerList }: any) {
     if (gamerList.length === 0) {
       setLoading(false);
     }
+    console.log("hhh");
   }, [gamerList]);
   async function getGamerInfo(gamer: string) {
+    setProfileLoading(true);
     let res = await fetch(
       `${process.env.NEXT_PUBLIC_DB_URL}/gamer-info/${gamer}`
     );
@@ -36,10 +39,17 @@ export default function TierComponent({ gamerList }: any) {
       setUserInfo({ ...json, isLogin: true });
     }
     setShowInfo(true);
+    setProfileLoading(false);
   }
-
+  console.log(profileLoading);
   return (
-    <div className="container relative ">
+    <div className="container">
+      {profileLoading && (
+        <div className="modal-background flex justify-center items-center ">
+          <BeatLoader color="orange" />
+        </div>
+      )}
+
       {showInfo && <GamerInfoPopup setShowInfo={setShowInfo} />}
       <div className="loader ">
         {loading && <PacmanLoader size={20} color="gray" />}

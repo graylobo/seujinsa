@@ -49,7 +49,6 @@ export default function BuildAlert() {
                   }
                 });
                 if (checkContentEmpty || checkTimerEmpty) {
-                  console.log(checkContentEmpty, checkTimerEmpty);
                   checkContentEmpty &&
                     alert("알림내용이 설정되지 않은 타이머가 존재합니다.");
                   checkTimerEmpty &&

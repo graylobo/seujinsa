@@ -145,7 +145,6 @@ function GamerInfoPopup({ setShowInfo }: any) {
     }
     setTotalPoint(totalCount);
   });
-  console.log(disabled);
   return (
     <div className={`info-popup flex flex-col items-center relative`}>
       {disabled && (

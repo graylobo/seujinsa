@@ -46,7 +46,6 @@ export default function ignIn() {
       .json()
       .then((e) => {
         if (e.msg === "인증완료") {
-          console.log("asd", e);
           setUserState({ isLogin: true, ...e });
           router.push("/");
         }

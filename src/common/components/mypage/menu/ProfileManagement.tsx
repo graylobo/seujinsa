@@ -46,7 +46,6 @@ export default function ProfileManagement() {
     }
   };
 
-  console.log(image);
   const subjectCSS = "mb-[10px] text-[15px]";
   const inputCSS =
     "focus:bg-white focus:border-gray-300 outline-none w-full rounded-[10px] bg-gray-100  border border-gray-40 px-[12px] focus:bg-gray-10 focus:border-gray-70 focus:border-2 focus:outline-none focus:text-gray-70 appearance-none";

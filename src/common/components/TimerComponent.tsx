@@ -62,7 +62,6 @@ export default function TimerComponent({ id }: Props) {
           Number(e.minute || "0") +
           Number(e.second || "0");
       });
-      console.log(wholeTime);
 
       if (wholeTime <= 0) {
         setTimerRunning(false);

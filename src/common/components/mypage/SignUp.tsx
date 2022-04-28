@@ -97,7 +97,6 @@ export default function SignUp() {
     }
   }, [email]);
   useEffect(() => {
-    console.log(nickNameValidate);
     const val = isNickName(nickName);
     setNickNameValidateText(val);
     if (val === "") {
