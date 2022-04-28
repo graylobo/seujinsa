@@ -135,6 +135,7 @@ export default function QNA() {
     setQnaClick(true);
     setQnaInfo(qnaInfo);
   }
+
   return (
     <section>
       <ToastContainer />
@@ -170,10 +171,13 @@ export default function QNA() {
               }}
             >
               <p className="font-bold">{e.title}</p>
+
               <div className="flex items-center mt-[16px] mb-[8px]">
                 <div className="w-[24px] h-[24px] ">
                   <img
-                    src={`${process.env.NEXT_PUBLIC_DB_URL}/image/${e.emailID}.png`}
+                    src={`${process.env.NEXT_PUBLIC_DB_URL}/image/${
+                      e.emailID
+                    }.png?${Date.now()}`}
                     className={"rounded-[100%] w-full h-full"}
                     onError={(e: any) => {
                       e.target.onerror = null;
