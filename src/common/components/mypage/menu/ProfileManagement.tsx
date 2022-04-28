@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import path from "path";
 import { checkNickNameExist } from "../../../utils/api-util";
+import { PropagateLoader } from "react-spinners";
 
 export default function ProfileManagement() {
   const [userState, setUserState] = useRecoilState(userInfoState);
@@ -15,6 +16,7 @@ export default function ProfileManagement() {
   const [introduction, setIntroduction] = useState<any>("");
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [formData, setFormData] = useState<FormData>();
+  const [loading, setLoading] = useState(false);
   const isMobile = useRecoilValue(isMobileState);
 
   function checkTextValid(str: string) {
@@ -61,6 +63,7 @@ export default function ProfileManagement() {
   }, []);
 
   async function updateUserInfo() {
+    setLoading(true);
     const user_res = await fetch(
       `${process.env.NEXT_PUBLIC_DB_URL}/user-info`,
       {
@@ -98,6 +101,7 @@ export default function ProfileManagement() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
+    setLoading(false);
   }
 
   return (
@@ -107,8 +111,15 @@ export default function ProfileManagement() {
       }`}
     >
       <ToastContainer />
+
+      {loading && (
+        <div className="modal-background flex justify-center items-center">
+          <PropagateLoader color="gold" />
+        </div>
+      )}
+
       <div className={subjectCSS}>프로필 이미지</div>
-      <div className="relative mb-[30px] w-[100px]">
+      <div className="relative mb-[30px] w-[100px]  ">
         <label htmlFor="file-input">
           <img
             src={image || profile + "?" + Date.now()}
