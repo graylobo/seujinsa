@@ -36,6 +36,7 @@ export default function QNA() {
   const [isQnaClick, setQnaClick] = useState(false);
   const [qnaInfo, setQnaInfo] = useRecoilState(qnaInfoState);
   const [isEdit, setIsEdit] = useState(false);
+  const [editLoading, setEditLoading] = useState(false);
   async function postQNA() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna`, {
       method: "post",
@@ -58,6 +59,7 @@ export default function QNA() {
   }
 
   async function editQNA() {
+    setEditLoading(true);
     const data: QnAProps = {
       _id: qnaInfo._id,
       emailID: userInfo._id,
@@ -87,6 +89,7 @@ export default function QNA() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
+    setEditLoading(false);
   }
 
   function onModalOpen() {
@@ -110,6 +113,7 @@ export default function QNA() {
   }
   useEffect(() => {
     if (!editorModalOpen) {
+      setTitle("");
       setBody("");
     }
     getQNA();
@@ -134,7 +138,12 @@ export default function QNA() {
   return (
     <section>
       <ToastContainer />
-      <div className={editorModalOpen ? "modal-background" : ""}></div>
+      {editLoading && (
+        <div className="modal-background flex justify-center items-center">
+          <SyncLoader color="red" size={15} />
+        </div>
+      )}
+      <div className={editorModalOpen ? "qna-modal-background" : ""}></div>
       <div className="px-[20px] pt-[24px] h-full flex flex-col">
         <div className="max-w-[700px] w-full mx-auto">
           <h1 className="font-bold text-[22px] mb-[8px]">건의 사항</h1>
@@ -189,15 +198,17 @@ export default function QNA() {
         </div>
       </div>
       {isQnaClick && (
-        <QnAContent
-          qnaInfo={qnaInfo}
-          setQnaInfo={setQnaInfo}
-          setQnaClick={setQnaClick}
-          setEditorModalOpen={setEditorModalOpen}
-          setTitle={setTitle}
-          setBody={setBody}
-          setIsEdit={setIsEdit}
-        />
+        <div className="qna-modal-background">
+          <QnAContent
+            qnaInfo={qnaInfo}
+            setQnaInfo={setQnaInfo}
+            setQnaClick={setQnaClick}
+            setEditorModalOpen={setEditorModalOpen}
+            setTitle={setTitle}
+            setBody={setBody}
+            setIsEdit={setIsEdit}
+          />
+        </div>
       )}
 
       <div className="max-w-700 mx-auto fixed left-0 right-0 bottom-[56px] w-full px-[20px] z-10 py-[12px] flex justify-center">
@@ -235,7 +246,7 @@ export default function QNA() {
             />
           </div>
           <p className="text-[14px]">내용</p>
-          <div className="w-full rounded-[10px] resize-none pb-[40px] h-[300px] text-gray-800 my-[16px] outline-none">
+          <div className="w-full rounded-[10px] resize-none pb-[40px] h-[300px] text-gray-800 my-[16px] outline-none z-500">
             <QuillEditor
               body={body}
               handleQuillChange={setBody}
@@ -278,14 +289,14 @@ export default function QNA() {
 
       {/* 모달종료 */}
       <style jsx>{`
-        .modal-background {
+        .qna-modal-background {
           position: fixed;
           top: 0;
           left: 0;
           bottom: 0;
           right: 0;
           background: rgba(0, 0, 0, 0.8);
-          z-index:100;
+          z-index:50;
         }
         .modal-box {
           padding: 20px;
@@ -302,6 +313,7 @@ export default function QNA() {
           max-height: 90%
           min-height: 400px;
           flex-direction: column;
+          
         }
       `}</style>
     </section>

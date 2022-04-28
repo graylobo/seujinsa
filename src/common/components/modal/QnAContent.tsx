@@ -15,7 +15,7 @@ export default function QnAContent({
   const [confirm, setConfirm] = useState(false);
 
   return (
-    <div className="fixed w-screen h-device inset-0 z-50 flex items-center justify-center bg-gray-700 bg-opacity-[90%] p-[20px]">
+    <div className="fixed  h-device inset-0 z-50 flex items-center justify-center p-[20px]">
       {confirm && <ConfirmModal qnaInfo={qnaInfo} setQnaClick={setQnaClick} />}
       <div className="bg-gray-100 rounded-[10px] relative py-[28px] px-[20px] max-w-[700px] w-full z-20 overflow-y-hidden min-h-[400px]  max-h-[[90%]%] flex flex-col">
         <div
@@ -42,18 +42,19 @@ export default function QnAContent({
                   }}
                 />
               </div>
-              <span className="font-bold text-14 mx-8">{qnaInfo.nickName}</span>
-              <span className="text-13 text-gray-70">{qnaInfo.date}</span>
+              <span className="font-bold text-[14px] mx-[8px]">
+                {qnaInfo.nickName}
+              </span>
+              <span className="text-[13px] text-gray-70">{qnaInfo.date}</span>
             </div>
             {qnaInfo.emailID === userInfo._id && (
-              <div className="text-[14px] text-red-600 flex items-center">
+              <div className="text-[14px] text-red-600 flex items-center whitespace-nowrap">
                 <span
                   onClick={() => {
                     setEditorModalOpen(true);
                     setTitle(qnaInfo.title);
                     setBody(qnaInfo.body);
                     setIsEdit(true);
-
                   }}
                   className="mr-[12px] cursor-pointer"
                 >
