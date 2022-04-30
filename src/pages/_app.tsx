@@ -22,6 +22,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>스진사</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
+          name="keyword"
+          content="티어표,스진사,스타크래프트,스타티어표,스타티어,티어"
+        ></meta>
+        <meta name="description" content="스타에 진심인 사이트"></meta>
+        <meta
           name="naver-site-verification"
           content="fce13107c51b22bb838ea06ae37d5531c60ed48a"
         />
