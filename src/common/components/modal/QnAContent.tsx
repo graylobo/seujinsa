@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import ConfirmModal from "./ConfirmModal";
 import { useRecoilValue } from "recoil";
 import { userInfoState } from "../../recoil/states";
+import { getDateFormat } from "../../utils/date";
+
 export default function QnAContent({
   qnaInfo,
   setQnaInfo,
@@ -12,11 +14,86 @@ export default function QnAContent({
   setIsEdit,
 }: any) {
   const userInfo = useRecoilValue(userInfoState);
-  const [confirm, setConfirm] = useState(false);
+  const [postDeleteConfirm, setPostDeleteConfirm] = useState(false);
+  const [commentDeleteConfirm, setCommentDeleteConfirm] = useState(false);
+  const [comment, setComment] = useState("");
+  const [content, setContent] = useState([]);
+  const [commentId, setCommentId] = useState("");
+  const [confirmModal, setConfirmModal] = useState(false);
+
+  async function postComment() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna-comment`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        _id: qnaInfo._id,
+        emailID: userInfo._id,
+        nickName: userInfo.nickName,
+        date: getDateFormat(),
+        comment: comment,
+        commentId: String(Date.now()),
+      }),
+    });
+
+    if (res.status === 200) {
+      setComment("");
+      getQNA();
+    }
+  }
+  useEffect(() => {
+    getQNA();
+  }, []);
+  useEffect(() => {
+    getQNA();
+  }, [confirmModal]);
+  async function getQNA() {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_DB_URL}/comment/${qnaInfo._id}`
+    );
+    if (res.status === 200) {
+      const json = await res?.json();
+      setContent(json);
+    }
+  }
+  async function deleteQnaPost() {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_DB_URL}/qna/${qnaInfo._id}/`,
+      {
+        method: "delete",
+      }
+    );
+
+    return res;
+  }
+  async function deleteComment() {
+    await fetch(
+      `${process.env.NEXT_PUBLIC_DB_URL}/comment/${qnaInfo._id}/${commentId}`,
+      {
+        method: "delete",
+      }
+    );
+  }
 
   return (
     <div className="fixed  h-device inset-0 z-50 flex items-center justify-center p-[20px]">
-      {confirm && <ConfirmModal qnaInfo={qnaInfo} setQnaClick={setQnaClick} />}
+      {postDeleteConfirm && confirmModal && (
+        <ConfirmModal
+          qnaInfo={qnaInfo}
+          setConfirmModal={setConfirmModal}
+          confirmMessage={"게시글을 삭제하시겠습니까?"}
+          successMessage={"게시글이 삭제되었습니다."}
+          action={deleteQnaPost}
+        />
+      )}
+      {commentDeleteConfirm && confirmModal && (
+        <ConfirmModal
+          qnaInfo={qnaInfo}
+          setConfirmModal={setConfirmModal}
+          confirmMessage={"댓글을 삭제하시겠습니까?"}
+          successMessage={"댓글이 삭제되었습니다."}
+          action={deleteComment}
+        />
+      )}
       <div className="bg-gray-100 rounded-[10px] relative py-[28px] px-[20px] max-w-[700px] w-full z-20 overflow-y-hidden min-h-[400px]  max-h-[[90%]%] flex flex-col">
         <div
           onClick={() => {
@@ -63,7 +140,7 @@ export default function QnAContent({
                 <span
                   className="cursor-pointer"
                   onClick={() => {
-                    setConfirm(true);
+                    setPostDeleteConfirm(true);
                   }}
                 >
                   삭제
@@ -84,13 +161,67 @@ export default function QnAContent({
             <input
               className=" outline-none w-full rounded-[10px] bg-gray-200 h-[48px] border border-gray-400 px-[12px] focus:bg-gray-100 focus:border-gray-700 focus:border-[2px] focus:outline-none focus:text-gray-700 appearance-none"
               type="text"
-              placeholder="댓글을 입력해주세요."
+              disabled={!userInfo.isLogin}
+              value={comment}
+              placeholder={
+                userInfo.isLogin
+                  ? "댓글을 입력해주세요."
+                  : "로그인 후 작성해주세요."
+              }
+              onChange={(e) => {
+                setComment(e.target.value);
+              }}
             />
-            <button className="ml-[16px] max-w-[96px] h-[48px] w-full py-[12px] rounded-[8px] outline-none transition-colors bg-red-600 hover:bg-red-800 disabled:bg-gray-500 text-gray-100">
+            <button
+              onClick={() => {
+                postComment();
+              }}
+              disabled={!userInfo.isLogin}
+              className="ml-[16px] max-w-[96px] h-[48px] w-full py-[12px] rounded-[8px] outline-none transition-colors bg-red-600 hover:bg-red-800 disabled:bg-gray-500 text-gray-100"
+            >
               작성
             </button>
           </div>
-          <div className="overflow-y-hidden h-full"></div>
+          <div className="overflow-y-hidden h-full">
+            {content?.map((e: any, i: number) => (
+              <div className="text-[14px] mb-[16px] last:mb-0">
+                <div className="flex items-center justify-between mb-[12px]">
+                  <div className="flex items-center cursor-pointer">
+                    <div className="flex flex-row-reverse w-[24px] h-[24px]">
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_DB_URL}/image/${
+                          e?.emailID
+                        }.png?${Date.now()}`}
+                        className={"rounded-[100%] w-full h-full"}
+                        onError={(e: any) => {
+                          e.target.onerror = null;
+                          e.target.src = "/default-profile.png";
+                        }}
+                      />
+                    </div>
+                    <span className="mx-[8px] text-[14px] font-bold">
+                      {e.nickName}
+                    </span>
+                    <span>{e.date}</span>
+                  </div>
+                  <div className="text-red-600">
+                    <span className="mr-[12px] cursor-pointer">수정</span>
+                    <span
+                      onClick={() => {
+                        setCommentId(e.commentId);
+                        setConfirmModal(true);
+                        setCommentDeleteConfirm(true);
+                      }}
+                      className="cursor-pointer"
+                    >
+                      삭제
+                    </span>
+                  </div>
+                </div>
+                <div>{e.comment}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <style jsx>{`
