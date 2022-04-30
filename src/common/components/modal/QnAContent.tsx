@@ -66,14 +66,15 @@ export default function QnAContent({
     return res;
   }
   async function deleteComment() {
-    await fetch(
+    const res = await fetch(
       `${process.env.NEXT_PUBLIC_DB_URL}/comment/${qnaInfo._id}/${commentId}`,
       {
         method: "delete",
       }
     );
+    return res;
   }
-
+  console.log("content:", content);
   return (
     <div className="fixed  h-device inset-0 z-50 flex items-center justify-center p-[20px]">
       {postDeleteConfirm && confirmModal && (
@@ -204,19 +205,21 @@ export default function QnAContent({
                     </span>
                     <span>{e.date}</span>
                   </div>
-                  <div className="text-red-600">
-                    <span className="mr-[12px] cursor-pointer">수정</span>
-                    <span
-                      onClick={() => {
-                        setCommentId(e.commentId);
-                        setConfirmModal(true);
-                        setCommentDeleteConfirm(true);
-                      }}
-                      className="cursor-pointer"
-                    >
-                      삭제
-                    </span>
-                  </div>
+                  {e.emailID === userInfo._id && (
+                    <div className="text-red-600">
+                      <span className="mr-[12px] cursor-pointer">수정</span>
+                      <span
+                        onClick={() => {
+                          setCommentId(e.commentId);
+                          setConfirmModal(true);
+                          setCommentDeleteConfirm(true);
+                        }}
+                        className="cursor-pointer"
+                      >
+                        삭제
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div>{e.comment}</div>
               </div>

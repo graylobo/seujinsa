@@ -25,10 +25,16 @@ export default function ConfirmModal({
           <button
             onClick={async () => {
               const res = await action();
+              console.log("몽미");
               if (res) {
+                console.log("몽미2", res);
+
                 if (res.status === 200) {
+                  console.log(successMessage);
                   success(successMessage);
                 } else {
+                  console.log("몽미3");
+
                   fail(await res.text());
                 }
               }
