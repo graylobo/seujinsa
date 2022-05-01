@@ -74,7 +74,6 @@ export default function QnAContent({
     );
     return res;
   }
-  console.log("content:", content);
   return (
     <div className="fixed  h-device inset-0 z-50 flex items-center justify-center p-[20px]">
       {postDeleteConfirm && confirmModal && (

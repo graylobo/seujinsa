@@ -11,7 +11,6 @@ export default function TierComponent({ gamerList }: any) {
   const [profileLoading, setProfileLoading] = useState(false);
   function onAllImageLoad(i: number) {
     if (i === gamerList.length - 1) {
-      console.log("zzz");
       setLoading(false);
     }
   }
@@ -21,7 +20,6 @@ export default function TierComponent({ gamerList }: any) {
     if (gamerList.length === 0) {
       setLoading(false);
     }
-    console.log("hhh");
   }, [gamerList]);
   async function getGamerInfo(gamer: string) {
     setProfileLoading(true);
@@ -41,7 +39,6 @@ export default function TierComponent({ gamerList }: any) {
     setShowInfo(true);
     setProfileLoading(false);
   }
-  console.log(profileLoading);
   return (
     <div className="container">
       {profileLoading && (

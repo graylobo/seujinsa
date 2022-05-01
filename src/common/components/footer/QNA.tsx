@@ -119,7 +119,6 @@ export default function QNA() {
     setQnaClick(true);
     setQnaInfo(qnaInfo);
   }
-  console.log("res");
   return (
     <section>
       <ToastContainer />
