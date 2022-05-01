@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import TierComponent from "./TierComponent";
 import { useRecoilValue } from "recoil";
-import { gamerState } from "../../recoil/states";
+import { gamerState, isMobileState } from "../../recoil/states";
+import { SyncLoader } from "react-spinners";
+
 const raceList = ["전체", "저그", "프로토스", "테란"];
 const universityList = [
   "전체",
@@ -28,6 +30,7 @@ const Wrapper = styled.div`
   .top-div {
     margin-top: 30px;
   }
+
   .info-popup {
     position: fixed;
     top: 50%;
@@ -103,11 +106,17 @@ export default function TierContainer() {
   const [nineTier, setNineTier] = useState([{}]);
   const [tenTier, setTenTier] = useState([{}]);
   const [elevenTier, setElevenTier] = useState([{}]);
+  const [gamerName, setGamerName] = useState("");
   const [race, setRace] = useState("");
   const [university, setUniversity] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sortedGamerArray, setSortedGamerArray] = useState([]);
+  const [filteredGamerArray, setFilterGamerArray] = useState([]);
   const gamerInfo = useRecoilValue(gamerState);
+  const isMobile = useRecoilValue(isMobileState);
 
   useEffect(() => {
+    setLoading(true);
     async function getGamerList() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-list`);
       const json = await res.json();
@@ -171,114 +180,152 @@ export default function TierContainer() {
           nickName: e.nickName,
         };
       });
-      if (race && race !== "전체") {
-        sortedGamerList = sortedGamerList.filter((e) => e.race === race);
-      }
-      if (university && university !== "전체") {
-        sortedGamerList = sortedGamerList.filter(
-          (e) => e.university === university
-        );
-      }
 
-      let zeroTemp = [];
-      let oneTemp = [];
-      let twoTemp = [];
-      let threeTemp = [];
-      let fourTemp = [];
-      let fiveTemp = [];
-      let sixTemp = [];
-      let sevenTemp = [];
-      let eightTemp = [];
-      let nineTemp = [];
-      let tenTemp = [];
-      let elevenTemp = [];
-
-      sortedGamerList.map((e) => {
-        if (tierList.includes(e.tier)) {
-          switch (e.tier) {
-            case "zero":
-              zeroTemp.push({
-                ...e,
-              });
-              break;
-            case "one":
-              oneTemp.push({ ...e });
-              break;
-            case "two":
-              twoTemp.push({ ...e });
-              break;
-            case "three":
-              threeTemp.push({ ...e });
-              break;
-            case "four":
-              fourTemp.push({ ...e });
-              break;
-            case "five":
-              fiveTemp.push({ ...e });
-              break;
-            case "six":
-              sixTemp.push({ ...e });
-              break;
-            case "seven":
-              sevenTemp.push({ ...e });
-              break;
-            case "eight":
-              eightTemp.push({ ...e });
-              break;
-            case "nine":
-              nineTemp.push({ ...e });
-              break;
-            case "ten":
-              tenTemp.push({ ...e });
-              break;
-            case "eleven":
-              elevenTemp.push({ ...e });
-              break;
-          }
-        }
-      });
-      setZeroTier([...zeroTemp]);
-      setOneTier([...oneTemp]);
-      setTwoTier([...twoTemp]);
-      setThreeTier([...threeTemp]);
-      serFourTier([...fourTemp]);
-      setFiveTier([...fiveTemp]);
-      setSixTier([...sixTemp]);
-      setSevenTier([...sevenTemp]);
-      setEightTier([...eightTemp]);
-      setNineTier([...nineTemp]);
-      setTenTier([...tenTemp]);
-      setElevenTier([...elevenTemp]);
+      setSortedGamerArray(sortedGamerList);
+      gamerClassification(sortedGamerList);
     }
     getGamerList();
-  }, [gamerInfo, race, university]);
+  }, [gamerInfo]);
+
+  useEffect(() => {
+    gamerClassification(sortedGamerArray);
+  }, [race, university, gamerName]);
+  function gamerClassification(list) {
+    let copy = [...list];
+    if (gamerName) {
+      copy = copy.filter((e) => e._id.includes(gamerName));
+    }
+    if (race && race !== "전체") {
+      copy = copy.filter((e) => e.race === race);
+    }
+    if (university && university !== "전체") {
+      copy = copy.filter((e) => e.university === university);
+    }
+    setFilterGamerArray(copy);
+    let zeroTemp = [];
+    let oneTemp = [];
+    let twoTemp = [];
+    let threeTemp = [];
+    let fourTemp = [];
+    let fiveTemp = [];
+    let sixTemp = [];
+    let sevenTemp = [];
+    let eightTemp = [];
+    let nineTemp = [];
+    let tenTemp = [];
+    let elevenTemp = [];
+
+    copy?.map((e) => {
+      if (tierList.includes(e.tier)) {
+        switch (e.tier) {
+          case "zero":
+            zeroTemp.push({
+              ...e,
+            });
+            break;
+          case "one":
+            oneTemp.push({ ...e });
+            break;
+          case "two":
+            twoTemp.push({ ...e });
+            break;
+          case "three":
+            threeTemp.push({ ...e });
+            break;
+          case "four":
+            fourTemp.push({ ...e });
+            break;
+          case "five":
+            fiveTemp.push({ ...e });
+            break;
+          case "six":
+            sixTemp.push({ ...e });
+            break;
+          case "seven":
+            sevenTemp.push({ ...e });
+            break;
+          case "eight":
+            eightTemp.push({ ...e });
+            break;
+          case "nine":
+            nineTemp.push({ ...e });
+            break;
+          case "ten":
+            tenTemp.push({ ...e });
+            break;
+          case "eleven":
+            elevenTemp.push({ ...e });
+            break;
+        }
+      }
+    });
+    setZeroTier([...zeroTemp]);
+    setOneTier([...oneTemp]);
+    setTwoTier([...twoTemp]);
+    setThreeTier([...threeTemp]);
+    serFourTier([...fourTemp]);
+    setFiveTier([...fiveTemp]);
+    setSixTier([...sixTemp]);
+    setSevenTier([...sevenTemp]);
+    setEightTier([...eightTemp]);
+    setNineTier([...nineTemp]);
+    setTenTier([...tenTemp]);
+    setElevenTier([...elevenTemp]);
+    setLoading(false);
+  }
 
   return (
     <Wrapper className="absolute left-0 w-full flex justify-center">
       <div className="top-div"></div>
       <div className="w-[90%]">
-        <div className="w-full min-w-[260px]">
-          <div className=" text-right">
-            <span>종족: </span>
-            <select
+        <div className="w-full min-w-[260px] mb-[20px]">
+          <div className=" text-right ">
+            {loading && (
+              <div className="modal-background flex justify-center items-center">
+                <SyncLoader color="gold" size={15} />
+              </div>
+            )}
+            <span>이름: </span>
+            <input
+              className="w-[110px] border-[1px] border-gray-500 rounded-[5px] px-[10px]  focus:outline-blue-600 "
+              value={gamerName}
               onChange={(e) => {
-                setRace(e.target.value);
+                setGamerName(e.target.value);
               }}
-            >
-              {raceList.map((e) => (
-                <option value={e}>{e}</option>
-              ))}
-            </select>
-            <span>대학: </span>
-            <select
-              onChange={(e) => {
-                setUniversity(e.target.value);
-              }}
-            >
-              {universityList.map((e) => (
-                <option value={e}>{e}</option>
-              ))}
-            </select>
+            ></input>
+            {isMobile && <div className="mt-[5px]"></div>}
+
+            <span className="ml-[10px] border-[2px] border-gray-300 inline-block pl-[5px] rounded-[5px] ">
+              종족:
+              <select
+                className="focus:outline-none"
+                onChange={(e) => {
+                  setRace(e.target.value);
+                }}
+              >
+                {raceList.map((e) => (
+                  <option value={e}>{e}</option>
+                ))}
+              </select>
+            </span>
+
+            <span className="ml-[10px] border-[2px] border-gray-300 inline-block pl-[5px] rounded-[5px]">
+              대학:
+              <select
+                className="focus:outline-none"
+                onChange={(e) => {
+                  setUniversity(e.target.value);
+                }}
+              >
+                {universityList.map((e) => (
+                  <option value={e}>{e}</option>
+                ))}
+              </select>
+            </span>
+
+            <div>
+              <span>count: {filteredGamerArray.length}</span>
+            </div>
           </div>
         </div>
 

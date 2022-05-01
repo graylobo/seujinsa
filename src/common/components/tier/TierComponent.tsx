@@ -21,6 +21,7 @@ export default function TierComponent({ gamerList }: any) {
       setLoading(false);
     }
   }, [gamerList]);
+
   async function getGamerInfo(gamer: string) {
     setProfileLoading(true);
     let res = await fetch(

@@ -165,7 +165,7 @@ export default function SignUp() {
   return (
     <div className="py-[60px] h-full px-[20px] mx-auto max-w-[500px]">
       <ToastContainer />
-      {loading && <div className="modal-background">asdasd</div>}
+      {loading && <div className="modal-background"></div>}
       <div className="mb-[16px]">
         <h1 className="text-[22px] font-bold mb-[8px]">회원가입</h1>
         <span className="text-[14px] mr-[16px]">

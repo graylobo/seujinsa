@@ -58,7 +58,6 @@ export default function AdminPage() {
     }
     setGamerList(copyGamerList);
   }
-  console.log(gamerList);
   return (
     <div className="absolute left-0 w-full">
       {gamerList.map((e: GamerInfoType, i: number) => (
