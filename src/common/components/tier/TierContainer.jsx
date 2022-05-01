@@ -40,7 +40,7 @@ const Wrapper = styled.div`
     color: white;
     width: 300px;
     height: 100%;
-    max-height: 400px;
+    max-height: 500px;
     border-radius: 5px;
     z-index: 1;
     opacity: 90%;
@@ -112,11 +112,10 @@ export default function TierContainer() {
   const [loading, setLoading] = useState(false);
   const [sortedGamerArray, setSortedGamerArray] = useState([]);
   const [filteredGamerArray, setFilterGamerArray] = useState([]);
+
   const gamerInfo = useRecoilValue(gamerState);
   const isMobile = useRecoilValue(isMobileState);
-
   useEffect(() => {
-    setLoading(true);
     async function getGamerList() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-list`);
       const json = await res.json();
@@ -188,8 +187,11 @@ export default function TierContainer() {
   }, [gamerInfo]);
 
   useEffect(() => {
+    setLoading(true);
     gamerClassification(sortedGamerArray);
-  }, [race, university, gamerName]);
+    setLoading(false);
+  }, [race, university, gamerName, loading]);
+
   function gamerClassification(list) {
     let copy = [...list];
     if (gamerName) {
@@ -219,9 +221,7 @@ export default function TierContainer() {
       if (tierList.includes(e.tier)) {
         switch (e.tier) {
           case "zero":
-            zeroTemp.push({
-              ...e,
-            });
+            zeroTemp.push({ ...e });
             break;
           case "one":
             oneTemp.push({ ...e });
@@ -271,12 +271,11 @@ export default function TierContainer() {
     setNineTier([...nineTemp]);
     setTenTier([...tenTemp]);
     setElevenTier([...elevenTemp]);
-    setLoading(false);
   }
-
   return (
     <Wrapper className="absolute left-0 w-full flex justify-center">
       <div className="top-div"></div>
+
       <div className="w-[90%]">
         <div className="w-full min-w-[260px] mb-[20px]">
           <div className=" text-right ">

@@ -6,6 +6,9 @@ import { SyncLoader } from "react-spinners";
 function convertTierName(tier: string): string {
   let val = "";
   switch (tier) {
+    case "주":
+      val = "zero";
+      break;
     case "갑":
       val = "one";
       break;
@@ -100,7 +103,7 @@ function GamerInfoPopup({ setShowInfo }: any) {
                 }
               }
             }}
-            className="absolute right-[90px] text-[13px] p-[2px] border-[1px] rounded-[2px] border-blue-800"
+            className="absolute right-[110px] text-[13px] p-[2px] border-[1px] rounded-[2px] border-blue-800"
           >
             투표
           </button>
@@ -162,36 +165,72 @@ function GamerInfoPopup({ setShowInfo }: any) {
       >
         x
       </span>
-      <div className="mt-[10px] gamer-name">{gamerInfo._id}</div>
-      <div className="w-full max-w-[80px]">
+      <div className="mt-[10px] gamer-name  mb-[10px]">{gamerInfo._id}</div>
+      <div className="w-full max-w-[180px] pl-[50px]">
         <div className="float-left">종족: {gamerInfo.race}</div>
       </div>
-      <div className="w-full max-w-[80px]">
+      <div className="w-full max-w-[180px] pl-[50px] mb-[10px]">
         <div className="float-left">대학: {gamerInfo.university}</div>
       </div>
-      <SubTier tier={"갑"} name={gamerInfo._id} point={gamerInfo.point?.one} />
-      <SubTier tier={"을"} name={gamerInfo._id} point={gamerInfo.point?.two} />
-      <SubTier
-        tier={"병"}
-        name={gamerInfo._id}
-        point={gamerInfo.point?.three}
-      />
-      <SubTier tier={"정"} name={gamerInfo._id} point={gamerInfo.point?.four} />
-      <SubTier tier={"무"} name={gamerInfo._id} point={gamerInfo.point?.five} />
-      <SubTier tier={"기"} name={gamerInfo._id} point={gamerInfo.point?.six} />
-      <SubTier
-        tier={"경"}
-        name={gamerInfo._id}
-        point={gamerInfo.point?.seven}
-      />
-      <SubTier
-        tier={"신"}
-        name={gamerInfo._id}
-        point={gamerInfo.point?.eight}
-      />
-      <SubTier tier={"임"} name={gamerInfo._id} point={gamerInfo.point?.nine} />
-      <SubTier tier={"계"} name={gamerInfo._id} point={gamerInfo.point?.ten} />
-      <div className="">총 득표수: {totalPoint}</div>
+      <div className="mr-[30px]">
+        <SubTier
+          tier={"주"}
+          name={gamerInfo._id}
+          point={gamerInfo.point?.zero}
+        />
+        <SubTier
+          tier={"갑"}
+          name={gamerInfo._id}
+          point={gamerInfo.point?.one}
+        />
+        <SubTier
+          tier={"을"}
+          name={gamerInfo._id}
+          point={gamerInfo.point?.two}
+        />
+        <SubTier
+          tier={"병"}
+          name={gamerInfo._id}
+          point={gamerInfo.point?.three}
+        />
+        <SubTier
+          tier={"정"}
+          name={gamerInfo._id}
+          point={gamerInfo.point?.four}
+        />
+        <SubTier
+          tier={"무"}
+          name={gamerInfo._id}
+          point={gamerInfo.point?.five}
+        />
+        <SubTier
+          tier={"기"}
+          name={gamerInfo._id}
+          point={gamerInfo.point?.six}
+        />
+        <SubTier
+          tier={"경"}
+          name={gamerInfo._id}
+          point={gamerInfo.point?.seven}
+        />
+        <SubTier
+          tier={"신"}
+          name={gamerInfo._id}
+          point={gamerInfo.point?.eight}
+        />
+        <SubTier
+          tier={"임"}
+          name={gamerInfo._id}
+          point={gamerInfo.point?.nine}
+        />
+        <SubTier
+          tier={"계"}
+          name={gamerInfo._id}
+          point={gamerInfo.point?.ten}
+        />
+      </div>
+
+      <div className="mt-[10px]">총 득표수: {totalPoint}</div>
 
       {userInfo.isLogin ? (
         <div>

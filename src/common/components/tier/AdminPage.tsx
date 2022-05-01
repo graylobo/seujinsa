@@ -59,7 +59,7 @@ export default function AdminPage() {
     setGamerList(copyGamerList);
   }
   return (
-    <div className="absolute left-0 w-full">
+    <div className="absolute left-0 w-full pb-[80px]">
       {gamerList.map((e: GamerInfoType, i: number) => (
         <div key={e._id} className="grid grid-cols-4">
           <span>
