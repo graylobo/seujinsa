@@ -18,10 +18,13 @@ export default function FooterBar() {
           </div>
         </Link>
 
-        <div className={iconContainerCSS}>
-          <span className="material-icons-outlined text-[19px]">search</span>
-          <span className="text-[12px]">검색</span>
-        </div>
+        <Link href={"/tier"}>
+          <div className={iconContainerCSS}>
+            <span className="material-icons-outlined text-[19px]">search</span>
+            <span className="text-[12px]">검색</span>
+          </div>
+        </Link>
+
         <Link href={"/qna"}>
           <div className={iconContainerCSS}>
             <span className="material-icons-outlined text-[19px]">sms</span>
