@@ -54,13 +54,13 @@ export default function TierComponent({ gamerList }: any) {
       {gamerList.map((gamer: GamerInfoType, index: number) => {
         let raceColor = "";
         switch (gamer.race) {
-          case "zerg":
+          case "저그":
             raceColor = "text-red-600";
             break;
-          case "terran":
+          case "테란":
             raceColor = "text-blue-600";
             break;
-          case "protoss":
+          case "프로토스":
             raceColor = "text-yellow-600";
             break;
           default:
@@ -73,7 +73,7 @@ export default function TierComponent({ gamerList }: any) {
             onClick={() => {
               getGamerInfo(gamer._id);
             }}
-            key={gamer._id}
+            key={index}
           >
             <div
               className={`${

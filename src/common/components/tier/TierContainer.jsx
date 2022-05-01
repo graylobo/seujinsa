@@ -3,7 +3,22 @@ import styled from "@emotion/styled";
 import TierComponent from "./TierComponent";
 import { useRecoilValue } from "recoil";
 import { gamerState } from "../../recoil/states";
-
+const raceList = ["전체", "저그", "프로토스", "테란"];
+const universityList = [
+  "전체",
+  "무소속",
+  "철기중대",
+  "바스포드",
+  "염석대",
+  "무친대",
+  "우끼끼즈",
+  "캄성여대",
+  "파이스트",
+  "학버드",
+  "CP대",
+  "JSA",
+  "NSU",
+];
 const Wrapper = styled.div`
   .container {
     display: grid;
@@ -88,13 +103,15 @@ export default function TierContainer() {
   const [nineTier, setNineTier] = useState([{}]);
   const [tenTier, setTenTier] = useState([{}]);
   const [elevenTier, setElevenTier] = useState([{}]);
+  const [race, setRace] = useState("");
+  const [university, setUniversity] = useState("");
   const gamerInfo = useRecoilValue(gamerState);
 
   useEffect(() => {
     async function getGamerList() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-list`);
       const json = await res.json();
-      const sortedGamerList = json.map((e) => {
+      let sortedGamerList = json.map((e) => {
         let totalPoint = 0;
         let sortable = [];
         for (const key in e.point) {
@@ -118,7 +135,6 @@ export default function TierContainer() {
         // let index = 1;
         // let find = false;
         // while (!find) {
-        //   console.log("무한");
         //   switch (currentTier) {
         //     case "one":
         //       if (totalPoint <= 5) {
@@ -155,6 +171,14 @@ export default function TierContainer() {
           nickName: e.nickName,
         };
       });
+      if (race && race !== "전체") {
+        sortedGamerList = sortedGamerList.filter((e) => e.race === race);
+      }
+      if (university && university !== "전체") {
+        sortedGamerList = sortedGamerList.filter(
+          (e) => e.university === university
+        );
+      }
 
       let zeroTemp = [];
       let oneTemp = [];
@@ -227,23 +251,50 @@ export default function TierContainer() {
       setElevenTier([...elevenTemp]);
     }
     getGamerList();
-  }, [gamerInfo]);
+  }, [gamerInfo, race, university]);
 
   return (
-    <Wrapper>
+    <Wrapper className="absolute left-0 w-full flex justify-center">
       <div className="top-div"></div>
-      <MemoizedMiddleContainer tierName={"주(柱)"} gamerList={zeroTier} />
-      <MemoizedMiddleContainer tierName={"갑(甲)"} gamerList={oneTier} />
-      <MemoizedMiddleContainer tierName={"을(乙)"} gamerList={twoTier} />
-      <MemoizedMiddleContainer tierName={"병(丙)"} gamerList={threeTier} />
-      <MemoizedMiddleContainer tierName={"정(丁)"} gamerList={fourTier} />
-      <MemoizedMiddleContainer tierName={"무(戊)"} gamerList={fiveTier} />
-      <MemoizedMiddleContainer tierName={"기(己)"} gamerList={sixTier} />
-      <MemoizedMiddleContainer tierName={"경(庚)"} gamerList={sevenTier} />
-      <MemoizedMiddleContainer tierName={"신(辛)"} gamerList={eightTier} />
-      <MemoizedMiddleContainer tierName={"임(壬)"} gamerList={nineTier} />
-      <MemoizedMiddleContainer tierName={"계(癸)"} gamerList={tenTier} />
-      <MemoizedMiddleContainer tierName={"배치"} gamerList={elevenTier} />
+      <div className="w-[90%]">
+        <div className="w-full min-w-[260px]">
+          <div className=" text-right">
+            <span>종족: </span>
+            <select
+              onChange={(e) => {
+                setRace(e.target.value);
+              }}
+            >
+              {raceList.map((e) => (
+                <option value={e}>{e}</option>
+              ))}
+            </select>
+            <span>대학: </span>
+            <select
+              onChange={(e) => {
+                setUniversity(e.target.value);
+              }}
+            >
+              {universityList.map((e) => (
+                <option value={e}>{e}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <MemoizedMiddleContainer tierName={"주(柱)"} gamerList={zeroTier} />
+        <MemoizedMiddleContainer tierName={"갑(甲)"} gamerList={oneTier} />
+        <MemoizedMiddleContainer tierName={"을(乙)"} gamerList={twoTier} />
+        <MemoizedMiddleContainer tierName={"병(丙)"} gamerList={threeTier} />
+        <MemoizedMiddleContainer tierName={"정(丁)"} gamerList={fourTier} />
+        <MemoizedMiddleContainer tierName={"무(戊)"} gamerList={fiveTier} />
+        <MemoizedMiddleContainer tierName={"기(己)"} gamerList={sixTier} />
+        <MemoizedMiddleContainer tierName={"경(庚)"} gamerList={sevenTier} />
+        <MemoizedMiddleContainer tierName={"신(辛)"} gamerList={eightTier} />
+        <MemoizedMiddleContainer tierName={"임(壬)"} gamerList={nineTier} />
+        <MemoizedMiddleContainer tierName={"계(癸)"} gamerList={tenTier} />
+        <MemoizedMiddleContainer tierName={"배치"} gamerList={elevenTier} />
+      </div>
     </Wrapper>
   );
 }

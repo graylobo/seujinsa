@@ -60,7 +60,7 @@ export default function AdminPage() {
   }
   console.log(gamerList);
   return (
-    <div>
+    <div className="absolute left-0 w-full">
       {gamerList.map((e: GamerInfoType, i: number) => (
         <div key={e._id} className="grid grid-cols-4">
           <span>
@@ -76,7 +76,9 @@ export default function AdminPage() {
               }}
             >
               {race.map((e) => (
-                <option value={e}>{e}</option>
+                <option key={e} value={e}>
+                  {e}
+                </option>
               ))}
             </select>
           </span>
@@ -89,7 +91,9 @@ export default function AdminPage() {
               }}
             >
               {university.map((e) => (
-                <option value={e}>{e}</option>
+                <option key={e} value={e}>
+                  {e}
+                </option>
               ))}
             </select>
           </span>
