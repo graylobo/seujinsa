@@ -179,16 +179,19 @@ export default function TierContainer() {
           nickName: e.nickName,
         };
       });
-
-      setSortedGamerArray(sortedGamerList);
-      gamerClassification(sortedGamerList);
+      if (sortedGamerList.length !== 0) {
+        setSortedGamerArray(sortedGamerList);
+        gamerClassification(sortedGamerList);
+      }
     }
     getGamerList();
   }, [gamerInfo]);
 
   useEffect(() => {
     setLoading(true);
-    gamerClassification(sortedGamerArray);
+    if (sortedGamerArray.length !== 0) {
+      gamerClassification(sortedGamerArray);
+    }
     setLoading(false);
   }, [race, university, gamerName, loading]);
 

@@ -11,6 +11,7 @@ export default function TierComponent({ gamerList }: any) {
   const [profileLoading, setProfileLoading] = useState(false);
   function onAllImageLoad(i: number) {
     if (i === gamerList.length - 1) {
+      console.log("onAllImageLoad");
       setLoading(false);
     }
   }
@@ -18,7 +19,11 @@ export default function TierComponent({ gamerList }: any) {
   useEffect(() => {
     // 처음 랜더링시에 gamerList Props
     if (gamerList.length === 0) {
+      console.log("onAllImageLoad2", gamerList.length);
+
       setLoading(false);
+    } else {
+      console.log("onAllImageLoad3", gamerList.length);
     }
   }, [gamerList]);
 
@@ -50,7 +55,7 @@ export default function TierComponent({ gamerList }: any) {
 
       {showInfo && <GamerInfoPopup setShowInfo={setShowInfo} />}
       <div className="loader ">
-        {loading && <PacmanLoader size={20} color="gray" />}
+        {loading && <PacmanLoader size={15} color="#EACF46" />}
       </div>
       {gamerList.map((gamer: GamerInfoType, index: number) => {
         let raceColor = "";
@@ -87,6 +92,7 @@ export default function TierComponent({ gamerList }: any) {
                 <img
                   className="gamer-image w-full h-full "
                   src={`/images/gamer/${gamer._id}.png`}
+                  loading={"lazy"}
                   onLoad={() => {
                     onAllImageLoad(index);
                   }}
