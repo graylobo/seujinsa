@@ -62,17 +62,44 @@ const Wrapper = styled.div`
   .gamer-name {
     letter-spacing: 3px;
   }
+  .tier-component {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    background-color: #e7e7e7;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    min-height: 150px;
+    align-items: center;
+  }
+  .zero {
+    background-image: url("/giphy.gif");
+    background-size: cover;
+  }
+  .one {
+    background-image: url("/giphy2.gif");
+    background-size: cover;
+  }
 `;
 
 const MemoizedMiddleContainer = React.memo(function MiddleContainer({
   tierName,
   gamerList,
+  backGround,
 }) {
-  const defaultCSS =
-    "flex flex-col items-center  p-[30px] bg-gray-100 rounded-[10px] mb-[30px]  min-h-[150px]";
+  // let backgroundCSS = "";
+  // if (backGround) {
+  //   // backgroundCSS = "bg-[url('" + backGround + "')] bg-contain";
+  //   backgroundCSS = "bg-[url('" + "star-cat.jpg" + "')] bg-contain";
+  //   console.log(backgroundCSS);
+  // } else {
+  //   console.log(".없음");
+  // }
+
+  // const defaultCSS = `flex flex-col items-center  p-[30px] bg-gray-100 rounded-[10px] mb-[30px]  min-h-[150px] ${backgroundCSS}`;
 
   return (
-    <div className={`${defaultCSS} `}>
+    <div className={`tier-component ${backGround}`}>
       <div className="mb-[10px] text-[20px] font-semibold">{tierName}</div>
       <TierComponent gamerList={gamerList}></TierComponent>
     </div>
@@ -331,7 +358,11 @@ export default function TierContainer() {
           </div>
         </div>
 
-        <MemoizedMiddleContainer tierName={"주(柱)"} gamerList={zeroTier} />
+        <MemoizedMiddleContainer
+          tierName={"주(柱)"}
+          gamerList={zeroTier}
+          backGround={"zero"}
+        />
         <MemoizedMiddleContainer tierName={"갑(甲)"} gamerList={oneTier} />
         <MemoizedMiddleContainer tierName={"을(乙)"} gamerList={twoTier} />
         <MemoizedMiddleContainer tierName={"병(丙)"} gamerList={threeTier} />
