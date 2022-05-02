@@ -151,10 +151,8 @@ function GamerInfoPopup({ setShowInfo }: any) {
   return (
     <div className={`info-popup flex flex-col items-center relative`}>
       {disabled && (
-        <div className="info-background flex justify-center items-center">
-          <div>
-            <SyncLoader color="white" />
-          </div>
+        <div className="modal-background flex justify-center items-center">
+          <SyncLoader color="white" />
         </div>
       )}
       <span

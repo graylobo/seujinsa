@@ -22,23 +22,27 @@ export default function QNA() {
   const [isEdit, setIsEdit] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
   async function postQNA() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna`, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        _id: userInfo._id,
-        nickName: userInfo.nickName,
-        date: getDateFormat(),
-        title: title,
-        body: body,
-      }),
-    });
-    if (res.status === 200) {
-      toast.success("게시글이 등록되었습니다.", {
-        autoClose: 1500,
-        position: toast.POSITION.TOP_CENTER,
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna`, {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          _id: userInfo._id,
+          nickName: userInfo.nickName,
+          date: getDateFormat(),
+          title: title,
+          body: body,
+        }),
       });
-      setEditorModalOpen(false);
+      if (res.status === 200) {
+        toast.success("게시글이 등록되었습니다.", {
+          autoClose: 1500,
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setEditorModalOpen(false);
+      }
+    } catch (error) {
+      alert(error);
     }
   }
 
@@ -52,26 +56,30 @@ export default function QNA() {
       title: title,
       body: body,
     };
-    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna-edit`, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    if (res.status === 200) {
-      setEditorModalOpen(false);
-      setIsEdit(false);
-      setTitle("");
-      setBody("");
-      setQnaInfo(data);
-      toast.success("게시글이 수정되었습니다.", {
-        autoClose: 1500,
-        position: toast.POSITION.TOP_CENTER,
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna-edit`, {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       });
-    } else {
-      toast.success(await res.text(), {
-        autoClose: 1500,
-        position: toast.POSITION.TOP_CENTER,
-      });
+      if (res.status === 200) {
+        setEditorModalOpen(false);
+        setIsEdit(false);
+        setTitle("");
+        setBody("");
+        setQnaInfo(data);
+        toast.success("게시글이 수정되었습니다.", {
+          autoClose: 1500,
+          position: toast.POSITION.TOP_CENTER,
+        });
+      } else {
+        toast.success(await res.text(), {
+          autoClose: 1500,
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+    } catch (error) {
+      alert(error);
     }
     setEditLoading(false);
   }
@@ -110,10 +118,6 @@ export default function QNA() {
       setCanUpload(false);
     }
   }, [title, body]);
-
-  useEffect(() => {
-    getQNA();
-  }, [isQnaClick]);
 
   function qnaClickHandler(qnaInfo: QnAProps) {
     setQnaClick(true);

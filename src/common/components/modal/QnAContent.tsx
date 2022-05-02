@@ -3,10 +3,10 @@ import ConfirmModal from "./ConfirmModal";
 import { useRecoilValue } from "recoil";
 import { userInfoState } from "../../recoil/states";
 import { getDateFormat } from "../../utils/date";
+import { SyncLoader } from "react-spinners";
 
 export default function QnAContent({
   qnaInfo,
-  setQnaInfo,
   setQnaClick,
   setEditorModalOpen,
   setTitle,
@@ -20,6 +20,7 @@ export default function QnAContent({
   const [content, setContent] = useState([]);
   const [commentId, setCommentId] = useState("");
   const [confirmModal, setConfirmModal] = useState(false);
+  const [commentLoading, setCommentLoading] = useState(false);
 
   async function postComment() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna-comment`, {
@@ -37,16 +38,17 @@ export default function QnAContent({
 
     if (res.status === 200) {
       setComment("");
-      getQNA();
+      getComment();
     }
   }
   useEffect(() => {
-    getQNA();
+    getComment();
   }, []);
   useEffect(() => {
-    getQNA();
+    getComment();
   }, [confirmModal]);
-  async function getQNA() {
+  async function getComment() {
+    setCommentLoading(true);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_DB_URL}/comment/${qnaInfo._id}`
     );
@@ -54,6 +56,7 @@ export default function QnAContent({
       const json = await res?.json();
       setContent(json);
     }
+    setCommentLoading(false);
   }
   async function deleteQnaPost() {
     const res = await fetch(
@@ -183,6 +186,11 @@ export default function QnAContent({
             </button>
           </div>
           <div className="overflow-y-hidden h-full">
+            {commentLoading && (
+              <div className="flex justify-center mt-[5px]">
+                <SyncLoader color="gray" size={10}></SyncLoader>
+              </div>
+            )}
             {content?.map((e: any, i: number) => (
               <div className="text-[14px] mb-[16px] last:mb-0">
                 <div className="flex items-center justify-between mb-[12px]">

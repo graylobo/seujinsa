@@ -29,19 +29,27 @@ export default function TierComponent({ gamerList }: any) {
 
   async function getGamerInfo(gamer: string) {
     setProfileLoading(true);
-    let res = await fetch(
-      `${process.env.NEXT_PUBLIC_DB_URL}/gamer-info/${gamer}`
-    );
-    let json = await res.json();
-    setGamerInfo(json);
-
-    if (userInfo._id) {
-      res = await fetch(
-        `${process.env.NEXT_PUBLIC_DB_URL}/user-info/${userInfo._id}`
+    try {
+      let res = await fetch(
+        `${process.env.NEXT_PUBLIC_DB_URL}/gamer-info/${gamer}`
       );
-      json = await res.json();
-      setUserInfo({ ...json, isLogin: true });
+      let json = await res.json();
+      setGamerInfo(json);
+    } catch (error) {
+      alert(error);
     }
+    try {
+      if (userInfo._id) {
+        let res = await fetch(
+          `${process.env.NEXT_PUBLIC_DB_URL}/user-info/${userInfo._id}`
+        );
+        let json = await res.json();
+        setUserInfo({ ...json, isLogin: true });
+      }
+    } catch (error) {
+      alert(error);
+    }
+
     setShowInfo(true);
     setProfileLoading(false);
   }
