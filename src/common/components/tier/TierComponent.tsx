@@ -11,7 +11,6 @@ export default function TierComponent({ gamerList }: any) {
   const [profileLoading, setProfileLoading] = useState(false);
   function onAllImageLoad(i: number) {
     if (i === gamerList.length - 1) {
-      console.log("onAllImageLoad");
       setLoading(false);
     }
   }
@@ -19,11 +18,8 @@ export default function TierComponent({ gamerList }: any) {
   useEffect(() => {
     // 처음 랜더링시에 gamerList Props
     if (gamerList.length === 0) {
-      console.log("onAllImageLoad2", gamerList.length);
-
       setLoading(false);
     } else {
-      console.log("onAllImageLoad3", gamerList.length);
     }
   }, [gamerList]);
 

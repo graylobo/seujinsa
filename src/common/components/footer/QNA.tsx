@@ -94,13 +94,23 @@ export default function QNA() {
       });
     }
   }
+
+  useEffect(() => {
+    getQNA();
+  }, [isQnaClick]);
   async function getQNA() {
-    setLoading(true);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna`);
-    if (res.status === 200) {
-      const json = await res.json();
-      setQnaList(json);
+    try {
+      setLoading(true);
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna`);
+      if (res.status === 200) {
+        const json = await res.json();
+        setQnaList(json);
+      }
+    } catch (error) {
+      alert(error);
     }
+
     setLoading(false);
   }
   useEffect(() => {
@@ -144,8 +154,8 @@ export default function QNA() {
         </div>
         <div className="grid grid-cols-1 gap-[20px] py-[20px] max-w-[700px] w-full mx-auto">
           {loading && (
-            <div className="mt-[30px] justify-self-center">
-              {<SyncLoader size={10} color={"gray"} />}
+            <div className="fixed left-[50%] top-[30%]">
+              {<SyncLoader size={10} color={"red"} />}
             </div>
           )}
 

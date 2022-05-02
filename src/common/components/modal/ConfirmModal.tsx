@@ -5,6 +5,7 @@ export default function ConfirmModal({
   setConfirmModal,
   confirmMessage,
   successMessage,
+  setConfirmFlag,
 }: any) {
   return (
     <div className="fixed w-screen h-device inset-0 z-50 flex items-center justify-center bg-gray-700 bg-opacity-[90%] p-[20px]">
@@ -17,6 +18,7 @@ export default function ConfirmModal({
           <button
             onClick={() => {
               setConfirmModal(false);
+              setConfirmFlag("아니오");
             }}
             className=" h-[48px] w-full py-[12px] rounded-[8px] outline-none transition-colors hover:border-0 bg-gray-100 hover:bg-red-100 border border-red-600 text-red-600"
           >
@@ -26,14 +28,13 @@ export default function ConfirmModal({
             onClick={async () => {
               const res = await action();
               if (res) {
-
                 if (res.status === 200) {
                   success(successMessage);
                 } else {
-
                   fail(await res.text());
                 }
               }
+              setConfirmFlag("네");
               setConfirmModal(false);
             }}
             className=" h-[48px] w-full py-[12px] rounded-[8px] outline-none transition-colors bg-red-600 hover:bg-red-800 disabled:bg-gray-500 text-gray-100"
