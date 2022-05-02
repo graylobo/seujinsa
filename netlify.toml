@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/api/:path*"
+  to = "https://seujinsa.herokuapp.com/:path*"
+  status = 302
+  force = false
