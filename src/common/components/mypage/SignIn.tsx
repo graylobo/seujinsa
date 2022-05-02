@@ -29,34 +29,39 @@ export default function ignIn() {
   }, [handleKeyPress]);
 
   async function login(e: any) {
-    setIsLoading(true);
-    e.preventDefault();
-    const data = {
-      id: email,
-      pw: password,
-    };
-    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/login`, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-      credentials: "include",
-    });
-
-    res
-      .json()
-      .then((e) => {
-        if (e.msg === "인증완료") {
-          setUserState({ isLogin: true, ...e });
-          router.push("/");
-        }
-      })
-      .catch((e) => {
-        toast.error("계정정보가 올바르지 않습니다.", {
-          autoClose: 1000,
-          position: toast.POSITION.TOP_CENTER,
-        });
+    try {
+      setIsLoading(true);
+      e.preventDefault();
+      const data = {
+        id: email,
+        pw: password,
+      };
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/login`, {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
       });
-    setIsLoading(false);
+
+      res
+        .json()
+        .then((e) => {
+          if (e.msg === "인증완료") {
+            setUserState({ isLogin: true, ...e });
+            router.push("/");
+          }
+        })
+        .catch((e) => {
+          toast.error("계정정보가 올바르지 않습니다.", {
+            autoClose: 1000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        });
+      setIsLoading(false);
+    } catch (error) {
+      alert(error);
+      setIsLoading(false);
+    }
   }
   return (
     <div className="py-[60px] p-[30px] w-full max-w-[475px] flex flex-col overflow-y-auto mx-auto">
