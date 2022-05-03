@@ -23,6 +23,7 @@ export default function QNA() {
   const [editLoading, setEditLoading] = useState(false);
   async function postQNA() {
     try {
+      setEditLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/qna`, {
         method: "post",
         headers: { "Content-Type": "application/json" },
@@ -44,8 +45,9 @@ export default function QNA() {
     } catch (error) {
       alert(error);
     }
+    setEditLoading(false);
   }
-
+  console.log("zz", editLoading);
   async function editQNA() {
     setEditLoading(true);
     const data: QnAProps = {
