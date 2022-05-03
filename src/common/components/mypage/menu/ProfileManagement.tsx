@@ -59,7 +59,18 @@ export default function ProfileManagement() {
       setNickName(userState.nickName);
     }
     setIntroduction(userState.introduction);
-    setProfile(`${process.env.NEXT_PUBLIC_DB_URL}/image/${userState._id}.png`);
+    var http = new XMLHttpRequest();
+    http.open(
+      "HEAD",
+      `${process.env.NEXT_PUBLIC_DB_URL}/image/${userState._id}.png`,
+      false
+    );
+    http.send();
+    if (http.status != 500) {
+      setProfile(
+        `${process.env.NEXT_PUBLIC_DB_URL}/image/${userState._id}.png`
+      );
+    }
   }, []);
 
   async function updateUserInfo() {
@@ -103,6 +114,7 @@ export default function ProfileManagement() {
     }
     setLoading(false);
   }
+  console.log(image, profile);
 
   return (
     <div
@@ -122,9 +134,12 @@ export default function ProfileManagement() {
       <div className="relative mb-[30px] w-[100px]  ">
         <label htmlFor="file-input">
           <img
-            src={image || profile + "?" + Date.now()}
+            src={
+              image || profile
+                ? image || profile + "?" + Date.now()
+                : "/default-profile.png"
+            }
             className={`w-[100px] h-[100px] rounded-full cursor-pointer object-contain`}
-            alt={"./default-profile.png"}
           />
           <img
             src="./edit-profile.svg"
