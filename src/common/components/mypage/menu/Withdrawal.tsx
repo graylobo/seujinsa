@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userInfoState } from "../../../recoil/states";
 import { success, fail, info } from "../../../utils/toast";
 import { ToastContainer } from "react-toastify";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 export default function Withdrawal() {
   const [password, setPassword] = useState("");
-  const userInfo = useRecoilValue(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const router = useRouter();
   const handleKeyPress = useCallback(
     (e: any) => {
@@ -34,6 +34,7 @@ export default function Withdrawal() {
       });
       if (res.status === 200) {
         alert("회원탈퇴가 완료되었습니다.");
+        setUserInfo({ ...userInfo, _id: "", isLogin: false });
         router.push("/");
       } else {
         info("비밀번호가 일치하지 않습니다.");

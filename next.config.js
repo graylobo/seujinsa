@@ -4,7 +4,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/:path*",
+        source: "/api/:path*",
         destination: `https://seujinsa.herokuapp.com/:path*`,
       },
     ];
