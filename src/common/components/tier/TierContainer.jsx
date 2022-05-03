@@ -358,11 +358,7 @@ export default function TierContainer() {
           </div>
         </div>
 
-        <MemoizedMiddleContainer
-          tierName={"주(柱)"}
-          gamerList={zeroTier}
-          backGround={"zero"}
-        />
+        <MemoizedMiddleContainer tierName={"주(柱)"} gamerList={zeroTier} />
         <MemoizedMiddleContainer tierName={"갑(甲)"} gamerList={oneTier} />
         <MemoizedMiddleContainer tierName={"을(乙)"} gamerList={twoTier} />
         <MemoizedMiddleContainer tierName={"병(丙)"} gamerList={threeTier} />
