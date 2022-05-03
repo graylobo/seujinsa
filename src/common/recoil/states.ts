@@ -12,6 +12,7 @@ export interface ITimerProps {
 interface IUserInfo {
   isLogin: boolean;
   _id?: string;
+  pw: string;
   votePoint: any;
   nickName?: string;
   introduction?: string;

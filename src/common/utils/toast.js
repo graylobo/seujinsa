@@ -20,4 +20,4 @@ function info(msg, autoClose = 1500) {
     position: toast.POSITION.TOP_CENTER,
   });
 }
-export { success,fail,info };
+export { success, fail, info };

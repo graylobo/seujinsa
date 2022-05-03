@@ -75,46 +75,50 @@ export default function ProfileManagement() {
 
   async function updateUserInfo() {
     setLoading(true);
-    const user_res = await fetch(
-      `${process.env.NEXT_PUBLIC_DB_URL}/user-info`,
-      {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          _id: userState._id,
+    try {
+      const user_res = await fetch(
+        `${process.env.NEXT_PUBLIC_DB_URL}/user-info`,
+        {
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            _id: userState._id,
+            nickName: nickName.trim(),
+            introduction: introduction,
+          }),
+        }
+      );
+      const profile_res = await fetch(
+        `${process.env.NEXT_PUBLIC_DB_URL}/profile-image`,
+        {
+          method: "post",
+          body: formData,
+        }
+      );
+
+      if (user_res.status === 200 && profile_res.status === 200) {
+        setUserInfo({
+          ...userInfo,
           nickName: nickName.trim(),
           introduction: introduction,
-        }),
+        });
+        toast.success("정보가 수정되었습니다.", {
+          autoClose: 1500,
+          position: toast.POSITION.TOP_CENTER,
+        });
+      } else {
+        const json = await profile_res.json();
+        toast.error(json.msg, {
+          autoClose: 1500,
+          position: toast.POSITION.TOP_CENTER,
+        });
       }
-    );
-    const profile_res = await fetch(
-      `${process.env.NEXT_PUBLIC_DB_URL}/profile-image`,
-      {
-        method: "post",
-        body: formData,
-      }
-    );
-
-    if (user_res.status === 200 && profile_res.status === 200) {
-      setUserInfo({
-        ...userInfo,
-        nickName: nickName.trim(),
-        introduction: introduction,
-      });
-      toast.success("정보가 수정되었습니다.", {
-        autoClose: 1500,
-        position: toast.POSITION.TOP_CENTER,
-      });
-    } else {
-      const json = await profile_res.json();
-      toast.error(json.msg, {
-        autoClose: 1500,
-        position: toast.POSITION.TOP_CENTER,
-      });
+    } catch (error) {
+      alert(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
-  console.log(image, profile);
 
   return (
     <div
