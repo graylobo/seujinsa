@@ -47,7 +47,6 @@ export default function QNA() {
     }
     setEditLoading(false);
   }
-  console.log("zz", editLoading);
   async function editQNA() {
     setEditLoading(true);
     const data: QnAProps = {

@@ -112,33 +112,48 @@ function GamerInfoPopup({ setShowInfo }: any) {
     );
   }
   //#endregion
-  async function cancelVote() {
+  async function cancelVote(gamerName: string) {
     setDisabled(true);
-
-    let json = await getUserInfo(userInfo._id);
-    const votedTier = userInfo.votePoint[gamerInfo._id][1];
-    let res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/cancel-vote`, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        _id: gamerInfo._id,
-        tier: votedTier,
-      }),
-    });
-    json = await getGamerInfo(gamerInfo._id);
-    setGamerInfo({ ...gamerInfo, ...json });
-    await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/increase-point`, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        _id: userInfo._id,
-        name: gamerInfo._id,
-        tier: votedTier,
-      }),
-    });
-    json = await getUserInfo(userInfo._id);
-    setUserInfo({ ...userInfo, ...json, isLogin: true });
-    setDisabled(false);
+    try {
+      let json = await getUserInfo(userInfo._id);
+      console.log(json.votePoint[gamerName]);
+      let votedDate = json.votePoint[gamerName][2];
+      let currentDate = Date.now();
+      let elapsedTime = currentDate - votedDate;
+      let d = new Date(votedDate);
+      let mm = d.getMonth() + 1;
+      let dd = d.getDate();
+      if (elapsedTime < 1000 * 60 * 60 * 24 * 7) {
+        alert(`투표후 7주일 뒤 취소 가능합니다.\n투표일: ${mm}월 ${dd}일`);
+        return;
+      }
+      const votedTier = userInfo.votePoint[gamerInfo._id][1];
+      let res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/cancel-vote`, {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          _id: gamerInfo._id,
+          tier: votedTier,
+        }),
+      });
+      json = await getGamerInfo(gamerInfo._id);
+      setGamerInfo({ ...gamerInfo, ...json });
+      await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/increase-point`, {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          _id: userInfo._id,
+          name: gamerInfo._id,
+          tier: votedTier,
+        }),
+      });
+      json = await getUserInfo(userInfo._id);
+      setUserInfo({ ...userInfo, ...json, isLogin: true });
+    } catch (error) {
+      alert(error);
+    } finally {
+      setDisabled(false);
+    }
   }
 
   useEffect(() => {
@@ -238,7 +253,7 @@ function GamerInfoPopup({ setShowInfo }: any) {
             <span
               className="cursor-pointer"
               onClick={() => {
-                cancelVote();
+                cancelVote(gamerInfo._id);
               }}
             >
               투표취소
