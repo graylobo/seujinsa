@@ -33,6 +33,24 @@ a {
   background: rgba(0, 0, 0, 0.7);
   z-index:1000;
 }
+.button-ok{
+  /* height: 48px;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-radius: 12px;
+  outline: none;
+  transition: colors;
+  background-color: red; */
+  
+ 
+}
 li{
   list-style: none;
 }
+.close {position:relative;display:inline-block;width:50px;height:50px;text-align:center; cursor: pointer;}
+
+
+.close1:after {content: "\00d7"; font-size:15pt;line-height:50px;}
+.close2:after {content: "\00d7"; font-size:25pt;line-height:45px;}
+.close3:after {content: "\00d7"; font-size:50pt;line-height:35px;}

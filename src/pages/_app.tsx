@@ -56,6 +56,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/styles/default.min.css"
         />
         <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css" />
+
         <script
           type="text/javascript"
           src="//t1.daumcdn.net/kas/static/ba.min.js"
