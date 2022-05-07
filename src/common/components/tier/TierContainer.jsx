@@ -220,7 +220,9 @@ export default function TierContainer() {
       gamerClassification(sortedGamerArray);
     }
     setLoading(false);
+    console.log("test1", loading);
   }, [race, university, gamerName, loading]);
+  console.log("test2", loading);
 
   function gamerClassification(list) {
     let copy = [...list];

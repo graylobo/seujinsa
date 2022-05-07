@@ -49,6 +49,7 @@ export default function TierComponent({ gamerList }: any) {
     setShowInfo(true);
     setProfileLoading(false);
   }
+  console.log("몇번");
   return (
     <div className="container">
       {profileLoading && (
