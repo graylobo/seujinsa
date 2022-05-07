@@ -25,7 +25,7 @@ export default function Main() {
       <style jsx>{`
         .cutton {
           width: 100%;
-          background-color: gray;
+          background-color: #282727;
           height: 100%;
           position: absolute;
           top: 0;

@@ -16,7 +16,7 @@ export default function Navigation({ setMenu }) {
   }, []);
 
   return (
-    <nav className=" h-[56px]  absoulute w-full justify-center flex  top-0  ">
+    <nav className=" h-[56px] px-[20px] fixed w-full justify-center flex  top-0 z-[1000] navigation-container">
       <div className="max-w-[700px] flex items-center w-full justify-around relative">
         <Link href={"/"}>
           {/* <span className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}>
@@ -40,6 +40,11 @@ export default function Navigation({ setMenu }) {
           more_horiz
         </span>
       </div>
+      <style jsx>{`
+        .navigation-container {
+          background-color: rgba(250, 250, 250, 0.8);
+        }
+      `}</style>
     </nav>
   );
 }
