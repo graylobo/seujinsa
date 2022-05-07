@@ -48,7 +48,7 @@ export default function Main() {
           videoId="A5AmE_b68cg"
           opts={opts}
           containerClassName={"h-full"}
-          onReady={(e) => {
+          onReady={(e: any) => {
             e.target.mute();
             e.target.playVideo();
             muteRef.current = e.target;

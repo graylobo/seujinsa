@@ -1,5 +1,4 @@
 import "../../styles/globals.css";
-import type { AppProps } from "next/app";
 import Navigation from "../common/components/Navigation";
 import Head from "next/head";
 import { RecoilRoot } from "recoil";
@@ -9,10 +8,17 @@ import { useRouter } from "next/router";
 import FooterBar from "../common/components/FooterBar";
 import Script from "next/script";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }) {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
-
+  useEffect(() => {
+    var ads = document.getElementsByClassName("adsbygoogle").length;
+    for (var i = 0; i < ads; i++) {
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {}
+    }
+  }, []);
   useEffect(() => {
     setMenu(false);
   }, [router]);
@@ -43,7 +49,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css" />
       </Head>
-    
+
       <Script
         type="text/javascript"
         onError={(e) => {
