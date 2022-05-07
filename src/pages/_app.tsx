@@ -43,14 +43,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css" />
       </Head>
-      <Script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1544015487048934"
-        onError={(e) => {
-          console.error("Google Script failed to load", e);
-        }}
-        crossOrigin="anonymous"
-      ></Script>
+    
       <Script
         type="text/javascript"
         onError={(e) => {

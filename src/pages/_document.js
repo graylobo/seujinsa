@@ -19,6 +19,14 @@ export default function Document() {
           name="google-site-verification"
           content="CHA780ClBXdq8NB9A7TUy6iISn-kvimrkWCcyZ1f4y8"
         />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1544015487048934"
+          onError={(e) => {
+            console.error("Google Script failed to load", e);
+          }}
+          crossOrigin="anonymous"
+        ></script>
         <body>
           <Main />
           <NextScript />
