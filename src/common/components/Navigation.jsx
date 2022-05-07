@@ -16,28 +16,30 @@ export default function Navigation({ setMenu }) {
   }, []);
 
   return (
-    <nav className=" relative ">
-      <Link href={"/"}>
-        {/* <span className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}>
+    <nav className=" h-[56px]  absoulute w-full justify-center flex  top-0  ">
+      <div className="max-w-[700px] flex items-center w-full justify-around relative">
+        <Link href={"/"}>
+          {/* <span className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}>
           스<span className="text-[18px]">타에</span>진
           <span className="text-[18px]">심인</span>사
           <span className="text-[18px]">이트</span>
         </span> */}
-        <span
-          className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}
-        >
-          SEUJINSA
-        </span>
-      </Link>
+          <span
+            className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}
+          >
+            SEUJINSA
+          </span>
+        </Link>
 
-      <span
-        className="material-icons-outlined cursor-pointer absolute right-[0px] top-[10px] text-[30px] "
-        onClick={() => {
-          setMenu((e) => !e);
-        }}
-      >
-        more_horiz
-      </span>
+        <span
+          className="material-icons-outlined cursor-pointer absolute right-[0px] top-[10px] text-[30px] "
+          onClick={() => {
+            setMenu((e) => !e);
+          }}
+        >
+          more_horiz
+        </span>
+      </div>
     </nav>
   );
 }

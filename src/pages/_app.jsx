@@ -63,9 +63,7 @@ function MyApp({ Component, pageProps }) {
       <Script src="//cdn.quilljs.com/1.3.6/quill.min.js"></Script>
       <RecoilRoot>
         <div className="flex flex-col ">
-          <div className=" w-full px-[30px] max-w-[700px] min-w-[300px] min-h-[50px] self-center">
-            <Navigation setMenu={setMenu} />
-          </div>
+          <Navigation setMenu={setMenu} />
           <div className="self-center w-full max-w-[700px] min-w-[300px]">
             {!menu ? <Component {...pageProps} /> : <More />}
           </div>
