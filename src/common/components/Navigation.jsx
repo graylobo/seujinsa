@@ -1,9 +1,13 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
-import { isMobileState } from "../recoil/states";
+import { useSetRecoilState, useRecoilState } from "recoil";
+import { isMobileState, topTenGamerList, gamerState } from "../recoil/states";
+import { setGamerTierList } from "../utils/api-util";
+
 export default function Navigation({ setMenu }) {
-  const [isMobile, setIsMobile] = useRecoilState(isMobileState);
+  const setIsMobile = useSetRecoilState(isMobileState);
+  const setTopTenGamerList = useSetRecoilState(topTenGamerList);
+  const [gamerInfo, setGamerInfo] = useRecoilState(gamerState);
   //모바일 사이즈여부 체크
   function handleWindowSizeChange() {
     setIsMobile(window.innerWidth <= 768);
@@ -14,6 +18,69 @@ export default function Navigation({ setMenu }) {
       window.removeEventListener("resize", handleWindowSizeChange);
     };
   }, []);
+
+  useEffect(() => {
+    setGamerTierList().then((gamerList) => {
+      gamerList = gamerList
+        .sort((a, b) => {
+          return b.totalPoint - a.totalPoint;
+        })
+        .slice(0, 10)
+        .map((e) => {
+          let tier = "";
+          let race = "";
+          switch (e.tier) {
+            case "zero":
+              tier = "주";
+              break;
+            case "one":
+              tier = "갑";
+              break;
+            case "two":
+              tier = "을";
+              break;
+            case "three":
+              tier = "병";
+              break;
+            case "four":
+              tier = "정";
+              break;
+            case "five":
+              tier = "무";
+              break;
+            case "six":
+              tier = "기";
+              break;
+            case "seven":
+              tier = "경";
+              break;
+            case "eight":
+              tier = "신";
+              break;
+            case "nine":
+              tier = "임";
+              break;
+            case "ten":
+              tier = "계";
+              break;
+          }
+          switch (e.race) {
+            case "저그":
+              race = "Z";
+              break;
+            case "테란":
+              race = "T";
+              break;
+            case "프로토스":
+              race = "P";
+              break;
+          }
+          return { ...e, tier, race };
+        });
+
+      setTopTenGamerList(gamerList);
+    });
+  }, [gamerInfo]);
 
   return (
     <nav className=" h-[56px] px-[20px] fixed w-full justify-center flex  top-0 z-[1000] navigation-container">

@@ -4,6 +4,7 @@ import TierComponent from "./TierComponent";
 import { useRecoilValue } from "recoil";
 import { gamerState, isMobileState } from "../../recoil/states";
 import { SyncLoader } from "react-spinners";
+import { setGamerTierList } from "../../utils/api-util";
 
 const raceList = ["전체", "저그", "프로토스", "테란"];
 const universityList = [
@@ -143,86 +144,27 @@ export default function TierContainer() {
   const gamerInfo = useRecoilValue(gamerState);
   const isMobile = useRecoilValue(isMobileState);
   useEffect(() => {
-    async function getGamerList() {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-list`);
-      const json = await res.json();
-      let sortedGamerList = json.map((e) => {
-        let totalPoint = 0;
-        let sortable = [];
-        for (const key in e.point) {
-          sortable.push([key, e.point[key]]);
-          totalPoint += e.point[key];
-        }
-        sortable.sort((a, b) => {
-          if (a[1] === b[1]) {
-            return -1;
-          } else {
-            return b[1] - a[1];
-          }
-        });
-        // 해당 게이머의 계급포인트중에서 가장 높은 포인트를 가진 계급 찾기
-        let currentTier = sortable[0][0];
-        if (e.level) {
-          currentTier = e.level;
-        }
-
-        //#region totalPoint 조건별로 티어결정하는 로직
-        // let index = 1;
-        // let find = false;
-        // while (!find) {
-        //   switch (currentTier) {
-        //     case "one":
-        //       if (totalPoint <= 5) {
-        //         currentTier = sortable[index++][0];
-        //         continue;
-        //       }
-        //       find = true;
-        //       break;
-        //     case "two":
-        //       if (totalPoint <= 3) {
-        //         currentTier = sortable[index++][0];
-        //         continue;
-        //       }
-        //       find = true;
-        //       break;
-        //     case "three":
-        //       if (totalPoint <= 1) {
-        //         currentTier = sortable[index++][0];
-        //         continue;
-        //       }
-        //       find = true;
-        //       break;
-        //     default:
-        //       find = true;
-        //   }
-        // }
-        //#endregion
-        return {
-          _id: e._id,
-          tier: currentTier,
-          race: e.race,
-          university: e.university,
-          totalPoint,
-          nickName: e.nickName,
-        };
-      });
-      if (sortedGamerList.length !== 0) {
-        setSortedGamerArray(sortedGamerList);
-        gamerClassification(sortedGamerList);
+    setGamerTierList().then((gamerList) => {
+      if (gamerList.length !== 0) {
+        setSortedGamerArray(gamerList);
+        gamerClassification(gamerList);
       }
-    }
-    getGamerList();
+    });
   }, [gamerInfo]);
 
   useEffect(() => {
-    setLoading(true);
-    if (sortedGamerArray.length !== 0) {
-      gamerClassification(sortedGamerArray);
-    }
-    setLoading(false);
-    console.log("test1", loading);
+    const dummy = async () => {
+      setLoading(true);
+      console.log("test1", loading);
+      if (sortedGamerArray.length !== 0) {
+        gamerClassification(sortedGamerArray);
+      }
+      setLoading(false);
+    };
+    dummy();
+    console.log("test2", loading);
   }, [race, university, gamerName, loading]);
-  console.log("test2", loading);
+  console.log("test3", loading);
 
   function gamerClassification(list) {
     let copy = [...list];

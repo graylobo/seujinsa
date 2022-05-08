@@ -36,6 +36,7 @@ export type GamerInfoType = {
   university?: string;
   totalPoint?: number;
   nickName?: string;
+  level?: string;
 };
 
 export type QnAProps = {
@@ -79,6 +80,11 @@ const timerState = atom<ITimerProps[]>({
 const gamerState = atom<GamerInfoType>({
   key: "gamerState",
   default: { _id: "" },
+});
+
+const topTenGamerList = atom<GamerInfoType[]>({
+  key: "topTenGamerList",
+  default: [],
 });
 
 const logoutState = atom<boolean>({
@@ -134,4 +140,5 @@ export {
   logoutState,
   isMobileState,
   qnaInfoState,
+  topTenGamerList,
 };

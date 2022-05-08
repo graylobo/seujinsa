@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { useRecoilValue } from "recoil";
 import { userInfoState } from "../recoil/states";
 import ConfirmModal from "./modal/ConfirmModal";
+import { getRecord } from "../utils/api-util";
 const header = [
   { 날짜: "date" },
   { 승자: "winner" },
@@ -36,11 +37,6 @@ export default function Record() {
   const [record, setRecord] = useState<any>([]);
   const userInfo = useRecoilValue(userInfoState);
 
-  async function getRecord() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/record`);
-    const json = await res.json();
-    setRecord(json);
-  }
   async function deleteRecord(_id: string) {
     let res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/record`, {
       method: "delete",
@@ -57,7 +53,9 @@ export default function Record() {
   }
 
   useEffect(() => {
-    getRecord();
+    getRecord().then((e) => {
+      setRecord(e);
+    });
   }, [recordModalOpen]);
   console.log(record);
   return (

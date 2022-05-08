@@ -64,7 +64,7 @@ function MyApp({ Component, pageProps }) {
       <RecoilRoot>
         <div className="flex flex-col ">
           <Navigation setMenu={setMenu} />
-          <div className="self-center w-full max-w-[700px] min-w-[300px] mt-[80px]">
+          <div className="self-center w-full max-w-[700px] min-w-[300px] mt-[56px]">
             {!menu ? <Component {...pageProps} /> : <More />}
           </div>
           <FooterBar />
