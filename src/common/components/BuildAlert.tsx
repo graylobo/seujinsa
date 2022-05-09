@@ -17,7 +17,7 @@ export default function BuildAlert() {
 
   return (
     <div className="mt-[50px]">
-      <div className="mx-auto">
+      <div className="">
         <div className="mx-auto mb-[30px] w-full max-w-[580px]  relative h-[50px]">
           <button
             className={`${buttonCss} `}

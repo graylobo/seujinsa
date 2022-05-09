@@ -22,7 +22,7 @@ export default function MyPage() {
   return (
     <div>
       {userState.isLogin ? (
-        <div className="flex flex-col mt-[10px] ">
+        <div className="flex flex-col mt-[10px] max-w-[700px]  mx-auto">
           <ul
             role={"tablist"}
             className=" border-b-2 mb-[30px] border-gray-40 grid grid-cols-3 text-center cursor-pointer text-[14px] font-bold"
