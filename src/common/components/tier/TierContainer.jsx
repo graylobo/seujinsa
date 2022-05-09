@@ -108,18 +108,18 @@ const MemoizedMiddleContainer = React.memo(function MiddleContainer({
 });
 
 const tierList = [
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-  "ten",
-  "eleven",
+  "주",
+  "갑",
+  "을",
+  "병",
+  "정",
+  "무",
+  "기",
+  "경",
+  "신",
+  "임",
+  "계",
+  "배치",
 ];
 export default function TierContainer() {
   const [zeroTier, setZeroTier] = useState([{}]);
@@ -194,40 +194,40 @@ export default function TierContainer() {
     copy?.map((e) => {
       if (tierList.includes(e.tier)) {
         switch (e.tier) {
-          case "zero":
+          case "주":
             zeroTemp.push({ ...e });
             break;
-          case "one":
+          case "갑":
             oneTemp.push({ ...e });
             break;
-          case "two":
+          case "을":
             twoTemp.push({ ...e });
             break;
-          case "three":
+          case "병":
             threeTemp.push({ ...e });
             break;
-          case "four":
+          case "정":
             fourTemp.push({ ...e });
             break;
-          case "five":
+          case "무":
             fiveTemp.push({ ...e });
             break;
-          case "six":
+          case "기":
             sixTemp.push({ ...e });
             break;
-          case "seven":
+          case "경":
             sevenTemp.push({ ...e });
             break;
-          case "eight":
+          case "신":
             eightTemp.push({ ...e });
             break;
-          case "nine":
+          case "임":
             nineTemp.push({ ...e });
             break;
-          case "ten":
+          case "계":
             tenTemp.push({ ...e });
             break;
-          case "eleven":
+          case "배치":
             elevenTemp.push({ ...e });
             break;
         }

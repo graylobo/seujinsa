@@ -77,9 +77,9 @@ export default function Main() {
               <div className="flex justify-center">
                 <div>
                   {record.map((e: any) => (
-                    <div className=" mb-[10px]">
-                      <span className="mr-[10px]">{e.date}</span>
-                      <span className=" w-[90px] inline-block">
+                    <div className=" mb-[10px] text-[15px]">
+                      <span className="mr-[10px] text-[13px]">{e.date}</span>
+                      <span className=" w-[110px]   inline-block">
                         <span className="w-[25px] h-[25px] inline-block relative">
                           <img
                             className="rounded-[100%] absolute top-[5px]"
@@ -89,6 +89,7 @@ export default function Main() {
                         </span>
                         {e.winner}
                         {e.winnerRace}
+                        [승]
                       </span>
                       <span className="inline-block w-[30px]">vs</span>
                       <span className="mr-[10px]">
@@ -100,7 +101,7 @@ export default function Main() {
                           />
                         </span>
                         {e.loser}
-                        {e.loserRace}
+                        {e.loserRace}[패]
                       </span>
                       <span className="mr-[10px]">{e.wayOfPlay}</span>
                       <span>{e.map}</span>

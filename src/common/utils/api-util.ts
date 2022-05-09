@@ -44,8 +44,60 @@ function setGamerTierList() {
       });
       // 해당 게이머의 계급포인트중에서 가장 높은 포인트를 가진 계급 찾기
       let currentTier = sortable[0][0];
+      let tierPoint = -1; // 티어 순으로 정렬하기 위해 티어별 포인트 설정
       if (gamer.level) {
         currentTier = gamer.level;
+      }
+
+      switch (currentTier) {
+        case "zero":
+          currentTier = "주";
+          tierPoint = 11;
+          break;
+        case "one":
+          currentTier = "갑";
+          tierPoint = 10;
+          break;
+        case "two":
+          currentTier = "을";
+          tierPoint = 9;
+          break;
+        case "three":
+          currentTier = "병";
+          tierPoint = 8;
+          break;
+        case "four":
+          currentTier = "정";
+          tierPoint = 7;
+          break;
+        case "five":
+          currentTier = "무";
+          tierPoint = 6;
+          break;
+        case "six":
+          currentTier = "기";
+          tierPoint = 5;
+          break;
+        case "seven":
+          currentTier = "경";
+          tierPoint = 4;
+          break;
+        case "eight":
+          currentTier = "신";
+          tierPoint = 3;
+          break;
+        case "nine":
+          currentTier = "임";
+          tierPoint = 2;
+          break;
+        case "ten":
+          currentTier = "계";
+          tierPoint = 1;
+          break;
+        case "eleven":
+          currentTier = "배치";
+          tierPoint = 0;
+          break;
       }
 
       //#region totalPoint 조건별로 티어결정하는 로직
@@ -85,6 +137,7 @@ function setGamerTierList() {
         race: gamer.race,
         university: gamer.university,
         totalPoint,
+        tierPoint,
         nickName: gamer.nickName,
       };
     });
@@ -109,5 +162,5 @@ export {
   checkNickNameExist,
   getWholeGamerInfo,
   setGamerTierList,
-  getRecord
+  getRecord,
 };

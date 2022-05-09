@@ -43,6 +43,9 @@ export default function More() {
       <Link href={"/tier"}>
         <p className="cursor-pointer p-2.5 border-b border-gray-60">계급표</p>
       </Link>
+      <Link href={"/univ"}>
+        <p className="cursor-pointer p-2.5 border-b border-gray-60">대학표</p>
+      </Link>
       <Link href={"/record"}>
         <p className="cursor-pointer p-2.5 border-b border-gray-60">전적등록</p>
       </Link>
