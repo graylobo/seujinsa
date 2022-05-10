@@ -49,7 +49,6 @@ export default function TierComponent({ gamerList }: any) {
     setShowInfo(true);
     setProfileLoading(false);
   }
-  console.log("몇번");
   return (
     <div className="container">
       {profileLoading && (
@@ -60,7 +59,7 @@ export default function TierComponent({ gamerList }: any) {
 
       {showInfo && <GamerInfoPopup setShowInfo={setShowInfo} />}
       <div className="loader ">
-        {loading && <PacmanLoader size={15} color="#EACF46" />}
+        {loading && <PacmanLoader size={15} color="black" />}
       </div>
       {gamerList.map((gamer: GamerInfoType, index: number) => {
         let raceColor = "";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { setGamerTierList } from "../utils/api-util";
-
+import {  SyncLoader } from "react-spinners";
 type GamerType = {
   [key: string]: [];
 };
@@ -19,8 +19,18 @@ const universityList = [
   "NSU",
 ];
 export default function University() {
-  const [gamerList, setGamerList] = useState<GamerType>();
-  const [univ, setUniv] = useState([]);
+  const [gamerList, setGamerList] = useState<any>();
+  const [loading,setLoading] = useState(true)
+  const [gamerCount, setGamerCount] = useState(0)
+
+  let loadCount = 0;
+  function onAllImageLoad(i: number) {
+    loadCount++;
+    console.log('test',loadCount,gamerCount)
+    if (loadCount === gamerCount) {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     setGamerTierList().then((e) => {
@@ -149,6 +159,7 @@ export default function University() {
         }
       );
       let sortedGamerList = {};
+      // 대학별로 티어점수가 가장 높은순으로 정렬
       for (const key in e) {
         sortedGamerList = {
           ...sortedGamerList,
@@ -160,7 +171,15 @@ export default function University() {
           }),
         };
       }
+      let count =0;
+      for (const key in e) {
+        if(key==="무소속"){
+          continue;
+        }
+        count += e[key].length;
+      }
       setGamerList(sortedGamerList);
+      setGamerCount(count);
     });
   }, []);
 
@@ -175,24 +194,31 @@ export default function University() {
               alt=""
             />
           </div>
+          <div className="mx-auto w-[62px] mt-[100px] mb-[100px] ">
+          {loading&&<SyncLoader/>}
+          </div>
           <div className="student-container">
             {gamerList !== undefined &&
-              gamerList[university]?.map((e: any) => (
+              gamerList[university]?.map((e: any,i:number) => (
                 <div className="w-[170px] flex">
                   <span className="w-[80px] h-[80px] inline-block ">
                     <img
                       className="w-full h-full mr-[5px] rounded-[10%]"
                       src={`/images/gamer/${Object.keys(e)}.png`}
+                      onLoad={()=>{
+                        onAllImageLoad(i)
+                      }}
                       alt=""
                     />
                   </span>
-                  <div className="ml-[5px] text-[15px]">
+                   <div className="ml-[5px] text-[15px]">
                     <div className="neonText">
                       {e[Object.keys(e) as unknown as string]?.tier}
                     </div>
                     <div>{Object.keys(e)}</div>
                     <div>{e[Object.keys(e) as unknown as string]?.race}</div>
                   </div>
+                 
                 </div>
               ))}
           </div>
