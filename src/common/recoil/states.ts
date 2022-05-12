@@ -35,6 +35,7 @@ export type GamerInfoType = {
   race?: string;
   university?: string;
   totalPoint?: number;
+  position?:string,
   nickName?: string;
   level?: string;
 };

@@ -57,7 +57,7 @@ export default function Record() {
       setRecord(e);
     });
   }, [recordModalOpen]);
-  console.log(record);
+  console.log(userInfoState);
   return (
     <Wrapper className="absolute left-0 w-full mt-[30px]">
       {recordModalOpen && (

@@ -52,6 +52,9 @@ export default function AdminPage() {
       case "race":
         copyGamerList[i].race = val;
         break;
+      case "position":
+        copyGamerList[i].position = val;
+        break;
       case "nickName":
         copyGamerList[i].nickName = val;
         break;
@@ -61,7 +64,7 @@ export default function AdminPage() {
   return (
     <div className="absolute left-0 w-full pb-[80px]">
       {gamerList.map((e: GamerInfoType, i: number) => (
-        <div key={e._id} className="grid grid-cols-4">
+        <div key={e._id} className="grid grid-cols-5">
           <span>
             이름:<span className="ml-[10px]">{e._id}</span>
           </span>
@@ -95,6 +98,15 @@ export default function AdminPage() {
                 </option>
               ))}
             </select>
+          </span>
+          <span>
+            직급:
+            <input
+              value={e.position}
+              onChange={(e) => {
+                updateGamerInfo(e.target.value, i, "position");
+              }}
+            ></input>
           </span>
           <span>
             별명:

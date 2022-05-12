@@ -27,43 +27,8 @@ export default function Navigation({ setMenu }) {
         })
         .slice(0, 10)
         .map((e) => {
-          let tier = "";
+          console.log("z", e);
           let race = "";
-          switch (e.tier) {
-            case "zero":
-              tier = "주";
-              break;
-            case "one":
-              tier = "갑";
-              break;
-            case "two":
-              tier = "을";
-              break;
-            case "three":
-              tier = "병";
-              break;
-            case "four":
-              tier = "정";
-              break;
-            case "five":
-              tier = "무";
-              break;
-            case "six":
-              tier = "기";
-              break;
-            case "seven":
-              tier = "경";
-              break;
-            case "eight":
-              tier = "신";
-              break;
-            case "nine":
-              tier = "임";
-              break;
-            case "ten":
-              tier = "계";
-              break;
-          }
           switch (e.race) {
             case "저그":
               race = "Z";
@@ -75,7 +40,7 @@ export default function Navigation({ setMenu }) {
               race = "P";
               break;
           }
-          return { ...e, tier, race };
+          return { ...e, race };
         });
 
       setTopTenGamerList(gamerList);

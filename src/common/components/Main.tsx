@@ -5,20 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getRecord } from "../utils/api-util";
 
-const tierList = [
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-  "ten",
-  "eleven",
-];
+
 export default function Main() {
   const [logout, setLogout] = useRecoilState(logoutState);
   const [record, setRecord] = useState([]);
