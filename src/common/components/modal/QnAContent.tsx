@@ -58,7 +58,6 @@ export default function QnAContent({
     if (confirmFlag === "네") {
       getComment();
     } else if (confirmFlag === "아니오") {
-      console.log("asd2");
     }
     setPostDeleteConfirm(false);
     setCommentDeleteConfirm(false);
@@ -100,7 +99,6 @@ export default function QnAContent({
     );
     return res;
   }
-  console.log(postDeleteConfirm, confirmModal);
   return (
     <div className="fixed  h-device inset-0 z-50 flex items-center justify-center p-[20px]">
       {postDeleteConfirm && confirmModal && (

@@ -32,7 +32,6 @@ export default function ignIn() {
     try {
       setIsLoading(true);
       e.preventDefault();
-      console.log(email, password);
       const data = {
         id: email,
         pw: password,

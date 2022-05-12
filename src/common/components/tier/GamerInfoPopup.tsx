@@ -116,7 +116,6 @@ function GamerInfoPopup({ setShowInfo }: any) {
     setDisabled(true);
     try {
       let json = await getUserInfo(userInfo._id);
-      console.log(json.votePoint[gamerName]);
       let votedDate = json.votePoint[gamerName][2];
       let currentDate = Date.now();
       let elapsedTime = currentDate - votedDate;

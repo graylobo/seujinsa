@@ -27,7 +27,6 @@ export default function Navigation({ setMenu }) {
         })
         .slice(0, 10)
         .map((e) => {
-          console.log("z", e);
           let race = "";
           switch (e.race) {
             case "저그":

@@ -217,7 +217,6 @@ export default function RecordModal({ setRecordModalOpen, userInfo }: any) {
   }, []);
 
   useEffect(() => {
-    console.log(winnerRace);
   }, [winnerRace]);
 
   function checkValidateGamer(gamer: string) {
@@ -253,7 +252,6 @@ export default function RecordModal({ setRecordModalOpen, userInfo }: any) {
       alert("경기방식을 입력해주세요.");
       return;
     }
-    console.log(winnerRace);
     const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/record`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -277,7 +275,6 @@ export default function RecordModal({ setRecordModalOpen, userInfo }: any) {
       setRecordModalOpen(false);
     }
   }
-  console.log(getDateFormat(startDate));
   const headerCSS = "font-bold mb-[10px]";
   return (
     <Wrapper className="absolute flex justify-center w-full min-w-[1150px] ">

@@ -139,6 +139,7 @@ function setGamerTierList() {
         totalPoint,
         tierPoint,
         nickName: gamer.nickName,
+        record: gamer.record,
       };
     });
     return gamerList;
