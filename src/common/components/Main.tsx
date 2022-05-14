@@ -10,9 +10,6 @@ export default function Main() {
   const [logout, setLogout] = useRecoilState(logoutState);
   const [record, setRecord] = useState([]);
   const [currentMonthRecord, setCurrentMonthRecord] = useState([]);
-  const [recentRecordLoading, setRecentRecordLoading] = useState(true);
-  const [popularGamerLoading, setPopularGamerLoading] = useState(true);
-  const [manyWinsLoading, setManyWinsLoading] = useState(true);
   const [loading, setLoading] = useState(true);
   const topVotedGamerList = useRecoilValue(topTenGamerList);
 
@@ -98,12 +95,12 @@ export default function Main() {
   }, []);
 
   return (
-    <main className="  left-0 w-full h-[500px] flex  ">
+    <main className="  left-0 w-full h-[700px] flex  ">
       <ToastContainer />
       <div className="cutton"></div>
       <video id="video" src="./backvideo.mp4" autoPlay loop muted></video>
-      <div className="h-[700px] fixed  w-full overflow-auto  ">
-        <div className="h-[1000px]  w-full min-w-[1500px]  relative">
+      <div className="h-full  w-full overflow-auto">
+        <div className="h-full  w-full min-w-[1500px]  relative">
           <div className=" h-[600px] absolute left-[10%] border-[1px] rounded-[5px] border-gray-400 bg-white opacity-[0.8] mt-[30px]">
             <div className="w-full min-w-[500px]  rounded-[5px]   ">
               <div className="text-center p-[20px]">
@@ -244,11 +241,9 @@ export default function Main() {
           left: 0;
           z-index: -1;
           opacity: 0.5;
-          min-width: 1000px;
         }
         #video {
           width: 100%;
-          min-width: 1000px;
           height: 100%;
           object-fit: cover;
           position: absolute;

@@ -155,7 +155,7 @@ export default function QNA() {
         </div>
         <div className="grid grid-cols-1 gap-[20px] py-[20px] max-w-[700px] w-full mx-auto">
           {loading && (
-            <div className="fixed left-[50%] top-[30%]">
+            <div className="fixed left-[50%] top-[30%] translate-x-[-50%]">
               {<SyncLoader size={10} color={"red"} />}
             </div>
           )}
