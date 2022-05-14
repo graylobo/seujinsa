@@ -3,12 +3,17 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { logoutState, topTenGamerList, gamerState } from "../recoil/states";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { SyncLoader } from "react-spinners";
 import { getRecord, setGamerTierList } from "../utils/api-util";
 
 export default function Main() {
   const [logout, setLogout] = useRecoilState(logoutState);
   const [record, setRecord] = useState([]);
   const [currentMonthRecord, setCurrentMonthRecord] = useState([]);
+  const [recentRecordLoading, setRecentRecordLoading] = useState(true);
+  const [popularGamerLoading, setPopularGamerLoading] = useState(true);
+  const [manyWinsLoading, setManyWinsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const topVotedGamerList = useRecoilValue(topTenGamerList);
 
   useEffect(() => {
@@ -77,9 +82,10 @@ export default function Main() {
         }
         return { ...e, winnerRace, loserRace };
       });
+
       currentMonthRecordList = Object.entries(currentMonthRecordList)
         .sort((a: any, b: any) => {
-          return b[1]["승"] - b[1]["패"] - (a[1]["승"] - a[1]["패"]);
+          return b[1]["승"] - b[1]["패"] - (a[1]["승"] - a[1]["패"]); // 이긴횟수가 많은 플레이어 순으로 정렬
         })
         .reduce((acc: any, [k, v]) => {
           acc.push({ [k]: v });
@@ -87,9 +93,9 @@ export default function Main() {
         }, []);
       setCurrentMonthRecord(currentMonthRecordList);
       setRecord(e);
+      setLoading(false);
     });
   }, []);
-  console.log("zz2", currentMonthRecord);
 
   return (
     <main className="  left-0 w-full h-[500px] flex  ">
@@ -105,37 +111,43 @@ export default function Main() {
               </div>
               <div className="flex justify-center">
                 <div>
-                  {record.map((e: any) => (
-                    <div className=" mb-[10px] text-[15px]">
-                      <span className="mr-[10px] text-[13px]">{e.date}</span>
-                      <span className=" w-[110px]   inline-block">
-                        <span className="w-[25px] h-[25px] inline-block relative">
-                          <img
-                            className="rounded-[100%] absolute top-[5px]"
-                            src={`/images/gamer/${e.winner}.png`}
-                            alt=""
-                          />
-                        </span>
-                        {e.winner}
-                        {e.winnerRace}
-                        [승]
-                      </span>
-                      <span className="inline-block w-[30px]">vs</span>
-                      <span className="mr-[10px]">
-                        <span className="w-[25px] h-[25px] inline-block relative">
-                          <img
-                            className="rounded-[100%] absolute top-[5px]"
-                            src={`/images/gamer/${e.loser}.png`}
-                            alt=""
-                          />
-                        </span>
-                        {e.loser}
-                        {e.loserRace}[패]
-                      </span>
-                      <span className="mr-[10px]">{e.wayOfPlay}</span>
-                      <span>{e.map}</span>
+                  {loading ? (
+                    <div className=" mt-[150px]">
+                      <SyncLoader />
                     </div>
-                  ))}
+                  ) : (
+                    record.map((e: any) => (
+                      <div className=" mb-[10px] text-[15px]">
+                        <span className="mr-[10px] text-[13px]">{e.date}</span>
+                        <span className=" w-[110px]   inline-block">
+                          <span className="w-[25px] h-[25px] inline-block relative">
+                            <img
+                              className="rounded-[100%] absolute top-[5px]"
+                              src={`/images/gamer/${e.winner}.png`}
+                              alt=""
+                            />
+                          </span>
+                          {e.winner}
+                          {e.winnerRace}
+                          [승]
+                        </span>
+                        <span className="inline-block w-[30px]">vs</span>
+                        <span className="mr-[10px]">
+                          <span className="w-[25px] h-[25px] inline-block relative">
+                            <img
+                              className="rounded-[100%] absolute top-[5px]"
+                              src={`/images/gamer/${e.loser}.png`}
+                              alt=""
+                            />
+                          </span>
+                          {e.loser}
+                          {e.loserRace}[패]
+                        </span>
+                        <span className="mr-[10px]">{e.wayOfPlay}</span>
+                        <span>{e.map}</span>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
@@ -146,27 +158,33 @@ export default function Main() {
                 <span>인기 플레이어 랭킹</span>
               </div>
               <ol>
-                {topVotedGamerList.map((e: any, i) => (
-                  <li className="bg-white rounded-[3px] mb-[3px] h-[50px] flex items-center relative">
-                    <div className="ml-[25px] w-[16px]">{i + 1}</div>
-                    <div className="w-[32px] h-[32px] ml-[10px]">
-                      <img
-                        className="rounded-[100%] w-full h-full"
-                        src={`/images/gamer/${e._id}.png`}
-                        alt=""
-                      />
-                    </div>
-                    <div className="ml-[12px] text-[15px]">
-                      <span>{e._id}</span>
-                      <span className="text-[13px]"> [{e.race}]</span>
-                      <div className="text-[13px]">{e.tier} tier</div>
-                    </div>
-                    <div className="ml-[12px] absolute text-[13px] right-[10px]">
-                      <span>{e.totalPoint}p</span>
-                    </div>
-                    <span></span>
-                  </li>
-                ))}
+                {loading ? (
+                  <div className="flex justify-center mt-[150px]">
+                    <SyncLoader />
+                  </div>
+                ) : (
+                  topVotedGamerList.map((e: any, i) => (
+                    <li className="bg-white rounded-[3px] mb-[3px] h-[50px] flex items-center relative">
+                      <div className="ml-[25px] w-[16px]">{i + 1}</div>
+                      <div className="w-[32px] h-[32px] ml-[10px]">
+                        <img
+                          className="rounded-[100%] w-full h-full"
+                          src={`/images/gamer/${e._id}.png`}
+                          alt=""
+                        />
+                      </div>
+                      <div className="ml-[12px] text-[15px]">
+                        <span>{e._id}</span>
+                        <span className="text-[13px]"> [{e.race}]</span>
+                        <div className="text-[13px]">{e.tier} tier</div>
+                      </div>
+                      <div className="ml-[12px] absolute text-[13px] right-[10px]">
+                        <span>{e.totalPoint}p</span>
+                      </div>
+                      <span></span>
+                    </li>
+                  ))
+                )}
               </ol>
             </div>
           </div>
@@ -176,34 +194,40 @@ export default function Main() {
                 <span>5월 다승 랭킹</span>
               </div>
               <ol>
-                {currentMonthRecord.map((e: any, i) => (
-                  <li className="bg-white rounded-[3px] mb-[3px] h-[50px] flex items-center relative">
-                    <div className="ml-[25px] w-[16px]">{i + 1}</div>
-                    <div className="w-[32px] h-[32px] ml-[10px]">
-                      <img
-                        className="rounded-[100%] w-full h-full"
-                        src={`/images/gamer/${Object.keys(e)}.png`}
-                        alt=""
-                      />
-                    </div>
-                    <div className="ml-[12px] text-[15px]">
-                      <span>{Object.keys(e)}[</span>
-                      <span className="text-[13px]">
-                        {e[Object.keys(e) as unknown as string]["race"]}]
-                      </span>
-                      <span className="text-[13px] ml-[3px]">
-                        승: {e[Object.keys(e) as unknown as string]["승"]}
-                      </span>
-                      <span className="text-[13px]">
-                        패: {e[Object.keys(e) as unknown as string]["패"]}
-                      </span>
-                    </div>
-                    <div className="ml-[12px] absolute text-[13px] right-[10px]">
-                      <span>{e.totalPoint}p</span>
-                    </div>
-                    <span></span>
-                  </li>
-                ))}
+                {loading ? (
+                  <div className="flex justify-center mt-[150px]">
+                    <SyncLoader />
+                  </div>
+                ) : (
+                  currentMonthRecord.map((e: any, i) => (
+                    <li className="bg-white rounded-[3px] mb-[3px] h-[50px] flex items-center relative">
+                      <div className="ml-[25px] w-[16px]">{i + 1}</div>
+                      <div className="w-[32px] h-[32px] ml-[10px]">
+                        <img
+                          className="rounded-[100%] w-full h-full"
+                          src={`/images/gamer/${Object.keys(e)}.png`}
+                          alt=""
+                        />
+                      </div>
+                      <div className="ml-[12px] text-[15px]">
+                        <span>{Object.keys(e)}[</span>
+                        <span className="text-[13px]">
+                          {e[Object.keys(e) as unknown as string]["race"]}]
+                        </span>
+                        <span className="text-[13px] ml-[3px]">
+                          승: {e[Object.keys(e) as unknown as string]["승"]}
+                        </span>
+                        <span className="text-[13px]">
+                          패: {e[Object.keys(e) as unknown as string]["패"]}
+                        </span>
+                      </div>
+                      <div className="ml-[12px] absolute text-[13px] right-[10px]">
+                        <span>{e.totalPoint}p</span>
+                      </div>
+                      <span></span>
+                    </li>
+                  ))
+                )}
               </ol>
             </div>
           </div>
