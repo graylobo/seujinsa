@@ -135,7 +135,7 @@ export default function QNA() {
     setQnaInfo(qnaInfo);
   }
   return (
-    <section>
+    <section className="mt-[56px]">
       <ToastContainer />
       {editLoading && (
         <div className="modal-background flex justify-center items-center">
@@ -226,14 +226,15 @@ export default function QNA() {
       {/* 모달시작 */}
       {editorModalOpen && (
         <div className="modal-box ">
-          <div
-            className="cursor-pointer absolute right-[16px] top-[16px]"
-            onClick={() => {
-              setEditorModalOpen(false);
-            }}
-          >
-            x
+          <div className="absolute right-0 top-0">
+            <div
+              className="close close2"
+              onClick={() => {
+                setEditorModalOpen(false);
+              }}
+            ></div>
           </div>
+
           <div className="mb-[16px]">
             <label htmlFor="" className="text-[14px] mb-[8px] inline-block">
               제목
@@ -303,9 +304,11 @@ export default function QNA() {
         .modal-box {
           padding: 20px;
           position: fixed;
-          top: 50%;
+          top: 100px;
+          bottom:100px;
+
           left: 50%;
-          transform: translate(-50%, -50%);
+          transform: translate(-50%);
           z-index:50;
           background-color: white;
           display: flex;
@@ -315,7 +318,11 @@ export default function QNA() {
           max-height: 90%
           min-height: 400px;
           flex-direction: column;
+          overflow-y:scroll;
           
+        }
+        .modal-box::-webkit-scrollbar {
+           display: none;
         }
       `}</style>
     </section>

@@ -37,7 +37,7 @@ export default function LeftControl() {
   }, [isSaved]);
 
   return (
-    <div className="mt-[50px]  h-[350px]  flex flex-col relative">
+    <div className="mt-[116px]  h-[350px]  flex flex-col relative">
       <ins
         className="kakao_ad_area"
         style={{ display: "none" }}
@@ -62,7 +62,7 @@ export default function LeftControl() {
         data-ad-format="auto"
         data-full-width-responsive="true"
       ></ins>
-      
+
       <div className="relative p-[30px] self-center  flex flex-col w-full max-w-[550px] ">
         <div className="relative self-center  w-full ">
           <div className="">키워드 입력 (30/{keyword.length}자)</div>

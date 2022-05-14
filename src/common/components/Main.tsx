@@ -95,13 +95,13 @@ export default function Main() {
   }, []);
 
   return (
-    <main className="  left-0 w-full h-[700px] flex  ">
+    <main className="  left-0 w-full h-[100vh] pb-[56px]  pt-[56px] ">
       <ToastContainer />
       <div className="cutton"></div>
       <video id="video" src="./backvideo.mp4" autoPlay loop muted></video>
-      <div className="h-full  w-full overflow-auto">
+      <div className="h-full  w-full overflow-auto ">
         <div className="h-full  w-full min-w-[1500px]  relative">
-          <div className=" h-[600px] absolute left-[10%] border-[1px] rounded-[5px] border-gray-400 bg-white opacity-[0.8] mt-[30px]">
+          <div className=" h-[600px] absolute left-[10%] border-[1px] rounded-[5px] border-gray-400 bg-white opacity-[0.8] mt-[30px] ">
             <div className="w-full min-w-[500px]  rounded-[5px]   ">
               <div className="text-center p-[20px]">
                 <span>최근 전적</span>
@@ -235,7 +235,7 @@ export default function Main() {
         .cutton {
           width: 100%;
           background-color: #282727;
-          height: 100%;
+          height: 100vh;
           position: absolute;
           top: 0;
           left: 0;
@@ -244,7 +244,7 @@ export default function Main() {
         }
         #video {
           width: 100%;
-          height: 100%;
+          height: 100vh;
           object-fit: cover;
           position: absolute;
           top: 0;

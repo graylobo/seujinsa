@@ -16,7 +16,7 @@ export default function BuildAlert() {
     "border-2  h-[50px] min-w-[100px]  border-blue-700 rounded-[10px] inline-block absolute";
 
   return (
-    <div className="mt-[50px]">
+    <div className="mt-[116px]">
       <div className="">
         <div className="mx-auto mb-[30px] w-full max-w-[580px]  relative h-[50px]">
           <button

@@ -58,7 +58,7 @@ export default function Record() {
     });
   }, [recordModalOpen]);
   return (
-    <Wrapper className="absolute left-0 w-full mt-[30px]">
+    <Wrapper className="absolute left-0 w-full mt-[86px]">
       {recordModalOpen && (
         <div>
           <RecordModal

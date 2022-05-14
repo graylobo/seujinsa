@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }) {
     setMenu(false);
   }, [router]);
   return (
-    <div>
+    <div className="">
       <Head>
         <title>스진사</title>
         <link rel="icon" href="/staricon.ico" />
@@ -64,7 +64,7 @@ function MyApp({ Component, pageProps }) {
       <RecoilRoot>
         <div className="flex flex-col ">
           <Navigation setMenu={setMenu} />
-          <div className=" w-full min-w-[300px] mt-[56px]">
+          <div className=" w-full  min-w-[300px] ">
             {!menu ? <Component {...pageProps} /> : <More />}
           </div>
           <FooterBar />

@@ -31,7 +31,7 @@ export default function More() {
   // }
 
   return (
-    <div className="p-[30px] w-[700px] mx-auto">
+    <div className="p-[30px] w-full max-w-[700px] mx-auto mt-[56px] text-center">
       <Link href={"/left-control"}>
         <p className="cursor-pointer p-2.5 border-b border-gray-60">왼손생산</p>
       </Link>

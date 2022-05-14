@@ -183,7 +183,7 @@ export default function University() {
   }, []);
 
   return (
-    <div className="mx-auto pb-[100px]">
+    <div className="mx-auto pb-[100px] mt-[56px]">
       {universityList.map((university: any) => (
         <div className="mx-auto w-full max-w-[800px] border-[10px] border-black rounded-[10px] p-[20px] mb-[30px]">
           <div className="w-[250px] h-[250px] mx-auto mb-[30px]">

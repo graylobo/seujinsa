@@ -64,7 +64,7 @@ export default function ignIn() {
     }
   }
   return (
-    <div className="py-[60px] p-[30px] w-full max-w-[475px] flex flex-col overflow-y-auto mx-auto">
+    <div className="py-[60px] p-[30px] w-full max-w-[475px] flex flex-col overflow-y-auto mx-auto mt-[56px]">
       <ToastContainer />
       {isLoading && <Loading message="Check ID..."></Loading>}
       <div className="w-full mx-auto">

@@ -23,6 +23,7 @@ const universityList = [
   "NSU",
 ];
 const Wrapper = styled.div`
+  margin-top: 56px;
   .container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
