@@ -5,6 +5,7 @@ import {
   timerRunningState,
   buildAlertLanguage,
 } from "../recoil/states";
+import Kakao from "./ad/Kakao";
 import TimerComponent from "./TimerComponent";
 
 export default function BuildAlert() {
@@ -17,7 +18,8 @@ export default function BuildAlert() {
 
   return (
     <div className="mt-[116px]">
-      <div className="">
+      <Kakao />
+      <div className="mt-[50px]">
         <div className="mx-auto mb-[30px] w-full max-w-[580px]  relative h-[50px]">
           <button
             className={`${buttonCss} `}

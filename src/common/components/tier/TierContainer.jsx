@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import { gamerState, isMobileState } from "../../recoil/states";
 import { SyncLoader } from "react-spinners";
 import { setGamerTierList } from "../../utils/api-util";
+import Kakao from "../ad/Kakao";
 
 const raceList = ["전체", "저그", "프로토스", "테란"];
 const universityList = [
@@ -251,8 +252,9 @@ export default function TierContainer() {
     <Wrapper className="absolute left-0 w-full flex justify-center">
       <div className="top-div"></div>
 
-      <div className="w-[90%]">
-        <div className="w-full min-w-[260px] mb-[20px]">
+      <div className="w-[90%] ">
+        <Kakao />
+        <div className="w-full min-w-[260px] mb-[20px] mt-[30px]">
           <div className=" text-right ">
             {loading && (
               <div className="modal-background flex justify-center items-center">

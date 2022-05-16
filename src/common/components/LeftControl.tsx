@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import Kakao from "../components/ad/Kakao";
 
 let combo = 0;
 export default function LeftControl() {
@@ -38,13 +39,14 @@ export default function LeftControl() {
 
   return (
     <div className="mt-[116px]  h-[350px]  flex flex-col relative">
-      <ins
+      <Kakao />
+      {/* <ins
         className="kakao_ad_area"
         style={{ display: "none" }}
         data-ad-unit="DAN-LX59cjGc51obvUKD"
         data-ad-width="320"
         data-ad-height="100"
-      ></ins>
+      ></ins> */}
       {/* <div className="absolute bottom-[-210px]  self-center w-full max-w-[700px] ">
         <ins
           className="kakao_ad_area"
