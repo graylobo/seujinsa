@@ -17,10 +17,7 @@ export default function Document() {
           name="naver-site-verification"
           content="fce13107c51b22bb838ea06ae37d5531c60ed48a"
         />
-        <meta
-          name="google-site-verification"
-          content="CHA780ClBXdq8NB9A7TUy6iISn-kvimrkWCcyZ1f4y8"
-        />
+
         <meta
           name="google-site-verification"
           content="4q1tSg31U51-TgnZXjup14H9acNB7TuV-yHWC9g5X4s"
@@ -28,8 +25,9 @@ export default function Document() {
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1544015487048934"
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         ></script>
+
         <body>
           <Main />
           <NextScript />

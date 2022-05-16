@@ -40,30 +40,15 @@ export default function LeftControl() {
   return (
     <div className="mt-[116px]  h-[350px]  flex flex-col relative">
       <Kakao />
+
       {/* <ins
-        className="kakao_ad_area"
-        style={{ display: "none" }}
-        data-ad-unit="DAN-LX59cjGc51obvUKD"
-        data-ad-width="320"
-        data-ad-height="100"
-      ></ins> */}
-      {/* <div className="absolute bottom-[-210px]  self-center w-full max-w-[700px] ">
-        <ins
-          className="kakao_ad_area"
-          style={{ display: "none" }}
-          data-ad-unit="DAN-LX59cjGc51obvUKD"
-          data-ad-width="320"
-          data-ad-height="100"
-        ></ins>
-      </div> */}
-      <ins
         className="adsbygoogle"
         style={{ display: "block" }}
         data-ad-client="ca-pub-1544015487048934"
         data-ad-slot="9049143837"
         data-ad-format="auto"
         data-full-width-responsive="true"
-      ></ins>
+      ></ins> */}
 
       <div className="relative p-[30px] self-center  flex flex-col w-full max-w-[550px] ">
         <div className="relative self-center  w-full ">

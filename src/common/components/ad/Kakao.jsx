@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 
 export default function Kakao() {
   useEffect(() => {
-    window.adfit && window.adfit();
+    if (window.adfit) {
+      window.adfit() && window.adfit().render();
+    }
   }, []);
 
   return (
@@ -10,7 +12,7 @@ export default function Kakao() {
       <ins
         className="kakao_ad_area"
         style={{ display: "none" }}
-        data-ad-unit="DAN-LX59cjGc51obvUKD"
+        data-ad-unit="DAN-aKNS1zqwgWC4KTTv"
         data-ad-width="320"
         data-ad-height="100"
       ></ins>
