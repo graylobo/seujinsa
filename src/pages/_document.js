@@ -15,7 +15,7 @@ export default function Document() {
         ></meta>
         <meta
           name="naver-site-verification"
-          content="fce13107c51b22bb838ea06ae37d5531c60ed48a"
+          content="547764876549458d441fe09377c3fd122d74e96b"
         />
 
         <meta
