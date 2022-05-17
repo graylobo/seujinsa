@@ -30,6 +30,7 @@ function MyApp({ Component, pageProps }) {
     <div className="">
       <Head>
         <title>스진사</title>
+
         <link rel="icon" href="/staricon.ico" />
         <link
           href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"

@@ -5,6 +5,7 @@ export default function Document() {
     <Html>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
         <meta
           name="keyword"
           content="티어표,스진사,스타크래프트,스타티어표,스타티어,티어,스타대학,스타대학교"

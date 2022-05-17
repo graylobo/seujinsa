@@ -5,7 +5,52 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SyncLoader } from "react-spinners";
 import { getRecord, setGamerTierList } from "../utils/api-util";
+import styled  from "@emotion/styled";
+import { css } from "@emotion/react";
 
+const gridChild = css`
+    height:600px;
+    margin:0 auto;
+    min-width:425px;
+    max-width:425px;
+    border-radius:5px;
+    background-color:white;
+    opacity: 0.8;
+    margin-top:30px;
+  white-space: nowrap;
+  overflow:auto;
+
+    
+`
+const Wrapper = styled.main`
+left:0;
+width:100%;
+height:100vh;
+padding-bottom:56px;
+padding-top:56px;
+
+.grid-container{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items:center;
+  margin:0 auto;
+  max-width:1300px;
+  gap:10px;
+
+}
+.grid-container > div{
+    ${gridChild}
+  }
+@media (max-width: 800px) {
+  .grid-container{
+    display:block;
+  }
+  .grid-container > div{
+  ${gridChild}
+
+  }
+}
+`
 export default function Main() {
   const [logout, setLogout] = useRecoilState(logoutState);
   const [record, setRecord] = useState([]);
@@ -95,14 +140,14 @@ export default function Main() {
   }, []);
 
   return (
-    <main className="  left-0 w-full h-[100vh] pb-[56px]  pt-[56px] ">
+    <Wrapper >
       <ToastContainer />
       <div className="cutton"></div>
       <video id="video" src="./backvideo.mp4" autoPlay loop muted></video>
       <div className="h-full  w-full overflow-auto ">
-        <div className="h-full  w-full min-w-[1500px]  relative">
-          <div className=" h-[600px] absolute left-[10%] border-[1px] rounded-[5px] border-gray-400 bg-white opacity-[0.8] mt-[30px] ">
-            <div className="w-full min-w-[500px]  rounded-[5px]   ">
+        <div className="grid-container">
+          <div className="">
+            <div className="    ">
               <div className="text-center p-[20px]">
                 <span>최근 전적</span>
               </div>
@@ -114,7 +159,7 @@ export default function Main() {
                     </div>
                   ) : (
                     record.map((e: any) => (
-                      <div className=" mb-[10px] text-[15px]">
+                      <div className=" mb-[10px] text-[15px] ">
                         <span className="mr-[10px] text-[13px]">{e.date}</span>
                         <span className=" w-[110px]   inline-block">
                           <span className="w-[25px] h-[25px] inline-block relative">
@@ -149,8 +194,8 @@ export default function Main() {
               </div>
             </div>
           </div>
-          <div className=" absolute right-[35%] ">
-            <div className="w-[310px] h-[600px] border-[1px] border-gray-400 rounded-[5px]  absolute right-[0px] bg-white opacity-[0.8] mt-[30px]">
+          <div className="">
+            <div className="">
               <div className="text-center  p-[20px]">
                 <span>인기 플레이어 랭킹</span>
               </div>
@@ -185,8 +230,8 @@ export default function Main() {
               </ol>
             </div>
           </div>
-          <div className=" absolute right-[13%]">
-            <div className="w-[310px] h-[600px] border-[1px] border-gray-400 rounded-[5px]  absolute right-[0px] bg-white opacity-[0.8] mt-[30px]">
+          <div className="">
+            <div className="">
               <div className="text-center  p-[20px]">
                 <span>5월 다승 랭킹</span>
               </div>
@@ -252,6 +297,6 @@ export default function Main() {
           z-index: -100;
         }
       `}</style>
-    </main>
+    </Wrapper>
   );
 }
