@@ -18,7 +18,11 @@ export default function BuildAlert() {
 
   return (
     <div className="mt-[116px]">
-      <Kakao />
+     <ins className="kakao_ad_area" style={{display:"none"}}
+ data-ad-unit    = "DAN-GERqb0PPhs1jZcLi" 
+ data-ad-width   = "320" 
+ data-ad-height  = "100">
+   </ins> 
       <div className="mt-[50px]">
         <div className="mx-auto mb-[30px] w-full max-w-[580px]  relative h-[50px]">
           <button

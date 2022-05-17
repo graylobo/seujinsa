@@ -253,7 +253,13 @@ export default function TierContainer() {
       <div className="top-div"></div>
 
       <div className="w-[90%] ">
-        <Kakao />
+        <ins
+          className="kakao_ad_area"
+          style={{ display: "none" }}
+          data-ad-unit="DAN-3TcmgD2TxLj823ns"
+          data-ad-width="320"
+          data-ad-height="100"
+        ></ins>
         <div className="w-full min-w-[260px] mb-[20px] mt-[30px]">
           <div className=" text-right ">
             {loading && (

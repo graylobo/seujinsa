@@ -39,8 +39,10 @@ export default function LeftControl() {
 
   return (
     <div className="mt-[116px]  h-[350px]  flex flex-col relative">
-      <Kakao />
-
+      <ins className="kakao_ad_area" style={{display:"none"}} 
+ data-ad-unit    = "DAN-aKNS1zqwgWC4KTTv" 
+ data-ad-width   = "320" 
+ data-ad-height  = "100"></ins> 
       {/* <ins
         className="adsbygoogle"
         style={{ display: "block" }}

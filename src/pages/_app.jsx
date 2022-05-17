@@ -20,6 +20,10 @@ function MyApp({ Component, pageProps }) {
     }
   }, []);
   useEffect(() => {
+    console.log("이동");
+    if (window.adfit) {
+      window.adfit() && window.adfit().render();
+    }
     setMenu(false);
   }, [router]);
   return (

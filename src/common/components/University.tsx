@@ -186,7 +186,13 @@ export default function University() {
   return (
     <div className="mx-auto pb-[100px] mt-[76px]">
       <div className="mb-[30px]">
-        <Kakao />
+      <ins
+          className="kakao_ad_area"
+          style={{ display: "none" }}
+          data-ad-unit="DAN-P7FMffHS9CGq20Bw"
+          data-ad-width="320"
+          data-ad-height="100"
+        ></ins>
       </div>
       {universityList.map((university: any) => (
         <div className="mx-auto w-full max-w-[800px] border-[10px] border-black rounded-[10px] p-[20px] mb-[30px]">
