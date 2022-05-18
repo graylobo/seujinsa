@@ -98,7 +98,9 @@ export default function ignIn() {
           로그인 하기
         </button>
         <div className="mt-[24px] border-t border-gray-40 pt-[24px] flex justify-around text-gray-70 pb-[48px]">
+          <Link href={"/account/find-password"}>
           <span className="text-[14px] cursor-pointer">비밀번호 재설정</span>
+          </Link>
           <Link href={"/signup"}>
             <span className="text-[14px] cursor-pointer">회원가입</span>
           </Link>
