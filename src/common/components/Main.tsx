@@ -41,7 +41,7 @@ padding-top:56px;
 .grid-container > div{
     ${gridChild}
   }
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .grid-container{
     display:block;
   }

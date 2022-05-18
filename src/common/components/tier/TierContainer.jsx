@@ -5,7 +5,6 @@ import { useRecoilValue } from "recoil";
 import { gamerState, isMobileState } from "../../recoil/states";
 import { SyncLoader } from "react-spinners";
 import { setGamerTierList } from "../../utils/api-util";
-import Kakao from "../ad/Kakao";
 
 const raceList = ["전체", "저그", "프로토스", "테란"];
 const universityList = [
@@ -252,15 +251,30 @@ export default function TierContainer() {
     <Wrapper className="absolute left-0 w-full flex justify-center">
       <div className="top-div"></div>
 
-      <div className="w-[90%] ">
-        <ins
-          className="kakao_ad_area"
-          style={{ display: "none" }}
-          data-ad-unit="DAN-3TcmgD2TxLj823ns"
-          data-ad-width="320"
-          data-ad-height="100"
-        ></ins>
-        <div className="w-full min-w-[260px] mb-[20px] mt-[30px]">
+      <div className="w-[90%] mt-[10px]">
+        {isMobile ? (
+          <div className="w-[320px]  mx-auto">
+            <ins
+              className="kakao_ad_area"
+              style={{ display: "none" }}
+              data-ad-unit="DAN-3TcmgD2TxLj823ns"
+              data-ad-width="320"
+              data-ad-height="100"
+            ></ins>
+          </div>
+        ) : (
+          <div className="w-[728px]  mx-auto">
+            <ins
+              className="kakao_ad_area"
+              style={{ display: "none" }}
+              data-ad-unit="DAN-3TcmgD2TxLj823ns"
+              data-ad-width="320"
+              data-ad-height="100"
+            ></ins>
+          </div>
+        )}
+
+        <div className="w-full min-w-[260px] mb-[20px] mt-[10px]">
           <div className=" text-right ">
             {loading && (
               <div className="modal-background flex justify-center items-center">

@@ -1,28 +1,39 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   timerState,
   timerRunningState,
   buildAlertLanguage,
+  isMobileState
 } from "../recoil/states";
-import Kakao from "./ad/Kakao";
 import TimerComponent from "./TimerComponent";
 
 export default function BuildAlert() {
   const [timer, setTimer] = useRecoilState(timerState);
   const [timerRunning, setTimerRunning] = useRecoilState(timerRunningState);
   const [lang, setLang] = useRecoilState(buildAlertLanguage);
+  const isMobile = useRecoilValue(isMobileState);
   const nextId: number = timer.length > 0 ? timer[timer.length - 1].id + 1 : 0;
   const buttonCss =
     "border-2  h-[50px] min-w-[100px]  border-blue-700 rounded-[10px] inline-block absolute";
 
   return (
     <div className="mt-[116px]">
-     <ins className="kakao_ad_area" style={{display:"none"}}
+      {isMobile?<div className="w-[320px] mx-auto">
+      <ins className="kakao_ad_area" style={{display:"none"}}
  data-ad-unit    = "DAN-GERqb0PPhs1jZcLi" 
  data-ad-width   = "320" 
  data-ad-height  = "100">
    </ins> 
+      </div>:<div className="w-[728px] mx-auto">
+      <ins className="kakao_ad_area" style={{display:"none"}}
+ data-ad-unit    = "DAN-GERqb0PPhs1jZcLi" 
+ data-ad-width   = "320" 
+ data-ad-height  = "100">
+   </ins> 
+      </div>}
+      
+     
       <div className="mt-[50px]">
         <div className="mx-auto mb-[30px] w-full max-w-[580px]  relative h-[50px]">
           <button

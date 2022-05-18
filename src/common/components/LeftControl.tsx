@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import Kakao from "../components/ad/Kakao";
+import { isMobileState } from "../recoil/states";
+import { useRecoilValue } from "recoil";
 
 let combo = 0;
 export default function LeftControl() {
@@ -9,6 +10,7 @@ export default function LeftControl() {
   const [checkBox, setCheckBox] = useState(true);
   const [comboUp, setComboUp] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const isMobile = useRecoilValue(isMobileState)
   const keywordValue = useRef<any>();
   const inputValue = useRef<any>();
 
@@ -38,11 +40,20 @@ export default function LeftControl() {
   }, [isSaved]);
 
   return (
-    <div className="mt-[116px]  h-[350px]  flex flex-col relative">
+    <div className="mt-[96px]  h-[350px]  flex flex-col relative">
+      {isMobile?  <div className="w-[320px] mx-auto">
       <ins className="kakao_ad_area" style={{display:"none"}} 
  data-ad-unit    = "DAN-aKNS1zqwgWC4KTTv" 
  data-ad-width   = "320" 
  data-ad-height  = "100"></ins> 
+      </div>:  <div className="w-[728px] mx-auto">
+      <ins className="kakao_ad_area" style={{display:"none"}} 
+ data-ad-unit    = "DAN-aKNS1zqwgWC4KTTv" 
+ data-ad-width   = "320" 
+ data-ad-height  = "100"></ins> 
+      </div>}
+    
+     
       {/* <ins
         className="adsbygoogle"
         style={{ display: "block" }}
