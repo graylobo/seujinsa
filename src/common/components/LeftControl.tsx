@@ -38,7 +38,7 @@ export default function LeftControl() {
   }, [isSaved]);
 
   return (
-    <div className="mt-[116px]  h-[350px]  flex flex-col relative">
+    <div className="mt-[86px]  h-[350px]  flex flex-col relative">
       <Kakao />
 
       {/* <ins

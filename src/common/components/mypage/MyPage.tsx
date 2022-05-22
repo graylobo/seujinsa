@@ -20,7 +20,7 @@ export default function MyPage() {
   const [userState, setUserState] = useRecoilState(userInfoState);
 
   return (
-    <div>
+    <div className="mt-[80px]">
       {userState.isLogin ? (
         <div className="flex flex-col mt-[10px] max-w-[700px]  mx-auto">
           <ul

@@ -39,7 +39,11 @@ export default function University() {
           switch (cur.university) {
             case "무친대":
               acc["무친대"].push({
-                [cur._id]: { race: cur.race, tier: cur.tier },
+                [cur._id]: {
+                  race: cur.race,
+                  tier: cur.tier,
+                  tierPoint: cur.tierPoint,
+                },
               });
               return { ...acc };
             case "바스포드":
