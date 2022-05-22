@@ -1,3 +1,18 @@
+async function fetchAPI(method: string, url: string, body: object) {
+  let res = null;
+  if (method === "get") {
+    res = await fetch(url);
+  } else {
+    res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+  }
+
+  return res;
+}
+
 async function getUserInfo(id?: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/user-info/${id}`);
   const json = await res.json();
@@ -164,4 +179,5 @@ export {
   getWholeGamerInfo,
   setGamerTierList,
   getRecord,
+  fetchAPI,
 };
