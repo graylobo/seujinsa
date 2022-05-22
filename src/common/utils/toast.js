@@ -9,7 +9,7 @@ function success(msg, autoClose = 1500) {
 }
 
 function fail(msg, autoClose = 1500) {
-  toast.fail(msg, {
+  toast.error(msg, {
     autoClose: autoClose,
     position: toast.POSITION.TOP_CENTER,
   });

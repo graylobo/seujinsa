@@ -5,6 +5,7 @@ import { userInfoState } from "../../recoil/states";
 import { getDateFormat } from "../../utils/date";
 import { SyncLoader } from "react-spinners";
 import { success, fail, info } from "../../utils/toast";
+import { ToastContainer } from "react-toastify";
 export default function QnAContent({
   qnaInfo,
   setQnaClick,
@@ -101,6 +102,7 @@ export default function QnAContent({
   }
   return (
     <div className="fixed  h-device inset-0 z-50 flex items-center justify-center p-[20px]">
+      <ToastContainer/>
       {postDeleteConfirm && confirmModal && (
         <ConfirmModal
           qnaInfo={qnaInfo}

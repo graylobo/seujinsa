@@ -1,4 +1,5 @@
 import React from "react";
+import { ToastContainer } from "react-toastify";
 import { success, fail } from "../../utils/toast";
 export default function ConfirmModal({
   action,
@@ -9,6 +10,7 @@ export default function ConfirmModal({
 }: any) {
   return (
     <div className="fixed w-screen h-device inset-0 z-50 flex items-center justify-center bg-gray-700 bg-opacity-[90%] p-[20px]">
+      <ToastContainer/>
       <div className="bg-gray-100 rounded-[10px] p-[16px] max-w-[460px] w-full z-50">
         <p className="text-[16px] font-bold mb-[8px]">알림</p>
         <div>
