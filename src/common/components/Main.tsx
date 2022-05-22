@@ -5,52 +5,51 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SyncLoader } from "react-spinners";
 import { getRecord, setGamerTierList } from "../utils/api-util";
-import styled  from "@emotion/styled";
+import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 const gridChild = css`
-    height:600px;
-    margin:0 auto;
-    min-width:425px;
-    max-width:425px;
-    border-radius:5px;
-    background-color:white;
-    opacity: 0.8;
-    margin-top:30px;
+  height: 600px;
+  margin: 0 auto;
+  min-width: 425px;
+  max-width: 425px;
+  border-radius: 5px;
+  background-color: white;
+  opacity: 0.8;
+  margin-top: 30px;
   white-space: nowrap;
-  overflow:auto;
-
-    
-`
+  overflow: auto;
+`;
 const Wrapper = styled.main`
-left:0;
-width:100%;
-height:100vh;
-padding-bottom:56px;
-padding-top:56px;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  padding-bottom: 56px;
+  padding-top: 56px;
 
-.grid-container{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-items:center;
-  margin:0 auto;
-  max-width:1300px;
-  gap:10px;
-
-}
-.grid-container > div{
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    margin: 0 auto;
+    max-width: 1300px;
+    gap: 10px;
+    .most-voted {
+      grid-column: 2/3;
+    }
+  }
+  .grid-container > div {
     ${gridChild}
   }
-@media (max-width: 900px) {
-  .grid-container{
-    display:block;
+  @media (max-width: 900px) {
+    .grid-container {
+      display: block;
+    }
+    .grid-container > div {
+      ${gridChild}
+    }
   }
-  .grid-container > div{
-  ${gridChild}
-
-  }
-}
-`
+`;
 export default function Main() {
   const [logout, setLogout] = useRecoilState(logoutState);
   const [record, setRecord] = useState([]);
@@ -140,139 +139,133 @@ export default function Main() {
   }, []);
 
   return (
-    <Wrapper >
+    <Wrapper>
       <ToastContainer />
       <div className="cutton"></div>
       <video id="video" src="./backvideo.mp4" autoPlay loop muted></video>
       <div className="h-full  w-full overflow-auto ">
         <div className="grid-container">
-          <div className="">
-            <div className="    ">
-              <div className="text-center p-[20px]">
-                <span>최근 전적</span>
-              </div>
-              <div className="flex justify-center">
-                <div>
-                  {loading ? (
-                    <div className=" mt-[150px]">
-                      <SyncLoader />
+          {/* <div className="">
+            <div className="text-center p-[20px]">
+              <span>최근 전적</span>
+            </div>
+            <div className="flex justify-center">
+              <div>
+                {loading ? (
+                  <div className=" mt-[150px]">
+                    <SyncLoader />
+                  </div>
+                ) : (
+                  record.map((e: any) => (
+                    <div className=" mb-[10px] text-[15px] ">
+                      <span className="mr-[10px] text-[13px]">{e.date}</span>
+                      <span className=" w-[110px]   inline-block">
+                        <span className="w-[25px] h-[25px] inline-block relative">
+                          <img
+                            className="rounded-[100%] absolute top-[5px]"
+                            src={`/images/gamer/${e.winner}.png`}
+                            alt=""
+                          />
+                        </span>
+                        {e.winner}
+                        {e.winnerRace}
+                        [승]
+                      </span>
+                      <span className="inline-block w-[30px]">vs</span>
+                      <span className="mr-[10px]">
+                        <span className="w-[25px] h-[25px] inline-block relative">
+                          <img
+                            className="rounded-[100%] absolute top-[5px]"
+                            src={`/images/gamer/${e.loser}.png`}
+                            alt=""
+                          />
+                        </span>
+                        {e.loser}
+                        {e.loserRace}[패]
+                      </span>
+                      <span className="mr-[10px]">{e.wayOfPlay}</span>
+                      <span>{e.map}</span>
                     </div>
-                  ) : (
-                    record.map((e: any) => (
-                      <div className=" mb-[10px] text-[15px] ">
-                        <span className="mr-[10px] text-[13px]">{e.date}</span>
-                        <span className=" w-[110px]   inline-block">
-                          <span className="w-[25px] h-[25px] inline-block relative">
-                            <img
-                              className="rounded-[100%] absolute top-[5px]"
-                              src={`/images/gamer/${e.winner}.png`}
-                              alt=""
-                            />
-                          </span>
-                          {e.winner}
-                          {e.winnerRace}
-                          [승]
-                        </span>
-                        <span className="inline-block w-[30px]">vs</span>
-                        <span className="mr-[10px]">
-                          <span className="w-[25px] h-[25px] inline-block relative">
-                            <img
-                              className="rounded-[100%] absolute top-[5px]"
-                              src={`/images/gamer/${e.loser}.png`}
-                              alt=""
-                            />
-                          </span>
-                          {e.loser}
-                          {e.loserRace}[패]
-                        </span>
-                        <span className="mr-[10px]">{e.wayOfPlay}</span>
-                        <span>{e.map}</span>
-                      </div>
-                    ))
-                  )}
+                  ))
+                )}
+              </div>
+            </div>
+          </div> */}
+          <div className="most-voted">
+            <div className="text-center p-[20px] ">
+              <span>최다 민심 득표</span>
+            </div>
+            <ol>
+              {loading ? (
+                <div className="flex justify-center mt-[150px]">
+                  <SyncLoader />
                 </div>
-              </div>
-            </div>
+              ) : (
+                topVotedGamerList.map((e: any, i) => (
+                  <li className="bg-white rounded-[3px] mb-[3px] h-[50px] flex items-center relative">
+                    <div className="ml-[25px] w-[16px]">{i + 1}</div>
+                    <div className="w-[32px] h-[32px] ml-[10px]">
+                      <img
+                        className="rounded-[100%] w-full h-full"
+                        src={`/images/gamer/${e._id}.png`}
+                        alt=""
+                      />
+                    </div>
+                    <div className="ml-[12px] text-[15px]">
+                      <span>{e._id}</span>
+                      <span className="text-[13px]"> [{e.race}]</span>
+                      <div className="text-[13px]">{e.tier} tier</div>
+                    </div>
+                    <div className="ml-[12px] absolute text-[13px] right-[10px]">
+                      <span>{e.totalPoint}p</span>
+                    </div>
+                    <span></span>
+                  </li>
+                ))
+              )}
+            </ol>
           </div>
-          <div className="">
-            <div className="">
-              <div className="text-center  p-[20px]">
-                <span>인기 플레이어 랭킹</span>
-              </div>
-              <ol>
-                {loading ? (
-                  <div className="flex justify-center mt-[150px]">
-                    <SyncLoader />
-                  </div>
-                ) : (
-                  topVotedGamerList.map((e: any, i) => (
-                    <li className="bg-white rounded-[3px] mb-[3px] h-[50px] flex items-center relative">
-                      <div className="ml-[25px] w-[16px]">{i + 1}</div>
-                      <div className="w-[32px] h-[32px] ml-[10px]">
-                        <img
-                          className="rounded-[100%] w-full h-full"
-                          src={`/images/gamer/${e._id}.png`}
-                          alt=""
-                        />
-                      </div>
-                      <div className="ml-[12px] text-[15px]">
-                        <span>{e._id}</span>
-                        <span className="text-[13px]"> [{e.race}]</span>
-                        <div className="text-[13px]">{e.tier} tier</div>
-                      </div>
-                      <div className="ml-[12px] absolute text-[13px] right-[10px]">
-                        <span>{e.totalPoint}p</span>
-                      </div>
-                      <span></span>
-                    </li>
-                  ))
-                )}
-              </ol>
+          {/* <div className="">
+            <div className="text-center  p-[20px]">
+              <span>5월 다승 랭킹</span>
             </div>
-          </div>
-          <div className="">
-            <div className="">
-              <div className="text-center  p-[20px]">
-                <span>5월 다승 랭킹</span>
-              </div>
-              <ol>
-                {loading ? (
-                  <div className="flex justify-center mt-[150px]">
-                    <SyncLoader />
-                  </div>
-                ) : (
-                  currentMonthRecord.map((e: any, i) => (
-                    <li className="bg-white rounded-[3px] mb-[3px] h-[50px] flex items-center relative">
-                      <div className="ml-[25px] w-[16px]">{i + 1}</div>
-                      <div className="w-[32px] h-[32px] ml-[10px]">
-                        <img
-                          className="rounded-[100%] w-full h-full"
-                          src={`/images/gamer/${Object.keys(e)}.png`}
-                          alt=""
-                        />
-                      </div>
-                      <div className="ml-[12px] text-[15px]">
-                        <span>{Object.keys(e)}[</span>
-                        <span className="text-[13px]">
-                          {e[Object.keys(e) as unknown as string]["race"]}]
-                        </span>
-                        <span className="text-[13px] ml-[3px]">
-                          승: {e[Object.keys(e) as unknown as string]["승"]}
-                        </span>
-                        <span className="text-[13px]">
-                          패: {e[Object.keys(e) as unknown as string]["패"]}
-                        </span>
-                      </div>
-                      <div className="ml-[12px] absolute text-[13px] right-[10px]">
-                        <span>{e.totalPoint}p</span>
-                      </div>
-                      <span></span>
-                    </li>
-                  ))
-                )}
-              </ol>
-            </div>
-          </div>
+            <ol>
+              {loading ? (
+                <div className="flex justify-center mt-[150px]">
+                  <SyncLoader />
+                </div>
+              ) : (
+                currentMonthRecord.map((e: any, i) => (
+                  <li className="bg-white rounded-[3px] mb-[3px] h-[50px] flex items-center relative">
+                    <div className="ml-[25px] w-[16px]">{i + 1}</div>
+                    <div className="w-[32px] h-[32px] ml-[10px]">
+                      <img
+                        className="rounded-[100%] w-full h-full"
+                        src={`/images/gamer/${Object.keys(e)}.png`}
+                        alt=""
+                      />
+                    </div>
+                    <div className="ml-[12px] text-[15px]">
+                      <span>{Object.keys(e)}[</span>
+                      <span className="text-[13px]">
+                        {e[Object.keys(e) as unknown as string]["race"]}]
+                      </span>
+                      <span className="text-[13px] ml-[3px]">
+                        승: {e[Object.keys(e) as unknown as string]["승"]}
+                      </span>
+                      <span className="text-[13px]">
+                        패: {e[Object.keys(e) as unknown as string]["패"]}
+                      </span>
+                    </div>
+                    <div className="ml-[12px] absolute text-[13px] right-[10px]">
+                      <span>{e.totalPoint}p</span>
+                    </div>
+                    <span></span>
+                  </li>
+                ))
+              )}
+            </ol>
+          </div> */}
         </div>
       </div>
 
