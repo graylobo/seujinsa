@@ -24,7 +24,7 @@ export default function QuillEditor({ body, handleQuillChange, mountBody }) {
         container: [
           ["bold", "italic", "underline"], // toggled buttons
           [{ list: "ordered" }, { list: "bullet" }],
-          ["link", "code-block", "image", "video"], // media
+          ["link", "code-block"], // media
         ],
       };
 
@@ -35,7 +35,7 @@ export default function QuillEditor({ body, handleQuillChange, mountBody }) {
             maxStack: 500,
             userOnly: true,
           },
-          syntax: true,
+          syntax: false,
           toolbar: toolbarOptions,
         },
         placeholder: "본문 입력",
