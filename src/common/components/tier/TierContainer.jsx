@@ -28,11 +28,18 @@ const Wrapper = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     grid-gap: 10px;
   }
-  .stick-container{
-    position:sticky;
-    top:70px;
+  .stick-container {
+    position: sticky;
+    top: 70px;
+    height: 80px;
+    .search-container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 10px;
+      position: absolute;
+      right: 0;
+    }
   }
- 
 
   .info-popup {
     position: fixed;
@@ -145,6 +152,17 @@ export default function TierContainer() {
 
   const gamerInfo = useRecoilValue(gamerState);
   const isMobile = useRecoilValue(isMobileState);
+  function changeCss() {
+    var elem = document.querySelector(".search-container");
+    this.scrollY > 300 ? (elem.style.opacity = 0.9) : (elem.style.opacity = 1);
+  }
+  useEffect(() => {
+    window.addEventListener("scroll", changeCss);
+    return () => {
+      window.removeEventListener("scroll", changeCss);
+    };
+  }, []);
+
   useEffect(() => {
     setGamerTierList().then((gamerList) => {
       if (gamerList.length !== 0) {
@@ -160,18 +178,20 @@ export default function TierContainer() {
       if (sortedGamerArray.length !== 0) {
         gamerClassification(sortedGamerArray);
       }
-     
+
       setLoading(false);
     };
     dummy();
   }, [race, university, gamerName, loading]);
-  useEffect(()=>{
-    if(filteredGamerArray.length===1){
-      const test =document.querySelector(`.gamer-${filteredGamerArray[0]._id}`).offsetTop;
-      scrollTo(0,test)
-      console.log(test)
+  useEffect(() => {
+    if (filteredGamerArray.length === 1) {
+      const test = document.querySelector(
+        `.gamer-${filteredGamerArray[0]._id}`
+      ).offsetTop;
+      scrollTo(0, test);
+      console.log(test);
     }
-  },[filteredGamerArray])
+  }, [filteredGamerArray]);
 
   function gamerClassification(list) {
     let copy = [...list];
@@ -279,7 +299,7 @@ export default function TierContainer() {
         )}
 
         <div className="w-full min-w-[260px] mb-[20px] mt-[10px] stick-container">
-          <div className=" text-right ">
+          <div className=" search-container">
             {loading && (
               <div className="modal-background flex justify-center items-center">
                 <SyncLoader color="gold" size={15} />
