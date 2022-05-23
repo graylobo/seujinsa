@@ -12,11 +12,35 @@ export default function BuildAlert() {
   const [timer, setTimer] = useRecoilState(timerState);
   const [timerRunning, setTimerRunning] = useRecoilState(timerRunningState);
   const [lang, setLang] = useRecoilState(buildAlertLanguage);
+  const [largestTime, setLargestTime] = useState(0);
   const isMobile = useRecoilValue(isMobileState);
   const nextId: number = timer.length > 0 ? timer[timer.length - 1].id + 1 : 0;
   const buttonCss =
     "border-2  h-[50px] min-w-[100px]  border-blue-700 rounded-[10px] inline-block absolute";
 
+  function getMostLargeTimer(timer:any){
+    const result = timer.reduce((acc:any,cur:any)=>{
+      let accTime = Number(acc.second||0) + Number(acc.minute||0)*60+Number(acc.hour||0)*60*60;
+      let curTime = Number(cur.second||0) + Number(cur.minute||0)*60+Number(cur.hour||0)*60*60;
+      if(accTime>curTime){
+        return acc;
+      }
+      return cur
+    })
+    const largestTime = Number(result.second||0) + Number(result.minute||0)*60+Number(result.hour||0)*60*60;
+    setLargestTime(largestTime)
+    
+  }
+  useEffect(()=>{
+    if(timerRunning){
+      setTimeout(() => {
+        alert("전체 타이머가 종료되었습니다.")
+        setTimerRunning(false)
+      }, largestTime*1000);
+    }
+    
+    
+  },[largestTime,timerRunning])
   return (
     <div className="mt-[76px]">
       {isMobile ? (
@@ -78,6 +102,7 @@ export default function BuildAlert() {
                   checkTimerEmpty &&
                     alert("시간이 설정되지 않은 타이머가 존재합니다.");
                 } else {
+                  getMostLargeTimer(timer)
                   setTimerRunning(!timerRunning);
                 }
               }
