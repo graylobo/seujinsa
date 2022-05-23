@@ -94,7 +94,7 @@ export default function TierComponent({ gamerList }: any) {
                 <div></div>
               ) : (
                 <img
-                  className="gamer-image w-full h-full "
+                  className={`gamer-image w-full h-full gamer-${gamer._id}`}
                   src={`/images/gamer/${gamer._id}.png`}
                   onLoad={() => {
                     onAllImageLoad(index);

@@ -28,9 +28,11 @@ const Wrapper = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     grid-gap: 10px;
   }
-  .top-div {
-    margin-top: 30px;
+  .stick-container{
+    position:sticky;
+    top:70px;
   }
+ 
 
   .info-popup {
     position: fixed;
@@ -155,16 +157,21 @@ export default function TierContainer() {
   useEffect(() => {
     const dummy = async () => {
       setLoading(true);
-      console.log("test1", loading);
       if (sortedGamerArray.length !== 0) {
         gamerClassification(sortedGamerArray);
       }
+     
       setLoading(false);
     };
     dummy();
-    console.log("test2", loading);
   }, [race, university, gamerName, loading]);
-  console.log("test3", loading);
+  useEffect(()=>{
+    if(filteredGamerArray.length===1){
+      const test =document.querySelector(`.gamer-${filteredGamerArray[0]._id}`).offsetTop;
+      scrollTo(0,test)
+      console.log(test)
+    }
+  },[filteredGamerArray])
 
   function gamerClassification(list) {
     let copy = [...list];
@@ -248,8 +255,6 @@ export default function TierContainer() {
   }
   return (
     <Wrapper className="absolute left-0 w-full flex justify-center">
-      <div className="top-div"></div>
-
       <div className="w-[90%] mt-[10px]">
         {isMobile ? (
           <div className="w-[320px]  mx-auto">
@@ -273,7 +278,7 @@ export default function TierContainer() {
           </div>
         )}
 
-        <div className="w-full min-w-[260px] mb-[20px] mt-[10px]">
+        <div className="w-full min-w-[260px] mb-[20px] mt-[10px] stick-container">
           <div className=" text-right ">
             {loading && (
               <div className="modal-background flex justify-center items-center">
@@ -284,6 +289,7 @@ export default function TierContainer() {
             <input
               className="w-[110px] border-[1px] border-gray-500 rounded-[5px] px-[10px]  focus:outline-blue-600 "
               value={gamerName}
+              autoFocus
               onChange={(e) => {
                 setGamerName(e.target.value);
               }}
