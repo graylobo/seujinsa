@@ -39,6 +39,14 @@ export default function LeftControl() {
     combo = 0;
   }, [isSaved]);
 
+  function checkInput(e:any):boolean{
+    if(/^([a-zA-Z0-9]+)$/.test(e.target.value))
+    {
+      return true
+    }
+      return false;
+    }
+
   return (
     <div className="mt-[96px]  h-[350px]  flex flex-col relative">
       {isMobile?  <div className="w-[320px] mx-auto">
@@ -71,10 +79,18 @@ export default function LeftControl() {
             className={` h-[50px] border-2 border-black p-[10px] w-full max-w-[500px] rounded-[3px] outline-blue-600 ${
               isSaved ? " bg-gray-400" : ""
             }`}
-            placeholder="왼손 생산할 키워드 입력"
+            placeholder="키워드 입력 (영문/숫자만 가능)"
             readOnly={isSaved}
             ref={keywordValue}
+          
+            value={keyword}
             onChange={(e) => {
+              if(!checkInput(e)){
+                console.log("asdasd")
+                setKeyword("");
+                return;
+              }
+              
               if (e.target.value.length > 30) {
                 alert("30자 이내로 설정해야 합니다.");
                 keywordValue.current.value = "";
