@@ -7,12 +7,16 @@ import {
   isMobileState,
 } from "../recoil/states";
 import TimerComponent from "./TimerComponent";
+import { success } from "../utils/toast";
+import { ToastContainer } from "react-toastify";
 
 export default function BuildAlert() {
   const [timer, setTimer] = useRecoilState(timerState);
   const [timerRunning, setTimerRunning] = useRecoilState(timerRunningState);
   const [lang, setLang] = useRecoilState(buildAlertLanguage);
   const [largestTime, setLargestTime] = useState(0);
+  const [timerVal, setTimerVal] = useState();
+
   const isMobile = useRecoilValue(isMobileState);
   const nextId: number = timer.length > 0 ? timer[timer.length - 1].id + 1 : 0;
   const buttonCss =
@@ -41,14 +45,20 @@ export default function BuildAlert() {
   }
   useEffect(() => {
     if (timerRunning) {
-      setTimeout(() => {
-        alert("전체 타이머가 종료되었습니다.");
+      let timers: any = setTimeout(() => {
+        success("전체 타이머가 종료되었습니다.");
         setTimerRunning(false);
       }, largestTime * 1000 + 500);
+      setTimerVal(timers);
+    } else {
+      if (timerVal) {
+        clearTimeout(timerVal);
+      }
     }
   }, [largestTime, timerRunning]);
   return (
     <div className="mt-[76px]">
+      <ToastContainer />
       {isMobile ? (
         <div className="w-[320px] mx-auto">
           <ins
