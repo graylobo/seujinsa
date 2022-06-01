@@ -205,6 +205,6 @@ export default function LeftControl() {
       
         }
       `}</style>
-    </div>
+    </main>
   );
 }
