@@ -9,6 +9,7 @@ import {
 import TimerComponent from "./TimerComponent";
 import { success } from "../utils/toast";
 import { ToastContainer } from "react-toastify";
+import HeadMeta from "./shared/HeadMeta";
 
 export default function BuildAlert() {
   const [timer, setTimer] = useRecoilState(timerState);
@@ -56,8 +57,15 @@ export default function BuildAlert() {
       }
     }
   }, [largestTime, timerRunning]);
+
+  const props = {
+    title: "빌드알리미",
+    description: "스타크래프트,스타빌드,저그빌드,프로토스빌드,테란빌드",
+    url: "https://seujinsa.com/build-alert",
+  };
   return (
-    <div className="mt-[76px]">
+    <main className="mt-[76px]">
+      <HeadMeta {...props} />
       <ToastContainer />
       {isMobile ? (
         <div className="w-[320px] mx-auto">
@@ -139,9 +147,12 @@ export default function BuildAlert() {
         </div>
 
         {timer.map((e, i) => (
-          <div className="timer-component mb-[10px] w-full h-[70px] " key={i}>
+          <section
+            className="timer-component mb-[10px] w-full h-[70px] "
+            key={i}
+          >
             <TimerComponent id={e.id}></TimerComponent>
-          </div>
+          </section>
         ))}
       </div>
       <style jsx>{`
@@ -151,6 +162,6 @@ export default function BuildAlert() {
           }
         }
       `}</style>
-    </div>
+    </main>
   );
 }

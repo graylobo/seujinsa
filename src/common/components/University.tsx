@@ -3,6 +3,7 @@ import { setGamerTierList } from "../utils/api-util";
 import { SyncLoader } from "react-spinners";
 import { useRecoilValue } from "recoil";
 import { isMobileState } from "../recoil/states";
+import HeadMeta from "./shared/HeadMeta";
 
 type GamerType = {
   [key: string]: [];
@@ -190,11 +191,19 @@ export default function University() {
     });
   }, []);
 
+  const props = {
+    title: "스타대학표",
+    description:
+      "스타대학,스타크래프트 대학,아프리카 스타대학,아프리카 대학,쳘기중대,바스포드,무친대,염석대,JSA,NSU,캄성여대,보신대,학버드,우끼끼즈,파이스트",
+    url: "https://seujinsa.com/univ",
+  };
+
   return (
-    <div className="mx-auto pb-[100px] mt-[76px]">
+    <main className="mx-auto pb-[100px] mt-[76px]">
+      <HeadMeta {...props} />
       <div className="mb-[30px]">
         {isMobile ? (
-          <div className="w-[320px] mx-auto">
+          <aside className="w-[320px] mx-auto">
             <ins
               className="kakao_ad_area"
               style={{ display: "none" }}
@@ -202,9 +211,9 @@ export default function University() {
               data-ad-width="320"
               data-ad-height="100"
             ></ins>
-          </div>
+          </aside>
         ) : (
-          <div className="w-[728px] mx-auto">
+          <aside className="w-[728px] mx-auto">
             <ins
               className="kakao_ad_area"
               style={{ display: "none" }}
@@ -212,11 +221,11 @@ export default function University() {
               data-ad-width="320"
               data-ad-height="100"
             ></ins>
-          </div>
+          </aside>
         )}
       </div>
       {universityList.map((university: any) => (
-        <div className="mx-auto w-full max-w-[800px] border-[10px] border-black rounded-[10px] p-[20px] mb-[30px]">
+        <section className="mx-auto w-full max-w-[800px] border-[10px] border-black rounded-[10px] p-[20px] mb-[30px]">
           <div className="w-[250px] h-[250px] mx-auto mb-[30px]">
             <img
               className="w-full h-full"
@@ -252,7 +261,7 @@ export default function University() {
                 </div>
               ))}
           </div>
-        </div>
+        </section>
       ))}
       <style jsx>{`
         .student-container {
@@ -261,6 +270,6 @@ export default function University() {
           grid-gap: 10px;
         }
       `}</style>
-    </div>
+    </main>
   );
 }

@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import { gamerState, isMobileState } from "../../recoil/states";
 import { SyncLoader } from "react-spinners";
 import { setGamerTierList } from "../../utils/api-util";
+import HeadMeta from "../shared/HeadMeta";
 
 const raceList = ["전체", "저그", "프로토스", "테란"];
 const universityList = [
@@ -21,7 +22,7 @@ const universityList = [
   "JSA",
   "NSU",
 ];
-const Wrapper = styled.div`
+const Wrapper = styled.main`
   margin-top: 56px;
   .container {
     display: grid;
@@ -109,10 +110,10 @@ const MemoizedMiddleContainer = React.memo(function MiddleContainer({
   // const defaultCSS = `flex flex-col items-center  p-[30px] bg-gray-100 rounded-[10px] mb-[30px]  min-h-[150px] ${backgroundCSS}`;
 
   return (
-    <div className={`tier-component ${backGround}`}>
+    <section className={`tier-component ${backGround}`}>
       <div className="mb-[10px] text-[20px] font-semibold">{tierName}</div>
       <TierComponent gamerList={gamerList}></TierComponent>
-    </div>
+    </section>
   );
 });
 
@@ -273,11 +274,18 @@ export default function TierContainer() {
     setTenTier([...tenTemp]);
     setElevenTier([...elevenTemp]);
   }
+  const props = {
+    title: "스타티어표",
+    description:
+      "스타티어표,스타크래프트 티어,아프리카 스타티어,스타크래프트 bj,스타여캠,스타대학",
+    url: "https://seujinsa.com/tier",
+  };
   return (
     <Wrapper className="absolute left-0 w-full flex justify-center">
+      <HeadMeta {...props} />
       <div className="w-[90%] mt-[10px]">
         {isMobile ? (
-          <div className="w-[320px]  mx-auto">
+          <aside className="w-[320px]  mx-auto">
             <ins
               className="kakao_ad_area"
               style={{ display: "none" }}
@@ -285,9 +293,9 @@ export default function TierContainer() {
               data-ad-width="320"
               data-ad-height="100"
             ></ins>
-          </div>
+          </aside>
         ) : (
-          <div className="w-[728px]  mx-auto">
+          <aside className="w-[728px]  mx-auto">
             <ins
               className="kakao_ad_area"
               style={{ display: "none" }}
@@ -295,7 +303,7 @@ export default function TierContainer() {
               data-ad-width="320"
               data-ad-height="100"
             ></ins>
-          </div>
+          </aside>
         )}
 
         <div className="w-full min-w-[260px] mb-[20px] mt-[10px] stick-container">

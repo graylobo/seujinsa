@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { isMobileState } from "../recoil/states";
 import { useRecoilValue } from "recoil";
+import HeadMeta from "./shared/HeadMeta";
 
 let combo = 0;
 export default function LeftControl() {
@@ -10,7 +11,7 @@ export default function LeftControl() {
   const [checkBox, setCheckBox] = useState(true);
   const [comboUp, setComboUp] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const isMobile = useRecoilValue(isMobileState)
+  const isMobile = useRecoilValue(isMobileState);
   const keywordValue = useRef<any>();
   const inputValue = useRef<any>();
 
@@ -39,29 +40,44 @@ export default function LeftControl() {
     combo = 0;
   }, [isSaved]);
 
-  function checkInput(e:any):boolean{
-    if(/^([a-zA-Z0-9]+)$/.test(e.target.value))
-    {
-      return true
+  function checkInput(e: any): boolean {
+    if (/^([a-zA-Z0-9]+)$/.test(e.target.value)) {
+      return true;
     }
-      return false;
-    }
+    return false;
+  }
+
+  const props = {
+    title: "왼손생산",
+    description: "스타크래프트,왼손생산,스타컨트롤",
+    url: "https://seujinsa.com/left-control",
+  };
 
   return (
-    <div className="mt-[96px]  h-[350px]  flex flex-col relative">
-      {isMobile?  <div className="w-[320px] mx-auto">
-      <ins className="kakao_ad_area" style={{display:"none"}} 
- data-ad-unit    = "DAN-aKNS1zqwgWC4KTTv" 
- data-ad-width   = "320" 
- data-ad-height  = "100"></ins> 
-      </div>:  <div className="w-[728px] mx-auto">
-      <ins className="kakao_ad_area" style={{display:"none"}} 
- data-ad-unit    = "DAN-aKNS1zqwgWC4KTTv" 
- data-ad-width   = "320" 
- data-ad-height  = "100"></ins> 
-      </div>}
-    
-     
+    <main className="mt-[96px]  h-[350px]  flex flex-col relative">
+      <HeadMeta {...props} />
+      {isMobile ? (
+        <aside className="w-[320px] mx-auto">
+          <ins
+            className="kakao_ad_area"
+            style={{ display: "none" }}
+            data-ad-unit="DAN-aKNS1zqwgWC4KTTv"
+            data-ad-width="320"
+            data-ad-height="100"
+          ></ins>
+        </aside>
+      ) : (
+        <aside className="w-[728px] mx-auto">
+          <ins
+            className="kakao_ad_area"
+            style={{ display: "none" }}
+            data-ad-unit="DAN-aKNS1zqwgWC4KTTv"
+            data-ad-width="320"
+            data-ad-height="100"
+          ></ins>
+        </aside>
+      )}
+
       {/* <ins
         className="adsbygoogle"
         style={{ display: "block" }}
@@ -82,15 +98,14 @@ export default function LeftControl() {
             placeholder="키워드 입력 (영문/숫자만 가능)"
             readOnly={isSaved}
             ref={keywordValue}
-          
             value={keyword}
             onChange={(e) => {
-              if(!checkInput(e)){
-                console.log("asdasd")
+              if (!checkInput(e)) {
+                console.log("asdasd");
                 setKeyword("");
                 return;
               }
-              
+
               if (e.target.value.length > 30) {
                 alert("30자 이내로 설정해야 합니다.");
                 keywordValue.current.value = "";
