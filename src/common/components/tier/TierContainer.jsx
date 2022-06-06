@@ -98,20 +98,11 @@ const MemoizedMiddleContainer = React.memo(function MiddleContainer({
   gamerList,
   backGround,
 }) {
-  // let backgroundCSS = "";
-  // if (backGround) {
-  //   // backgroundCSS = "bg-[url('" + backGround + "')] bg-contain";
-  //   backgroundCSS = "bg-[url('" + "star-cat.jpg" + "')] bg-contain";
-  //   console.log(backgroundCSS);
-  // } else {
-  //   console.log(".없음");
-  // }
-
-  // const defaultCSS = `flex flex-col items-center  p-[30px] bg-gray-100 rounded-[10px] mb-[30px]  min-h-[150px] ${backgroundCSS}`;
-
   return (
     <section className={`tier-component ${backGround}`}>
-      <div className="mb-[10px] text-[20px] font-semibold">{tierName}</div>
+      <div className="mb-[10px] text-[20px] font-semibold text-black">
+        {tierName}
+      </div>
       <TierComponent gamerList={gamerList}></TierComponent>
     </section>
   );
@@ -307,7 +298,7 @@ export default function TierContainer() {
         )}
 
         <div className="w-full min-w-[260px] mb-[20px] mt-[10px] stick-container">
-          <div className=" search-container">
+          <div className="search-container text-black">
             {loading && (
               <div className="modal-background flex justify-center items-center">
                 <SyncLoader color="gold" size={15} />

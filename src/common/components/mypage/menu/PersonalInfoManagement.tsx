@@ -29,7 +29,6 @@ export default function PersonalInfoManagement() {
           setChangePassword2("");
         });
       } else {
-        console.log("s");
         fail("비밀번호가 일치하지 않습니다.");
       }
     });

@@ -2,7 +2,6 @@ import Head from "next/head";
 import React from "react";
 
 export default function HeadMeta({ title, description, url, image }: any) {
-  console.log("zz", title);
   return (
     <Head>
       <title>{title}</title>

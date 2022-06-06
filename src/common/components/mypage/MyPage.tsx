@@ -25,7 +25,7 @@ export default function MyPage() {
         <div className="flex flex-col mt-[10px] max-w-[700px]  mx-auto">
           <ul
             role={"tablist"}
-            className=" border-b-2 mb-[30px] border-gray-40 grid grid-cols-3 text-center cursor-pointer text-[14px] font-bold"
+            className=" border-b-2 mb-[30px] border-gray-40 grid grid-cols-3 text-center cursor-pointer text-[14px] font-bold "
           >
             {menu.map((e, i) => (
               <li
@@ -54,7 +54,7 @@ export default function MyPage() {
 
       <style jsx>{`
         .active {
-          border-bottom: 2px solid black;
+          border-bottom: 2px solid red;
           box-sizing: border-box;
         }
       `}</style>

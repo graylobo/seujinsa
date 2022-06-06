@@ -177,7 +177,7 @@ export default function ProfileManagement() {
       <div className={subjectCSS}>소개글</div>
       <textarea
         maxLength={100}
-        className={`${inputCSS} h-[100px] resize-none `}
+        className={`${inputCSS} h-[100px] resize-none text-black`}
         value={introduction}
         placeholder={"소개글을 입력해주세요"}
         onChange={(e) => {

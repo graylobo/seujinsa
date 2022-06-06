@@ -163,7 +163,7 @@ export default function QNA() {
           {qnaList.map((e: QnAProps) => (
             <div
               key={e._id}
-              className="w-full bg-[#E9E9E9] rounded-[10px] p-[16px] last:mb-[56px] cursor-pointer"
+              className="w-full bg-[#E9E9E9] rounded-[10px] p-[16px] last:mb-[56px] cursor-pointer text-black"
               onClick={() => {
                 qnaClickHandler(e);
               }}

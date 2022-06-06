@@ -92,7 +92,7 @@ export default function LeftControl() {
           <div className="">키워드 입력 (30/{keyword.length}자)</div>
           <input
             type="text"
-            className={` h-[50px] border-2 border-black p-[10px] w-full max-w-[500px] rounded-[3px] outline-blue-600 ${
+            className={` h-[50px] border-2 border-black p-[10px] w-full max-w-[500px] text-black rounded-[3px] outline-blue-600 ${
               isSaved ? " bg-gray-400" : ""
             }`}
             placeholder="키워드 입력 (영문/숫자만 가능)"
@@ -101,7 +101,6 @@ export default function LeftControl() {
             value={keyword}
             onChange={(e) => {
               if (!checkInput(e)) {
-                console.log("asdasd");
                 setKeyword("");
                 return;
               }

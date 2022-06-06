@@ -225,7 +225,7 @@ export default function University() {
         )}
       </div>
       {universityList.map((university: any) => (
-        <section className="mx-auto w-full max-w-[800px] border-[10px] border-black rounded-[10px] p-[20px] mb-[30px]">
+        <section className="mx-auto w-full max-w-[800px] border-[10px] border-black dark:border-white rounded-[10px] p-[20px] mb-[30px]">
           <div className="w-[250px] h-[250px] mx-auto mb-[30px]">
             <img
               className="w-full h-full"
@@ -235,7 +235,7 @@ export default function University() {
           </div>
           {/* <div>{gamerList && gamerList[university].length}</div> */}
           <div className="mx-auto w-[62px] mt-[100px] mb-[100px] ">
-            {loading && <SyncLoader />}
+            {loading && <SyncLoader color="gold" />}
           </div>
           <div className="student-container">
             {gamerList !== undefined &&

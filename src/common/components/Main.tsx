@@ -26,6 +26,7 @@ const Wrapper = styled.main`
   height: 100vh;
   padding-bottom: 56px;
   padding-top: 56px;
+  color: black;
 
   .grid-container {
     display: grid;

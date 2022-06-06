@@ -10,8 +10,10 @@ body {
     "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR",
     "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     sans-serif;
+    transition: background-color 0.3s;
     
 }
+
 
 a { 
   color: inherit;
@@ -41,6 +43,9 @@ a {
   background-color: red; */
   
  
+}
+input{
+  color:black;
 }
 li{
   list-style: none;

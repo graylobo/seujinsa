@@ -9,7 +9,7 @@ export default function FooterBar() {
   const iconContainerCSS =
     "mt-4 flex flex-col items-center cursor-pointer w-[56px] ";
   return (
-    <footer className="h-[56px]  fixed w-full justify-center flex  bottom-0   footer-container">
+    <footer className="h-[56px]  fixed w-full justify-center flex  bottom-0   footer-container text-black">
       <div className="max-w-[700px] flex items-center w-full justify-around">
         <Link href={"/"}>
           <div className={iconContainerCSS}>

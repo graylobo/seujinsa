@@ -144,6 +144,7 @@ export default function TimerComponent({ id }: Props) {
       />
       <button
         disabled={timerRunning}
+        className="dark:text-white"
         onClick={() => {
           setTimer(timer.filter((e: ITimerProps) => e.id !== id));
         }}

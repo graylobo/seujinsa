@@ -44,6 +44,7 @@ export default function BuildAlert() {
       Number(result.hour || 0) * 60 * 60;
     setLargestTime(largestTime);
   }
+
   useEffect(() => {
     if (timerRunning) {
       let timers: any = setTimeout(() => {
@@ -64,9 +65,10 @@ export default function BuildAlert() {
     url: "https://seujinsa.com/build-alert",
   };
   return (
-    <main className="mt-[76px]">
+    <main className="mt-[76px] ">
       <HeadMeta {...props} />
       <ToastContainer />
+
       {isMobile ? (
         <div className="w-[320px] mx-auto">
           <ins
@@ -135,7 +137,7 @@ export default function BuildAlert() {
             {timerRunning ? "중지" : "시작"}
           </button>
           <select
-            className="w-[70px] absolute right-0 top-[12px]"
+            className="w-[70px] absolute right-0 top-[12px] text-black"
             id="select-lang"
             onChange={(e) => {
               setLang({ lang: e.target.value });
@@ -148,7 +150,7 @@ export default function BuildAlert() {
 
         {timer.map((e, i) => (
           <section
-            className="timer-component mb-[10px] w-full h-[70px] "
+            className="timer-component mb-[10px] w-full h-[70px] text-black"
             key={i}
           >
             <TimerComponent id={e.id}></TimerComponent>
