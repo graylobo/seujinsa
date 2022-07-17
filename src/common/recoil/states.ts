@@ -38,6 +38,7 @@ export type GamerInfoType = {
   position?:string,
   nickName?: string;
   level?: string;
+  standardTier?:"string"
 };
 
 export type QnAProps = {
