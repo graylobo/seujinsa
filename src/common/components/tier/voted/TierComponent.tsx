@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { gamerState, userInfoState, GamerInfoType } from "../../recoil/states";
-import GamerInfoPopup from "./GamerInfoPopup";
+import { gamerState, userInfoState, GamerInfoType } from "../../../recoil/states";
+import GamerInfoPopup from "../GamerInfoPopup";
 import { PacmanLoader, BeatLoader } from "react-spinners";
 export default function TierComponent({ gamerList }: any) {
   const [showInfo, setShowInfo] = useState(false);

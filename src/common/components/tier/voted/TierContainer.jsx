@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import TierComponent from "./TierComponent";
 import { useRecoilValue } from "recoil";
-import { gamerState, isMobileState } from "../../recoil/states";
+import { gamerState, isMobileState } from "../../../recoil/states";
 import { SyncLoader } from "react-spinners";
-import { setGamerTierList } from "../../utils/api-util";
-import HeadMeta from "../shared/HeadMeta";
+import { setGamerTierList } from "../../../utils/api-util";
+import HeadMeta from "../../shared/HeadMeta";
 
 const raceList = ["전체", "저그", "프로토스", "테란"];
 const universityList = [
