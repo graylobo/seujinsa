@@ -177,11 +177,10 @@ export default function TierContainer() {
   }, [race, university, gamerName, loading]);
   useEffect(() => {
     if (filteredGamerArray.length === 1) {
-      const test = document.querySelector(
+      const position = document.querySelector(
         `.gamer-${filteredGamerArray[0]._id}`
       ).offsetTop;
-      scrollTo(0, test);
-      console.log(test);
+      scrollTo(0, position);
     }
   }, [filteredGamerArray]);
 

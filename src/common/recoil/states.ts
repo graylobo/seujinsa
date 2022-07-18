@@ -50,6 +50,10 @@ export type QnAProps = {
   body: string;
 };
 
+export type SearchProps ={
+  inputText:string;
+}
+
 const menuState = atom<boolean>({
   key: "menuState",
   default: false,
@@ -106,6 +110,13 @@ const qnaInfoState = atom<QnAProps>({
   },
 });
 
+const searchState = atom<SearchProps>({
+  key:"searchState",
+  default:{
+    inputText:""
+  }
+})
+
 const timerSelector = selector<ITimerProps[]>({
   key: "timerSelector",
   get: ({ get }) => {
@@ -143,4 +154,5 @@ export {
   isMobileState,
   qnaInfoState,
   topTenGamerList,
+  searchState
 };

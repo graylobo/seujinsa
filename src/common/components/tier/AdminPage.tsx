@@ -18,6 +18,7 @@ const university = [
 const tierList=["미지정","갓","킹","잭","조커","0",'1','2','3','4','5','6','7','8','애기']
 export default function AdminPage() {
     const [gamerList, setGamerList] = useState([]);
+    const [filteredGamerList, setFilteredGamerList] = useState([]);
 
     async function updateGamer() {
         const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/all-gamer`, {
@@ -67,9 +68,9 @@ export default function AdminPage() {
         setGamerList(copyGamerList);
     }
     return (
-        <div className="absolute left-0 w-full pb-[80px] pt-[130px]">
+        <div className="absolute left-0 w-full pb-[80px] pt-[130px] p-[10px] ">
             {gamerList.map((e: GamerInfoType, i: number) => (
-                <div key={e._id} className="grid grid-cols-6">
+                <div key={e._id} className="grid grid-cols-6 mb-3 box-border hover:bg-red-100 ">
                     <span>
                         이름:<span className="ml-[10px]">{e._id}</span>
                     </span>
@@ -83,6 +84,25 @@ export default function AdminPage() {
                             }}
                         >
                             {race.map((e) => (
+                                <option key={e} value={e}>
+                                    {e}
+                                </option>
+                            ))}
+                        </select>
+                    </span>
+                    <span>
+                        티어:
+                        <select
+                            value={e.standardTier}
+                            onChange={(e) => {
+                                updateGamerInfo(
+                                    e.target.value,
+                                    i,
+                                    "standardTier"
+                                );
+                            }}
+                        >
+                            {tierList.map((e) => (
                                 <option key={e} value={e}>
                                     {e}
                                 </option>
@@ -127,25 +147,7 @@ export default function AdminPage() {
                             }}
                         ></input>
                     </span>
-                    <span>
-                        티어:
-                        <select
-                            value={e.standardTier}
-                            onChange={(e) => {
-                                updateGamerInfo(
-                                    e.target.value,
-                                    i,
-                                    "standardTier"
-                                );
-                            }}
-                        >
-                            {tierList.map((e) => (
-                                <option key={e} value={e}>
-                                    {e}
-                                </option>
-                            ))}
-                        </select>
-                    </span>
+                   
                 </div>
             ))}
             <button
