@@ -40,9 +40,9 @@ export default function More() {
           빌드알리미
         </p>
       </Link>
-      <Link href={"/tier"}>
+      <Link href={"/tier/standard"}>
         <p className="cursor-pointer p-2.5 border-b border-gray-60">
-          민심티어표
+          티어표
         </p>
       </Link>
       <Link href={"/univ"}>

@@ -34,7 +34,7 @@ export default function Navigation({ setMenu }) {
     var themeToggleBtn = document.getElementById("theme-toggle");
 
     themeToggleBtn?.addEventListener("click", function () {
-      // toggle icons inside button
+      // toggle icons inside <button></button>
       themeToggleDarkIcon?.classList.toggle("hidden");
       themeToggleLightIcon?.classList.toggle("hidden");
 

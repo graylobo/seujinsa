@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/common/components/Navigation.jsx", "src/common/components/tier/TierContainer.jsx", "src/pages/_app.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/common/components/Navigation.jsx", "src/common/components/tier/TierContainer.jsx", "src/pages/_app.jsx", "src/common/components/tier/standard/test.js"],
   "exclude": ["node_modules"]
 }

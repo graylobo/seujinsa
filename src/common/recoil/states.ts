@@ -52,6 +52,7 @@ export type QnAProps = {
 
 export type SearchProps ={
   inputText:string;
+  race:string;
 }
 
 const menuState = atom<boolean>({
@@ -83,6 +84,7 @@ const timerState = atom<ITimerProps[]>({
   default: [],
 });
 
+// 서버에서 받아온 게이머 정보
 const gamerState = atom<GamerInfoType>({
   key: "gamerState",
   default: { _id: "" },
@@ -113,7 +115,8 @@ const qnaInfoState = atom<QnAProps>({
 const searchState = atom<SearchProps>({
   key:"searchState",
   default:{
-    inputText:""
+    inputText:"",
+    race:"",
   }
 })
 
@@ -142,6 +145,7 @@ const timerSelector = selector<ITimerProps[]>({
     });
   },
 });
+
 export {
   menuState,
   timerState,
@@ -154,5 +158,5 @@ export {
   isMobileState,
   qnaInfoState,
   topTenGamerList,
-  searchState
+  searchState,
 };
