@@ -21,7 +21,7 @@ const Wrapper = styled.main`
     .search-bar {
         position: fixed;
         right: 100px;
-        z-index:1;
+        z-index: 1;
     }
 
     .tier-container {
@@ -35,6 +35,10 @@ const Wrapper = styled.main`
             grid-template-columns: repeat(10, 1fr);
             place-items: center;
             display: grid;
+            .onair {
+                width: 30px;
+                height: 30px;
+            }
 
             .gamer {
                 width: 100px;
@@ -51,6 +55,19 @@ const Wrapper = styled.main`
                 }
                 img {
                     border-radius: 10px;
+                }
+                .onair{
+                    position:absolute;
+                    top:-15px;
+                    left:15px;
+                }
+                .thumbnail{
+                    position:absolute;
+                    min-width:500px;
+                    height:300px;
+                    top:-15px;
+                    left:15px;
+                    z-index:0;
                 }
                 .gamer-image {
                     width: 70px;
@@ -108,11 +125,14 @@ const initTierValue = {
 export default function PlayerContainer() {
     const searchValue = useRecoilValue(searchState);
     const [gamerList, setGamerList] = useState<any>(initTierValue);
-    const [initialGamerList, setInitialGamerList] = useState<any>(initTierValue); // 서버에서 받아온 초기 데이터 (setGamerList 와 구분짓는 이유: [1]useEffect참고 )
+    const [initialGamerList, setInitialGamerList] =
+        useState<any>(initTierValue); // 서버에서 받아온 초기 데이터 (setGamerList 와 구분짓는 이유: [1]useEffect참고 )
     const [selectedGamer, setSelectedGamer] = useState("");
     const [currentRecord, setCurrentRecord] = useState<any>({});
     const [backgroundClick, setBackgroundClick] = useState(false);
-    const [count, setCount] = useState(0)
+    const [showThumbNail, setShowThumbNail] = useState(false);
+    const [onAirGamer, setOnAirGamer] = useState("");
+    const [count, setCount] = useState(0);
 
     useEffect(() => {
         getWholeGamerInfo()
@@ -129,29 +149,32 @@ export default function PlayerContainer() {
                 console.log("err", err);
             });
     }, []);
+    console.log("gamer", gamerList);
+    console.log("selectedGamer", selectedGamer);
 
     // [1]
     // 필터링 기능 함수
     useEffect(() => {
-        // gamerList를 가 아닌 initialGamerList를 전달하는이유: gamerList를 전달했을때 아래 filter함수에서 빈값을 리턴하는 경우 마지막 라인의 setGamerList 가 
+        // gamerList를 가 아닌 initialGamerList를 전달하는이유: gamerList를 전달했을때 아래 filter함수에서 빈값을 리턴하는 경우 마지막 라인의 setGamerList 가
         // gamerList를 빈값으로 업데이트 되기때문에, 다음 동작에서 빈값에 대해 filter함수를 수행하게 되므로 setGamerList에 영향을 받지않고 서버에서 받아온
         // 초기상태를 보관하고있는 initialGamerList를 전달해주어야함
         let copy = _.cloneDeep(initialGamerList);
         let count = 0;
         for (const key in copy) {
-            console.log('searchValue.race',searchValue.race)
-            copy[key] = copy[key].filter((e: any) => e._id.includes(searchValue.inputText));
-            if(searchValue.race!=="전체"){
-                copy[key]  = copy[key].filter((e:any)=>e.race===searchValue.race);
+            copy[key] = copy[key].filter((e: any) =>
+                e._id.includes(searchValue.inputText)
+            );
+            if (searchValue.race !== "전체" && searchValue.race !== "") {
+                copy[key] = copy[key].filter(
+                    (e: any) => e.race === searchValue.race
+                );
             }
-            
+
             count += copy[key].length;
         }
         setGamerList(copy);
-        setCount(count)
+        setCount(count);
     }, [searchValue]);
-
-    
 
     function renderGamer(e: any, i: any) {
         const current = currentRecord[e._id];
@@ -164,6 +187,26 @@ export default function PlayerContainer() {
                     (current || selectedGamer === e._id ? "" : "no-played")
                 } `}
             >
+                
+                {showThumbNail && onAirGamer===e._id&& <img className="thumbnail" src={e["afreeca"]["imgPath"]}></img>}
+
+                {e.afreeca && (
+                    <img
+                        className="onair"
+                        src="/on-air.png"
+                        alt=""
+                        onMouseEnter={() => {
+                            setOnAirGamer(e._id)
+                            setShowThumbNail(true);
+                        }}
+                        onMouseLeave={() => {
+                            setOnAirGamer("")
+
+                            setShowThumbNail(false);
+                        }}
+                    />
+                )}
+
                 <img
                     className={`gamer-image ${
                         selectedGamer === e._id && !backgroundClick
@@ -198,7 +241,7 @@ export default function PlayerContainer() {
     return (
         <Wrapper>
             <div className="search-bar">
-                <GamerSearchBar count={count}/>
+                <GamerSearchBar count={count} />
             </div>
             <div
                 className="tier-container"
@@ -212,7 +255,7 @@ export default function PlayerContainer() {
                             {e} 티어
                         </div>
                         <div className="gamer-container">
-                            { gamerList[e].map((e: any, i: any) =>
+                            {gamerList[e].map((e: any, i: any) =>
                                 renderGamer(e, i)
                             )}
                         </div>
