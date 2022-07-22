@@ -15,7 +15,7 @@ const university = [
     "JSA",
     "NSU",
 ];
-const tierList=["미지정","갓","킹","잭","조커","0",'1','2','3','4','5','6','7','8','애기']
+const tierList=["미지정","갓","킹","잭","조커","0",'1','2','3','4','5','6','7','8','벌레']
 export default function AdminPage() {
     const [gamerList, setGamerList] = useState([]);
     const [filteredGamerList, setFilteredGamerList] = useState([]);

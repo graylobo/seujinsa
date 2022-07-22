@@ -3,11 +3,11 @@ import { getWholeGamerInfo } from "../../../utils/api-util";
 import styled from "@emotion/styled";
 import GamerSearchBar from "../../shared/GamerSearchBar";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { searchState } from "../../../recoil/states";
+import { isMobileState, searchState } from "../../../recoil/states";
 import _ from "lodash";
 
 const Wrapper = styled.main`
-    margin-top: 100px;
+    margin-top: 90px;
 
     .테란 {
         color: blue;
@@ -20,24 +20,32 @@ const Wrapper = styled.main`
     }
     .search-bar {
         position: fixed;
-        right: 100px;
+        right: 20px;
+        top: 190px;
         z-index: 1;
     }
 
     .tier-container {
+        margin-top: 100px;
         display: grid;
         justify-items: center;
         align-items: center;
         .tier-subject {
             font-size: 30px;
+            margin-bottom:30px;
         }
         .gamer-container {
             grid-template-columns: repeat(10, 1fr);
             place-items: center;
             display: grid;
             .onair {
-                width: 30px;
-                height: 30px;
+                width: 50px;
+                height: 50px;
+                position: absolute;
+                top: -30px;
+                left: 10px;
+                z-index: 1;
+                cursor: pointer;
             }
 
             .gamer {
@@ -45,6 +53,25 @@ const Wrapper = styled.main`
                 margin-bottom: 50px;
                 height: 100px;
                 position: relative;
+                .afreeca-container {
+                    position: fixed;
+                    min-width: 600px;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    display: flex;
+                    justify-content: center;
+
+                    .title {
+                        font-size: 25px;
+                        position: absolute;
+                        top: 10px;
+                    }
+                    .thumbnail {
+                        width: 100%;
+                        z-index: 999;
+                    }
+                }
 
                 &.no-played {
                     opacity: 0.3;
@@ -56,19 +83,7 @@ const Wrapper = styled.main`
                 img {
                     border-radius: 10px;
                 }
-                .onair{
-                    position:absolute;
-                    top:-15px;
-                    left:15px;
-                }
-                .thumbnail{
-                    position:absolute;
-                    min-width:500px;
-                    height:300px;
-                    top:-15px;
-                    left:15px;
-                    z-index:0;
-                }
+
                 .gamer-image {
                     width: 70px;
                     height: 70px;
@@ -100,7 +115,7 @@ const tierList = [
     "6",
     "7",
     "8",
-    "애기",
+    "벌레",
     "미지정",
 ];
 
@@ -118,7 +133,7 @@ const initTierValue = {
     "6": [],
     "7": [],
     "8": [],
-    애기: [],
+    벌레: [],
     미지정: [],
 };
 
@@ -133,6 +148,7 @@ export default function PlayerContainer() {
     const [showThumbNail, setShowThumbNail] = useState(false);
     const [onAirGamer, setOnAirGamer] = useState("");
     const [count, setCount] = useState(0);
+    const isMobile = useRecoilValue(isMobileState);
 
     useEffect(() => {
         getWholeGamerInfo()
@@ -140,8 +156,9 @@ export default function PlayerContainer() {
                 let copy: any = _.cloneDeep(initTierValue);
                 // 서버에서 받아온 게이머리스트를 티어별로 분류
                 for (const e of result) {
-                    copy[e.standardTier].push(e);
+                    copy[e.standardTier]?.push(e);
                 }
+
                 setInitialGamerList(copy);
                 setGamerList(copy);
             })
@@ -149,9 +166,6 @@ export default function PlayerContainer() {
                 console.log("err", err);
             });
     }, []);
-    console.log("gamer", gamerList);
-    console.log("selectedGamer", selectedGamer);
-
     // [1]
     // 필터링 기능 함수
     useEffect(() => {
@@ -161,13 +175,29 @@ export default function PlayerContainer() {
         let copy = _.cloneDeep(initialGamerList);
         let count = 0;
         for (const key in copy) {
-            copy[key] = copy[key].filter((e: any) =>
-                e._id.includes(searchValue.inputText)
-            );
             if (searchValue.race !== "전체" && searchValue.race !== "") {
                 copy[key] = copy[key].filter(
                     (e: any) => e.race === searchValue.race
                 );
+            }
+            if (searchValue.tier !== "전체" && searchValue.tier !== "") {
+                copy[key] = copy[key].filter(
+                    (e: any) => e.standardTier === searchValue.tier
+                );
+            }
+            if (searchValue.univ !== "전체" && searchValue.univ !== "") {
+                if (searchValue.univ === "무소속") {
+                    copy[key] = copy[key].filter(
+                        (e: any) => e.university === "무소속"
+                    );
+                } else {
+                    copy[key] = copy[key].filter(
+                        (e: any) => e.university === searchValue.univ
+                    );
+                }
+            }
+            if (searchValue.onair) {
+                copy[key] = copy[key].filter((e: any) => e.afreeca);
             }
 
             count += copy[key].length;
@@ -176,19 +206,45 @@ export default function PlayerContainer() {
         setCount(count);
     }, [searchValue]);
 
+    useEffect(() => {
+        try {
+            const elem = document.querySelector<HTMLElement>(
+                `.gamer-${searchValue.inputText}`
+            );
+
+            const position = (elem?.offsetParent as HTMLElement).offsetTop;
+
+            if (position) {
+                scrollTo(0, (position as number) - 500);
+                elem?.click();
+            } else {
+                setBackgroundClick(true);
+            }
+        } catch {
+            setBackgroundClick(true);
+        }
+    }, [searchValue.inputText]);
+
     function renderGamer(e: any, i: any) {
         const current = currentRecord[e._id];
         return (
             <div
                 key={i}
-                className={`gamer ${
+                className={`gamer  ${
                     selectedGamer &&
                     !backgroundClick &&
                     (current || selectedGamer === e._id ? "" : "no-played")
                 } `}
             >
-                
-                {showThumbNail && onAirGamer===e._id&& <img className="thumbnail" src={e["afreeca"]["imgPath"]}></img>}
+                {showThumbNail && onAirGamer === e._id && (
+                    <div className="afreeca-container">
+                        <div className="title">{e["afreeca"]["title"]}</div>
+                        <img
+                            className="thumbnail"
+                            src={e["afreeca"]["imgPath"]}
+                        ></img>
+                    </div>
+                )}
 
                 {e.afreeca && (
                     <img
@@ -196,11 +252,11 @@ export default function PlayerContainer() {
                         src="/on-air.png"
                         alt=""
                         onMouseEnter={() => {
-                            setOnAirGamer(e._id)
+                            setOnAirGamer(e._id);
                             setShowThumbNail(true);
                         }}
                         onMouseLeave={() => {
-                            setOnAirGamer("")
+                            setOnAirGamer("");
 
                             setShowThumbNail(false);
                         }}
@@ -208,7 +264,7 @@ export default function PlayerContainer() {
                 )}
 
                 <img
-                    className={`gamer-image ${
+                    className={`gamer-image gamer-${e._id} ${
                         selectedGamer === e._id && !backgroundClick
                             ? "selected"
                             : ""
@@ -243,6 +299,27 @@ export default function PlayerContainer() {
             <div className="search-bar">
                 <GamerSearchBar count={count} />
             </div>
+            {isMobile ? (
+                <div className="w-[320px] mx-auto">
+                    <ins
+                        className="kakao_ad_area"
+                        style={{ display: "none" }}
+                        data-ad-unit="DAN-dpnzA4C94ch8HynZ"
+                        data-ad-width="320"
+                        data-ad-height="100"
+                    ></ins>
+                </div>
+            ) : (
+                <div className="w-[728px]  mx-auto">
+                    <ins
+                        className="kakao_ad_area"
+                        style={{ display: "none" }}
+                        data-ad-unit="DAN-orPlGTMAwqXbMtbn"
+                        data-ad-width="320"
+                        data-ad-height="100"
+                    ></ins>
+                </div>
+            )}
             <div
                 className="tier-container"
                 onClick={() => {
@@ -251,9 +328,12 @@ export default function PlayerContainer() {
             >
                 {tierList.map((e, i) => (
                     <>
-                        <div className="tier-subject" key={i}>
-                            {e} 티어
-                        </div>
+                        {gamerList[e].length !== 0 && (
+                            <div className="tier-subject" key={i}>
+                                {e} 티어
+                            </div>
+                        )}
+
                         <div className="gamer-container">
                             {gamerList[e].map((e: any, i: any) =>
                                 renderGamer(e, i)

@@ -53,6 +53,9 @@ export type QnAProps = {
 export type SearchProps ={
   inputText:string;
   race:string;
+  tier:string;
+  onair:boolean;
+  univ:string;
 }
 
 const menuState = atom<boolean>({
@@ -117,6 +120,9 @@ const searchState = atom<SearchProps>({
   default:{
     inputText:"",
     race:"",
+    tier:"",
+    onair:false,
+    univ:"",
   }
 })
 
