@@ -126,6 +126,16 @@ const searchState = atom<SearchProps>({
   }
 })
 
+interface LoadingProps{
+  loading:boolean,
+  msg?:string,
+}
+
+const loadingState = atom<LoadingProps>({
+  key:"loadingState",
+  default:{loading:false,msg:""},
+})
+
 const timerSelector = selector<ITimerProps[]>({
   key: "timerSelector",
   get: ({ get }) => {
@@ -165,4 +175,5 @@ export {
   qnaInfoState,
   topTenGamerList,
   searchState,
+  loadingState,
 };

@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import { getWholeGamerInfo } from "../../../utils/api-util";
 import styled from "@emotion/styled";
 import GamerSearchBar from "../../shared/GamerSearchBar";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { isMobileState, searchState } from "../../../recoil/states";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+    isMobileState,
+    loadingState,
+    searchState,
+} from "../../../recoil/states";
 import _ from "lodash";
 
 const Wrapper = styled.main`
@@ -22,7 +26,7 @@ const Wrapper = styled.main`
         position: fixed;
         right: 20px;
         top: 190px;
-        z-index: 1;
+        z-index: 2;
     }
 
     .tier-container {
@@ -32,7 +36,7 @@ const Wrapper = styled.main`
         align-items: center;
         .tier-subject {
             font-size: 30px;
-            margin-bottom:30px;
+            margin-bottom: 30px;
         }
         .gamer-container {
             grid-template-columns: repeat(10, 1fr);
@@ -47,20 +51,32 @@ const Wrapper = styled.main`
                 z-index: 1;
                 cursor: pointer;
             }
-
+            
             .gamer {
                 width: 100px;
-                margin-bottom: 50px;
+                margin-bottom: 60px;
                 height: 100px;
                 position: relative;
+                .afreeca-icon{
+                    position :absolute;
+                    right:0;
+                    top:0;
+                    display:none;
+                    &.active{
+                        display:block;
+                    }
+
+                }
                 .afreeca-container {
-                    position: fixed;
+                    position: absolute;
+                    border: 3px solid red;
+                    border-radius: 10px;
+
                     min-width: 600px;
-                    left: 50%;
-                    top: 50%;
-                    transform: translate(-50%, -50%);
+                    top: 30%;
                     display: flex;
                     justify-content: center;
+                    z-index: 2;
 
                     .title {
                         font-size: 25px;
@@ -69,13 +85,11 @@ const Wrapper = styled.main`
                     }
                     .thumbnail {
                         width: 100%;
-                        z-index: 999;
                     }
                 }
 
                 &.no-played {
                     opacity: 0.3;
-                    transition: opacity 0.3s;
                 }
                 .selected {
                     border: solid 1px red;
@@ -87,15 +101,8 @@ const Wrapper = styled.main`
                 .gamer-image {
                     width: 70px;
                     height: 70px;
-                    z-index: 10;
                 }
-                .record {
-                    opacity: 0;
-                    transition: opacity 0.3s;
-                    &.active {
-                        opacity: 1;
-                    }
-                }
+                
             }
         }
     }
@@ -148,9 +155,12 @@ export default function PlayerContainer() {
     const [showThumbNail, setShowThumbNail] = useState(false);
     const [onAirGamer, setOnAirGamer] = useState("");
     const [count, setCount] = useState(0);
+    const setLoading = useSetRecoilState(loadingState);
     const isMobile = useRecoilValue(isMobileState);
 
     useEffect(() => {
+        setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
+
         getWholeGamerInfo()
             .then((result) => {
                 let copy: any = _.cloneDeep(initTierValue);
@@ -158,14 +168,31 @@ export default function PlayerContainer() {
                 for (const e of result) {
                     copy[e.standardTier]?.push(e);
                 }
-
+                copy = setPriority(copy);
                 setInitialGamerList(copy);
                 setGamerList(copy);
+                setLoading({ loading: false });
             })
             .catch((err) => {
                 console.log("err", err);
             });
+
+        return () => {
+            setLoading({ loading: false });
+        };
     }, []);
+
+    function setPriority(arr: any) {
+        let copy = _.cloneDeep(arr);
+        const priority: any = { 저그: 1, 테란: 2, 프로토스: 3 };
+        for (const key in copy) {
+            copy[key] = copy[key].sort((a: any, b: any) => {
+                return priority[a.race] - priority[b.race];
+            });
+        }
+        return copy;
+    }
+
     // [1]
     // 필터링 기능 함수
     useEffect(() => {
@@ -202,6 +229,7 @@ export default function PlayerContainer() {
 
             count += copy[key].length;
         }
+        copy = setPriority(copy);
         setGamerList(copy);
         setCount(count);
     }, [searchValue]);
@@ -251,13 +279,17 @@ export default function PlayerContainer() {
                         className="onair"
                         src="/on-air.png"
                         alt=""
+                        onClick={() => {
+                            window.open(
+                                `https://play.afreecatv.com/${e["afreeca"]["bjID"]}`
+                            );
+                        }}
                         onMouseEnter={() => {
                             setOnAirGamer(e._id);
                             setShowThumbNail(true);
                         }}
                         onMouseLeave={() => {
                             setOnAirGamer("");
-
                             setShowThumbNail(false);
                         }}
                     />
@@ -277,6 +309,10 @@ export default function PlayerContainer() {
                         setSelectedGamer(e._id);
                     }}
                 />
+                
+                <img className={`afreeca-icon ${selectedGamer === e._id &&e["afreeca"]?.["bjID"]?"active":""}`} src="/afreeca.png" onClick={()=>{
+                    window.open(`https://bj.afreecatv.com/${e["afreeca"]["bjID"]}`)
+                }} alt="" />
                 <span className={`${e.race}`}>{e._id}</span>
 
                 <div

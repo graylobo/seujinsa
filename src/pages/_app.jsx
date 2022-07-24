@@ -1,12 +1,14 @@
 import "../../styles/globals.css";
 import Navigation from "../common/components/Navigation";
 import Head from "next/head";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilValue } from "recoil";
 import More from "../common/components/More";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import FooterBar from "../common/components/FooterBar";
 import Script from "next/script";
+import Loading from "../common/components/shared/Loading";
+import { loadingState } from "../common/recoil/states";
 
 function MyApp({ Component, pageProps }) {
   const [menu, setMenu] = useState(false);
@@ -70,6 +72,7 @@ function MyApp({ Component, pageProps }) {
         <div className="flex flex-col ">
           <Navigation setMenu={setMenu} />
           <div className=" w-full  min-w-[300px] ">
+            <Loading/>
             {!menu ? <Component {...pageProps} /> : <More />}
           </div>
           <FooterBar />
