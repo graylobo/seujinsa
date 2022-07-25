@@ -9,6 +9,8 @@ import {
     searchState,
 } from "../../../recoil/states";
 import _ from "lodash";
+import { setInterval } from "timers";
+import { sleep } from "../../../utils/utils";
 
 const Wrapper = styled.main`
     margin-top: 90px;
@@ -159,29 +161,42 @@ export default function PlayerContainer() {
     const [showThumbNail, setShowThumbNail] = useState(false);
     const [onAirGamer, setOnAirGamer] = useState("");
     const [count, setCount] = useState(0);
+    const [intervalUpdateFlag, setIntervalUpdateFlag] = useState(false);
     const setLoading = useSetRecoilState(loadingState);
     const isMobile = useRecoilValue(isMobileState);
     const selectedRef = useRef<any>();
 
+    function getWholeGamerInfoWrapper() {
+        return new Promise<void>((resolve, reject) => {
+            getWholeGamerInfo()
+                .then((result) => {
+                    let copy: any = _.cloneDeep(initTierValue);
+                    // 서버에서 받아온 게이머리스트를 티어별로 분류
+                    for (const e of result) {
+                        copy[e.standardTier]?.push(e);
+                    }
+                    copy = setPriority(copy);
+                    setInitialGamerList(copy);
+                    setGamerList(copy);
+                    setIntervalUpdateFlag((e) => !e);
+                    setLoading({ loading: false });
+                    resolve();
+                })
+                .catch((err) => {
+                    console.log("err", err);
+                });
+        });
+    }
+
     useEffect(() => {
-        setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
+        (async function inner() {
+            setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
 
-        getWholeGamerInfo()
-            .then((result) => {
-                let copy: any = _.cloneDeep(initTierValue);
-                // 서버에서 받아온 게이머리스트를 티어별로 분류
-                for (const e of result) {
-                    copy[e.standardTier]?.push(e);
-                }
-                copy = setPriority(copy);
-                setInitialGamerList(copy);
-                setGamerList(copy);
-                setLoading({ loading: false });
-            })
-            .catch((err) => {
-                console.log("err", err);
-            });
-
+            while(true){
+                await getWholeGamerInfoWrapper();
+                await sleep(30000)
+            }
+        })()
         return () => {
             setLoading({ loading: false });
         };
@@ -245,7 +260,7 @@ export default function PlayerContainer() {
         copy = setPriority(copy);
         setGamerList(copy);
         setCount(count);
-    }, [searchValue, selectedGamer]);
+    }, [searchValue, selectedGamer, intervalUpdateFlag]);
 
     useEffect(() => {
         try {

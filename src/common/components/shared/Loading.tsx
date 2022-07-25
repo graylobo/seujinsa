@@ -14,7 +14,6 @@ export default function Loading({
     message,
 }: Props) {
     const loading = useRecoilValue(loadingState);
-    console.log("ll", loading.msg);
     return loading.loading ? (
         <div className="contentWrap">
             <div className="background"></div>
