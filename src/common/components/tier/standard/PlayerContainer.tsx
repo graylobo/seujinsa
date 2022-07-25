@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getWholeGamerInfo } from "../../../utils/api-util";
 import styled from "@emotion/styled";
 import GamerSearchBar from "../../shared/GamerSearchBar";
@@ -161,6 +161,7 @@ export default function PlayerContainer() {
     const [count, setCount] = useState(0);
     const setLoading = useSetRecoilState(loadingState);
     const isMobile = useRecoilValue(isMobileState);
+    const selectedRef = useRef<any>();
 
     useEffect(() => {
         setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
@@ -231,7 +232,6 @@ export default function PlayerContainer() {
                 copy[key] = copy[key].filter((e: any) => e.afreeca);
             }
             if (searchValue.recordExist) {
-                // 현재 렌더링 하려는 게이머 정보가 선택한(이미지클릭한) 게이머가 아닌경우 return null (현재 선택한 게이머는 렌더링 돼야하므로)
                 copy[key] = copy[key].filter((e: any) => {
                     if (selectedGamer !== e._id) {
                         return e._id in currentRecord;
@@ -245,7 +245,7 @@ export default function PlayerContainer() {
         copy = setPriority(copy);
         setGamerList(copy);
         setCount(count);
-    }, [searchValue]);
+    }, [searchValue, selectedGamer]);
 
     useEffect(() => {
         try {
@@ -265,6 +265,31 @@ export default function PlayerContainer() {
             setBackgroundClick(true);
         }
     }, [searchValue.inputText]);
+
+    let prev = useRef(0);
+
+    useEffect(() => {
+        try {
+            if (!searchValue.recordExist) {
+                if (prev.current > 0) {
+                    // html이 렌더링 되기전에 scroll을 하면 안되므로
+                    setTimeout(() => {
+                        scrollTo(
+                            0,
+                            (prev.current as number) - window.innerHeight / 2
+                        );
+                        prev.current = 0;
+                    }, 0);
+                }
+            } else {
+                prev.current = (
+                    selectedRef?.current.offsetParent as HTMLElement
+                ).offsetTop;
+            }
+        } catch {
+            setBackgroundClick(true);
+        }
+    }, [searchValue.recordExist]);
 
     function renderGamer(e: any, i: any) {
         const current = currentRecord[e._id]; // 현재 클릭한 게이머와 전적이 있는 게이머
@@ -315,6 +340,11 @@ export default function PlayerContainer() {
                             ? "selected"
                             : ""
                     }`}
+                    ref={
+                        selectedGamer === e._id && !backgroundClick
+                            ? selectedRef
+                            : null
+                    }
                     src={`/images/gamer/${e._id}.png`}
                     onClick={(event) => {
                         event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
