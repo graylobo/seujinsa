@@ -128,7 +128,7 @@ const tierList = [
     "6",
     "7",
     "8",
-    "벌레",
+    "아기",
     "미지정",
 ];
 
@@ -146,7 +146,7 @@ const initTierValue = {
     "6": [],
     "7": [],
     "8": [],
-    벌레: [],
+    아기: [],
     미지정: [],
 };
 
@@ -192,11 +192,11 @@ export default function PlayerContainer() {
         (async function inner() {
             setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
 
-            while(true){
+            while (true) {
                 await getWholeGamerInfoWrapper();
-                await sleep(30000)
+                await sleep(30000);
             }
-        })()
+        })();
         return () => {
             setLoading({ loading: false });
         };
@@ -439,7 +439,7 @@ export default function PlayerContainer() {
                     <>
                         {gamerList[e].length !== 0 && (
                             <div className="tier-subject" key={i}>
-                                {e} 티어
+                                {e === "아기" ? "벌레" : e} 티어
                             </div>
                         )}
 

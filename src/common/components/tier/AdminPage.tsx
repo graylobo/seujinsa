@@ -33,16 +33,14 @@ export default function AdminPage() {
 
     useEffect(() => {
         async function getGamerInfo() {
-            let some = await getWholeGamerInfo();
-            some = some.sort(function (a: GamerInfoType, b: GamerInfoType) {
+            let gamerList = await getWholeGamerInfo();
+            gamerList = gamerList.sort(function (a: GamerInfoType, b: GamerInfoType) {
                 // 한글 오름차순
                 return a._id < b._id ? -1 : a._id > b._id ? 1 : 0;
             });
 
-            console.log("some", some);
-            setGamerList(some);
+            setGamerList(gamerList);
         }
-
         getGamerInfo();
     }, []);
     function updateGamerInfo(val: string, i: number, type: string) {
