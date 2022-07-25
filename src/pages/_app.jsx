@@ -31,6 +31,7 @@ function MyApp({ Component, pageProps }) {
     <div className="">
       <Head>
         <title>스진사</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <link rel="icon" href="/staricon.ico" />
         <link

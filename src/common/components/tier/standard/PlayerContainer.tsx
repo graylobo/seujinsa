@@ -224,27 +224,27 @@ export default function PlayerContainer() {
         for (const key in copy) {
             if (searchValue.race !== "전체" && searchValue.race !== "") {
                 copy[key] = copy[key].filter(
-                    (e: any) => e.race === searchValue.race
+                    (e: any) => e._id===selectedGamer||e.race === searchValue.race
                 );
             }
             if (searchValue.tier !== "전체" && searchValue.tier !== "") {
                 copy[key] = copy[key].filter(
-                    (e: any) => e.standardTier === searchValue.tier
+                    (e: any) => e._id===selectedGamer|| e.standardTier === searchValue.tier
                 );
             }
             if (searchValue.univ !== "전체" && searchValue.univ !== "") {
                 if (searchValue.univ === "무소속") {
                     copy[key] = copy[key].filter(
-                        (e: any) => e.university === "무소속"
+                        (e: any) => e._id===selectedGamer||e.university === "무소속"
                     );
                 } else {
                     copy[key] = copy[key].filter(
-                        (e: any) => e.university === searchValue.univ
+                        (e: any) => e._id===selectedGamer||e.university === searchValue.univ
                     );
                 }
             }
             if (searchValue.onair) {
-                copy[key] = copy[key].filter((e: any) => e.afreeca);
+                copy[key] = copy[key].filter((e: any) => e._id===selectedGamer||e.afreeca);
             }
             if (searchValue.recordExist) {
                 copy[key] = copy[key].filter((e: any) => {
@@ -261,6 +261,8 @@ export default function PlayerContainer() {
         setGamerList(copy);
         setCount(count);
     }, [searchValue, selectedGamer, intervalUpdateFlag]);
+
+    
 
     useEffect(() => {
         try {
