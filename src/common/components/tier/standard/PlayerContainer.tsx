@@ -51,21 +51,26 @@ const Wrapper = styled.main`
                 z-index: 1;
                 cursor: pointer;
             }
-            
+
             .gamer {
                 width: 100px;
                 margin-bottom: 60px;
                 height: 100px;
                 position: relative;
-                .afreeca-icon{
-                    position :absolute;
-                    right:0;
-                    top:0;
-                    display:none;
-                    &.active{
-                        display:block;
+                .afreeca-icon {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    display: none;
+                    &.active {
+                        display: block;
                     }
-
+                }
+                .record {
+                    display: none;
+                    &.active {
+                        display: block;
+                    }
                 }
                 .afreeca-container {
                     position: absolute;
@@ -102,7 +107,6 @@ const Wrapper = styled.main`
                     width: 70px;
                     height: 70px;
                 }
-                
             }
         }
     }
@@ -145,7 +149,7 @@ const initTierValue = {
 };
 
 export default function PlayerContainer() {
-    const searchValue = useRecoilValue(searchState);
+    const [searchValue, setSearchValue] = useRecoilState(searchState);
     const [gamerList, setGamerList] = useState<any>(initTierValue);
     const [initialGamerList, setInitialGamerList] =
         useState<any>(initTierValue); // 서버에서 받아온 초기 데이터 (setGamerList 와 구분짓는 이유: [1]useEffect참고 )
@@ -226,6 +230,15 @@ export default function PlayerContainer() {
             if (searchValue.onair) {
                 copy[key] = copy[key].filter((e: any) => e.afreeca);
             }
+            if (searchValue.recordExist) {
+                // 현재 렌더링 하려는 게이머 정보가 선택한(이미지클릭한) 게이머가 아닌경우 return null (현재 선택한 게이머는 렌더링 돼야하므로)
+                copy[key] = copy[key].filter((e: any) => {
+                    if (selectedGamer !== e._id) {
+                        return e._id in currentRecord;
+                    }
+                    return e;
+                });
+            }
 
             count += copy[key].length;
         }
@@ -254,7 +267,8 @@ export default function PlayerContainer() {
     }, [searchValue.inputText]);
 
     function renderGamer(e: any, i: any) {
-        const current = currentRecord[e._id];
+        const current = currentRecord[e._id]; // 현재 클릭한 게이머와 전적이 있는 게이머
+
         return (
             <div
                 key={i}
@@ -309,15 +323,26 @@ export default function PlayerContainer() {
                         setSelectedGamer(e._id);
                     }}
                 />
-                
-                <img className={`afreeca-icon ${selectedGamer === e._id &&e["afreeca"]?.["bjID"]?"active":""}`} src="/afreeca.png" onClick={()=>{
-                    window.open(`https://bj.afreecatv.com/${e["afreeca"]["bjID"]}`)
-                }} alt="" />
+
+                <img
+                    className={`afreeca-icon ${
+                        selectedGamer === e._id && e["afreeca"]?.["bjID"]
+                            ? "active"
+                            : ""
+                    }`}
+                    src="/afreeca.png"
+                    onClick={() => {
+                        window.open(
+                            `https://bj.afreecatv.com/${e["afreeca"]["bjID"]}`
+                        );
+                    }}
+                    alt=""
+                />
                 <span className={`${e.race}`}>{e._id}</span>
 
                 <div
                     className={`record ${
-                        current && !backgroundClick ? "active" : ""
+                        current && !backgroundClick ? "active" : "" // 상대전적이 있고 배경화면 클릭한게 아니면 전적 보여주기
                     }`}
                 >
                     <div>
@@ -330,10 +355,11 @@ export default function PlayerContainer() {
         );
     }
 
+    const searchBarProps = { count, selectedGamer };
     return (
         <Wrapper>
             <div className="search-bar">
-                <GamerSearchBar count={count} />
+                <GamerSearchBar {...searchBarProps} />
             </div>
             {isMobile ? (
                 <div className="w-[320px] mx-auto">
@@ -360,6 +386,8 @@ export default function PlayerContainer() {
                 className="tier-container"
                 onClick={() => {
                     setBackgroundClick(true);
+                    setSelectedGamer("");
+                    setSearchValue({ ...searchValue, recordExist: false });
                 }}
             >
                 {tierList.map((e, i) => (

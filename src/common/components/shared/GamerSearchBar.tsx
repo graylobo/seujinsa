@@ -25,8 +25,19 @@ const Wrapper = styled.nav`
         .line2 {
             margin-bottom: 5px;
         }
-        .onair-box {
-            margin-left: 210px;
+
+        .checkbox-container {
+            display:flex;
+            
+            .onair-box {
+                width:70px;
+                margin-left:125px;
+            }
+            .record-exist-box{
+                .disable{
+                    color:gray;
+                }
+            }
         }
 
         .name-input {
@@ -85,7 +96,7 @@ const univList = [
     "미다스(폐교)",
     "염석대(폐교)",
 ];
-export default function GamerSearchBar({ count }: any) {
+export default function GamerSearchBar({ count,selectedGamer }: any) {
     const [state, setState] = useRecoilState(searchState);
     const [filterOn, setFilterOn] = useState(true);
     return (
@@ -153,17 +164,36 @@ export default function GamerSearchBar({ count }: any) {
                             ))}
                         </select>
                     </div>
-
-                    <div className="onair-box">
-                        <input
-                            type="checkbox"
-                            id="onair"
-                            checked={state.onair}
-                            onChange={(e) => {
-                                setState({ ...state, onair: e.target.checked });
-                            }}
-                        />
-                        <label htmlFor="onair">방송중</label>
+                    <div className="checkbox-container">
+                        <div className="onair-box">
+                            <input
+                                type="checkbox"
+                                id="onair"
+                                checked={state.onair}
+                                onChange={(e) => {
+                                    setState({
+                                        ...state,
+                                        onair: e.target.checked,
+                                    });
+                                }}
+                            />
+                            <label htmlFor="onair">방송중</label>
+                        </div>
+                        <div className="record-exist-box">
+                            <input
+                                type="checkbox"
+                                id="record-exist"
+                                checked={state.recordExist}
+                                disabled={!selectedGamer}
+                                onChange={(e) => {
+                                    setState({
+                                        ...state,
+                                        recordExist: e.target.checked,
+                                    });
+                                }}
+                            />
+                            <label className={`${!selectedGamer?"disable":""}`} htmlFor="record-exist">전적존재</label>
+                        </div>
                     </div>
 
                     <div className="count">count:{count}</div>
