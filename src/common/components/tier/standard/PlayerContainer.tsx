@@ -178,7 +178,7 @@ export default function PlayerContainer() {
 
       while (true) {
         await getWholeGamerInfoWrapper();
-        await sleep(3000000);
+        await sleep(60000);
       }
     })();
     return () => {
@@ -243,10 +243,13 @@ export default function PlayerContainer() {
 
   useEffect(() => {
     try {
-      let copy = _.cloneDeep(initialGamerList);
-      for (const key in copy) {
+     
+      const findResult = searchGamer()
+      let finded = "";
+      if(findResult.length===1){
+        finded= findResult[0]["_id"]
       }
-      const elem = document.querySelector<HTMLElement>(`.gamer-${searchValue.inputText}`);
+      const elem = document.querySelector<HTMLElement>(`.gamer-${finded || searchValue.inputText}`);
 
       const position = (elem?.offsetParent as HTMLElement).offsetTop;
 
@@ -260,6 +263,22 @@ export default function PlayerContainer() {
       setBackgroundClick(true);
     }
   }, [searchValue.inputText]);
+
+
+  function searchGamer(){
+    let copy = _.cloneDeep(initialGamerList);
+
+    let search:any = [];
+    for (const key in copy) {
+      const find = copy[key].filter((e:any)=>e._id.includes(searchValue.inputText));
+      if(find){
+        search = [...search,...find]
+      }
+    }
+
+    return search;
+
+  }
 
   let prev = useRef(0);
 
