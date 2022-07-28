@@ -96,7 +96,7 @@ const univList = [
     "미다스(폐교)",
     "염석대(폐교)",
 ];
-export default function GamerSearchBar({ count,selectedGamer }: any) {
+export default function GamerSearchBar({ count,gamerCount,selectedGamer }: any) {
     const [state, setState] = useRecoilState(searchState);
     const [filterOn, setFilterOn] = useState(true);
     return (
@@ -196,7 +196,7 @@ export default function GamerSearchBar({ count,selectedGamer }: any) {
                         </div>
                     </div>
 
-                    <div className="count">count:{count}</div>
+                    <div className="count">count:{gamerCount||count}</div>
                 </div>
             )}
         </Wrapper>

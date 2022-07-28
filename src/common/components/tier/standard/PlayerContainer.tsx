@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { getWholeGamerInfo } from "../../../utils/api-util";
 import styled from "@emotion/styled";
 import GamerSearchBar from "../../shared/GamerSearchBar";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { isMobileState, loadingState, searchState } from "../../../recoil/states";
 import _ from "lodash";
-import { sleep } from "../../../utils/utils";
+import { debounce, sleep } from "../../../utils/utils";
 
 const Wrapper = styled.main`
   margin-top: 90px;
@@ -145,6 +145,7 @@ export default function PlayerContainer() {
   const [onAirGamer, setOnAirGamer] = useState("");
   const [count, setCount] = useState(0);
   const [intervalUpdateFlag, setIntervalUpdateFlag] = useState(false);
+  const [gamerCount, setGamerCount] = useState(0); // 필터 > 이름검색시 결과 카운트 변수
   const setLoading = useSetRecoilState(loadingState);
   const isMobile = useRecoilValue(isMobileState);
   const selectedRef = useRef<any>();
@@ -178,7 +179,7 @@ export default function PlayerContainer() {
 
       while (true) {
         await getWholeGamerInfoWrapper();
-        await sleep(60000);
+        await sleep(600000);
       }
     })();
     return () => {
@@ -206,9 +207,9 @@ export default function PlayerContainer() {
     let copy = _.cloneDeep(initialGamerList);
     let count = 0;
     for (const key in copy) {
-    //   if (searchValue.inputText) {
-    //     copy[key] = copy[key].filter((e: any) => e._id.includes(searchValue.inputText));
-    //   }
+      // if (searchValue.inputText) {
+      //   copy[key] = copy[key].filter((e: any) => e._id.includes(searchValue.inputText));
+      // }
       if (searchValue.race !== "전체" && searchValue.race !== "") {
         copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.race === searchValue.race);
       }
@@ -241,43 +242,45 @@ export default function PlayerContainer() {
     setCount(count);
   }, [searchValue, selectedGamer, intervalUpdateFlag]);
 
+  const searchGamerDebounce = useCallback(debounce(searchGamer, 100), []);
+
   useEffect(() => {
     try {
-     
-      const findResult = searchGamer()
-      let finded = "";
-      if(findResult.length===1){
-        finded= findResult[0]["_id"]
+    } catch (error) {}
+    searchGamerDebounce(searchValue.inputText).then((result: any) => {
+      try {
+        let finded = "";
+        if (result?.length === 1) {
+          finded = result[0]["_id"];
+        }
+        if (searchValue.inputText) {
+          setGamerCount(result.length);
+        } else {
+          setGamerCount(0);
+        }
+        const elem = document.querySelector<HTMLElement>(`.gamer-${finded || searchValue.inputText}`);
+        const position = (elem?.offsetParent as HTMLElement)?.offsetTop;
+        if (position) {
+          scrollTo(0, (position as number) - 500);
+          elem?.click();
+        } else {
+          setBackgroundClick(true);
+        }
+      } catch {
       }
-      const elem = document.querySelector<HTMLElement>(`.gamer-${finded || searchValue.inputText}`);
-
-      const position = (elem?.offsetParent as HTMLElement).offsetTop;
-
-      if (position) {
-        scrollTo(0, (position as number) - 500);
-        elem?.click();
-      } else {
-        setBackgroundClick(true);
-      }
-    } catch {
-      setBackgroundClick(true);
-    }
+    });
   }, [searchValue.inputText]);
 
-
-  function searchGamer(){
+  function searchGamer(value: string) {
     let copy = _.cloneDeep(initialGamerList);
-
-    let search:any = [];
+    let search: any = [];
     for (const key in copy) {
-      const find = copy[key].filter((e:any)=>e._id.includes(searchValue.inputText));
-      if(find){
-        search = [...search,...find]
+      const find = copy[key].filter((e: any) => e._id.includes(value));
+      if (find) {
+        search = [...search, ...find];
       }
     }
-
     return search;
-
   }
 
   let prev = useRef(0);
@@ -369,7 +372,7 @@ export default function PlayerContainer() {
     );
   }
 
-  const searchBarProps = { count, selectedGamer };
+  const searchBarProps = { count, gamerCount, selectedGamer };
   return (
     <Wrapper>
       <div className="search-bar">
