@@ -134,6 +134,30 @@ const initTierValue = {
   미지정: [],
 };
 
+const switchData:any = {
+  "박상현(짭제)": "박상현",
+  "윤찬희(몽군)": "윤찬희",
+  "손경훈(브신)":"손경훈",
+  철구:"이예준(철구)",
+  이예준:"이예준(철구)",
+  기뉴다:"박현재(기뉴다)",
+  박현재:"박현재(기뉴다)",
+  박정일:"박정일(짭호)",
+  유규민:"유규민(초난강)",
+  빡죠스:"박종승(빡죠스)",
+  박종승:"박종승(빡죠스)",
+  장영근:"장영근(난수)",
+  박지호:"박지호(라박이)",
+  김동민:"김동민(액션구드론)",
+  윤호준:"윤호준(고도준)",
+  미동미동:"박준영(미동미동)",
+  박준영:"박준영(미동미동)",
+  허유진:"허유진(허유)",
+  박성용:"박성용(소룡)"
+};
+function nickNameSwitch(gamer:string) {
+  return switchData[gamer];
+}
 export default function PlayerContainer() {
   const [searchValue, setSearchValue] = useRecoilState(searchState);
   const [gamerList, setGamerList] = useState<any>(initTierValue);
@@ -254,6 +278,7 @@ export default function PlayerContainer() {
         let finded = "";
         if (result?.length === 1) {
           finded = result[0]["_id"];
+          finded = finded in switchData?nickNameSwitch(finded):finded;
         }
         if (searchValue.inputText) {
           setGamerCount(result.length);
@@ -261,7 +286,6 @@ export default function PlayerContainer() {
           setGamerCount(0);
         }
         const elem = document.querySelector<HTMLElement>(`.gamer-${finded || searchValue.inputText}`);
-        console.log('elem',elem)
         const position = (elem?.offsetParent as HTMLElement)?.offsetTop;
         if (position) {
           scrollTo(0, (position as number) - 500);
@@ -270,7 +294,7 @@ export default function PlayerContainer() {
           setBackgroundClick(true);
         }
       } catch {}
-    });
+    }).catch(e=>console.log('error:',e));
   }, [searchValue.inputText]);
 
   function searchGamer(value: string) {
@@ -279,6 +303,7 @@ export default function PlayerContainer() {
     for (const key in copy) {
       const find = copy[key].filter((e: any) => e._id.includes(value));
       if (find) {
+        console.log('find',find)
         search = [...search, ...find];
       }
     }
@@ -307,7 +332,8 @@ export default function PlayerContainer() {
 
   function renderGamer(gamerInfo: any, i: any) {
     const current = currentGamerRecord?.[gamerInfo._id]; // 현재 랜더링 하려는 게이머가 프로필클릭한 게이머의 상대전적 리스트에 있는 게이머라면 current에 정보 담김
-
+    let gamerClassName = gamerInfo._id in switchData ? nickNameSwitch(gamerInfo._id) : gamerInfo._id
+    
     return (
       <div key={i} className={`gamer  ${selectedGamer && !backgroundClick && (current || selectedGamer === gamerInfo._id ? "" : "no-played")} `}>
         {showThumbNail && onAirGamer === gamerInfo._id && (
@@ -338,9 +364,13 @@ export default function PlayerContainer() {
         )}
 
         <img
-          className={`gamer-image gamer-${gamerInfo._id} ${selectedGamer === gamerInfo._id && !backgroundClick ? "selected" : ""}`}
+          className={`gamer-image gamer-${gamerClassName} ${selectedGamer === gamerInfo._id && !backgroundClick ? "selected" : ""}`}
           ref={selectedGamer === gamerInfo._id && !backgroundClick ? selectedRef : null}
           src={`/images/gamer/${gamerInfo._id}.png`}
+          onError={({currentTarget})=>{
+            currentTarget.onerror=null;
+            currentTarget.src="/images/gamer/notfound.png"
+          }}
           onClick={(event) => {
             event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
             setBackgroundClick(false);

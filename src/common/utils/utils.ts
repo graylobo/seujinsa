@@ -13,7 +13,7 @@ export function debounce(callback: (...args: any) => any, delay: number) {
     return new Promise((resolve, reject) => {
       clearTimeout(timer);
       timer = setTimeout(() => {
-        resolve(callback(...args));
+        resolve(callback(...args))
       }, delay);
     });
   };

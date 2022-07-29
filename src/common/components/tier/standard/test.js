@@ -1,20 +1,4 @@
-function some(){
-    return new Promise((res,rej)=>{
-        setTimeout(() => {
-                console.log("1ck")
-                setTimeout(() => {
-                    console.log("2ck")
-                }, 3000);
-        }, 3000);
-    })
-}
+const some = ["박상현(짭제)","박상현","하위"]
 
-
-function test(){
-    console.log("실행")
-    some().then(e=>{
-        console.log('완',e)
-    })
-}
-
-test()
+let test = some.filter(e=>e.includes("짭제"))
+test
