@@ -59,7 +59,6 @@ export default function AdminPage() {
                 copyGamerList[i].nickName = val;
                 break;
             case "standardTier":
-                console.log('val',val)
                 copyGamerList[i].standardTier = val;
                 break;
         }

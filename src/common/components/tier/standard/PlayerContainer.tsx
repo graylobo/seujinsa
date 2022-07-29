@@ -139,7 +139,7 @@ export default function PlayerContainer() {
   const [gamerList, setGamerList] = useState<any>(initTierValue);
   const [initialGamerList, setInitialGamerList] = useState<any>(initTierValue); // 서버에서 받아온 초기 데이터 (setGamerList 와 구분짓는 이유: [1] useEffect참고 )
   const [selectedGamer, setSelectedGamer] = useState("");
-  const [currentRecord, setCurrentRecord] = useState<any>({});
+  const [currentGamerRecord, setCurrentGamerRecord] = useState<any>({}); // 현재 클릭한 게이머의 상대전적 정보가 있는 리스트
   const [backgroundClick, setBackgroundClick] = useState(false);
   const [showThumbNail, setShowThumbNail] = useState(false);
   const [onAirGamer, setOnAirGamer] = useState("");
@@ -154,7 +154,6 @@ export default function PlayerContainer() {
     return new Promise<void>((resolve, reject) => {
       getWholeGamerInfo()
         .then((result) => {
-          console.log("res", result);
           let copy: any = _.cloneDeep(initTierValue);
           // 서버에서 받아온 게이머리스트를 티어별로 분류
           for (const e of result) {
@@ -179,7 +178,7 @@ export default function PlayerContainer() {
 
       while (true) {
         await getWholeGamerInfoWrapper();
-        await sleep(600000);
+        await sleep(60000);
       }
     })();
     return () => {
@@ -214,7 +213,12 @@ export default function PlayerContainer() {
         copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.race === searchValue.race);
       }
       if (searchValue.tier !== "전체" && searchValue.tier !== "") {
-        copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.standardTier === searchValue.tier);
+        copy[key] = copy[key].filter((e: any) => {
+          if (e.standardTier === "아기") {
+            e.standardTier = "벌레";
+          }
+          return e._id === selectedGamer || e.standardTier === searchValue.tier;
+        });
       }
       if (searchValue.univ !== "전체" && searchValue.univ !== "") {
         if (searchValue.univ === "무소속") {
@@ -229,7 +233,7 @@ export default function PlayerContainer() {
       if (searchValue.recordExist) {
         copy[key] = copy[key].filter((e: any) => {
           if (selectedGamer !== e._id) {
-            return e._id in currentRecord;
+            return e._id in currentGamerRecord;
           }
           return e;
         });
@@ -245,8 +249,6 @@ export default function PlayerContainer() {
   const searchGamerDebounce = useCallback(debounce(searchGamer, 100), []);
 
   useEffect(() => {
-    try {
-    } catch (error) {}
     searchGamerDebounce(searchValue.inputText).then((result: any) => {
       try {
         let finded = "";
@@ -259,6 +261,7 @@ export default function PlayerContainer() {
           setGamerCount(0);
         }
         const elem = document.querySelector<HTMLElement>(`.gamer-${finded || searchValue.inputText}`);
+        console.log('elem',elem)
         const position = (elem?.offsetParent as HTMLElement)?.offsetTop;
         if (position) {
           scrollTo(0, (position as number) - 500);
@@ -266,8 +269,7 @@ export default function PlayerContainer() {
         } else {
           setBackgroundClick(true);
         }
-      } catch {
-      }
+      } catch {}
     });
   }, [searchValue.inputText]);
 
@@ -303,29 +305,29 @@ export default function PlayerContainer() {
     }
   }, [searchValue.recordExist]);
 
-  function renderGamer(e: any, i: any) {
-    const current = currentRecord?.[e._id]; // 현재 클릭한 게이머와 전적이 있는 게이머
+  function renderGamer(gamerInfo: any, i: any) {
+    const current = currentGamerRecord?.[gamerInfo._id]; // 현재 랜더링 하려는 게이머가 프로필클릭한 게이머의 상대전적 리스트에 있는 게이머라면 current에 정보 담김
 
     return (
-      <div key={i} className={`gamer  ${selectedGamer && !backgroundClick && (current || selectedGamer === e._id ? "" : "no-played")} `}>
-        {showThumbNail && onAirGamer === e._id && (
+      <div key={i} className={`gamer  ${selectedGamer && !backgroundClick && (current || selectedGamer === gamerInfo._id ? "" : "no-played")} `}>
+        {showThumbNail && onAirGamer === gamerInfo._id && (
           <div className="afreeca-container">
-            <div className="title">{e["afreeca"]["title"]}</div>
-            <div className="viewers">{e["afreeca"]["viewers"]}</div>
-            <img className="thumbnail" src={e["afreeca"]["imgPath"]}></img>
+            <div className="title">{gamerInfo["afreeca"]["title"]}</div>
+            <div className="viewers">{gamerInfo["afreeca"]["viewers"]}</div>
+            <img className="thumbnail" src={gamerInfo["afreeca"]["imgPath"]}></img>
           </div>
         )}
 
-        {e.afreeca && (
+        {gamerInfo.afreeca && (
           <img
             className="onair"
             src="/on-air.png"
             alt=""
             onClick={() => {
-              window.open(`https://play.afreecatv.com/${e["afreeca"]["bjID"]}`);
+              window.open(`https://play.afreecatv.com/${gamerInfo["afreeca"]["bjID"]}`);
             }}
             onMouseEnter={() => {
-              setOnAirGamer(e._id);
+              setOnAirGamer(gamerInfo._id);
               setShowThumbNail(true);
             }}
             onMouseLeave={() => {
@@ -336,26 +338,26 @@ export default function PlayerContainer() {
         )}
 
         <img
-          className={`gamer-image gamer-${e._id} ${selectedGamer === e._id && !backgroundClick ? "selected" : ""}`}
-          ref={selectedGamer === e._id && !backgroundClick ? selectedRef : null}
-          src={`/images/gamer/${e._id}.png`}
+          className={`gamer-image gamer-${gamerInfo._id} ${selectedGamer === gamerInfo._id && !backgroundClick ? "selected" : ""}`}
+          ref={selectedGamer === gamerInfo._id && !backgroundClick ? selectedRef : null}
+          src={`/images/gamer/${gamerInfo._id}.png`}
           onClick={(event) => {
             event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
             setBackgroundClick(false);
-            setCurrentRecord(e.record);
-            setSelectedGamer(e._id);
+            setCurrentGamerRecord(gamerInfo.record);
+            setSelectedGamer(gamerInfo._id);
           }}
         />
 
         <img
-          className={`afreeca-icon ${selectedGamer === e._id && e["afreeca"]?.["bjID"] ? "active" : ""}`}
+          className={`afreeca-icon ${selectedGamer === gamerInfo._id && gamerInfo["afreeca"]?.["bjID"] ? "active" : ""}`}
           src="/afreeca.png"
           onClick={() => {
-            window.open(`https://bj.afreecatv.com/${e["afreeca"]["bjID"]}`);
+            window.open(`https://bj.afreecatv.com/${gamerInfo["afreeca"]["bjID"]}`);
           }}
           alt=""
         />
-        <span className={`${e.race}`}>{e._id}</span>
+        <span className={`${gamerInfo.race}`}>{gamerInfo._id}</span>
 
         <div
           className={`record ${
