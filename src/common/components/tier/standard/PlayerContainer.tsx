@@ -254,7 +254,6 @@ export default function PlayerContainer() {
       if (searchValue.onair) {
         copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.afreeca);
         if(searchValue.spon){
-          console.log('copy[key]',copy[key])
         copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.afreeca.title.includes("스폰"));
 
         }
@@ -276,7 +275,7 @@ export default function PlayerContainer() {
     setCount(count);
   }, [searchValue, selectedGamer, intervalUpdateFlag]);
 
-  const searchGamerDebounce = useCallback(debounce(searchGamer, 100), []);
+  const searchGamerDebounce = useCallback(debounce(searchGamer, 100), [initialGamerList]);
 
   useEffect(() => {
     searchGamerDebounce(searchValue.inputText).then((result: any) => {
@@ -291,7 +290,6 @@ export default function PlayerContainer() {
         } else {
           setGamerCount(0);
         }
-        console.log('finded',finded)
         const elem = document.querySelector<HTMLElement>(`.gamer-${finded || searchValue.inputText}`);
         const position = (elem?.offsetParent as HTMLElement)?.offsetTop;
         if (position) {
@@ -310,7 +308,6 @@ export default function PlayerContainer() {
     for (const key in copy) {
       const find = copy[key].filter((e: any) => e._id.includes(value));
       if (find) {
-        console.log('find',find)
         search = [...search, ...find];
       }
     }
