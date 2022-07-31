@@ -28,12 +28,21 @@ const Wrapper = styled.nav`
 
         .checkbox-container {
             display:flex;
+            margin-left:90px;
             
             .onair-box {
-                width:70px;
-                margin-left:125px;
+                width:130px;
+            }
+            .spon-box{
+                width:100px;
+                .disable{
+                    color:gray;
+                }
+
             }
             .record-exist-box{
+                width:180px;
+
                 .disable{
                     color:gray;
                 }
@@ -178,6 +187,21 @@ export default function GamerSearchBar({ count,gamerCount,selectedGamer }: any) 
                                 }}
                             />
                             <label htmlFor="onair">방송중</label>
+                        </div>
+                        <div className="spon-box">
+                            <input
+                                type="checkbox"
+                                id="spon"
+                                checked={state.spon}
+                                disabled={!state.onair}
+                                onChange={(e) => {
+                                    setState({
+                                        ...state,
+                                        spon: e.target.checked,
+                                    });
+                                }}
+                            />
+                            <label className={!state.onair?"disable":""} htmlFor="spon">스폰</label>
                         </div>
                         <div className="record-exist-box">
                             <input

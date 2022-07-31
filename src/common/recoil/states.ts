@@ -55,6 +55,7 @@ export type SearchProps ={
   race:string;
   tier:string;
   onair:boolean;
+  spon:boolean;
   recordExist:boolean;
   univ:string;
 }
@@ -123,6 +124,7 @@ const searchState = atom<SearchProps>({
     race:"",
     tier:"",
     onair:false,
+    spon:false,
     recordExist:false,
     univ:"",
   }

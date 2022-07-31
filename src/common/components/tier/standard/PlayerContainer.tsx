@@ -36,9 +36,9 @@ const Wrapper = styled.main`
       margin-bottom: 30px;
     }
     .gamer-container {
-      grid-template-columns: repeat(10, 1fr);
-      place-items: center;
       display: grid;
+      width:100%;
+      grid-template-columns: repeat(auto-fill, minmax(100px,1fr));
       .onair {
         width: 50px;
         height: 50px;
@@ -253,7 +253,13 @@ export default function PlayerContainer() {
       }
       if (searchValue.onair) {
         copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.afreeca);
+        if(searchValue.spon){
+          console.log('copy[key]',copy[key])
+        copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.afreeca.title.includes("스폰"));
+
+        }
       }
+      
       if (searchValue.recordExist) {
         copy[key] = copy[key].filter((e: any) => {
           if (selectedGamer !== e._id) {
