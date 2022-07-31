@@ -285,6 +285,7 @@ export default function PlayerContainer() {
         } else {
           setGamerCount(0);
         }
+        console.log('finded',finded)
         const elem = document.querySelector<HTMLElement>(`.gamer-${finded || searchValue.inputText}`);
         const position = (elem?.offsetParent as HTMLElement)?.offsetTop;
         if (position) {
