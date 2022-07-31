@@ -19,15 +19,19 @@ const Wrapper = styled.main`
   .프로토스 {
     color: yellow;
   }
-  .search-bar {
-    position: fixed;
-    right: 20px;
-    top: 190px;
+  .stick-container {
+    position: sticky;
+    top: 10%;
     z-index: 2;
+
+    .search-bar {
+      position: absolute;
+      right: 5%;
+    }
   }
 
   .tier-container {
-    margin-top: 300px;
+    margin-top: 200px;
     display: grid;
     justify-items: center;
     align-items: center;
@@ -36,9 +40,10 @@ const Wrapper = styled.main`
       margin-bottom: 30px;
     }
     .gamer-container {
+      padding: 30px;
       display: grid;
-      width:100%;
-      grid-template-columns: repeat(auto-fill, minmax(100px,1fr));
+      width: 100%;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       .onair {
         width: 50px;
         height: 50px;
@@ -134,28 +139,28 @@ const initTierValue = {
   미지정: [],
 };
 
-const switchData:any = {
+const switchData: any = {
   "박상현(짭제)": "박상현",
   "윤찬희(몽군)": "윤찬희",
-  "손경훈(브신)":"손경훈",
-  철구:"이예준(철구)",
-  이예준:"이예준(철구)",
-  기뉴다:"박현재(기뉴다)",
-  박현재:"박현재(기뉴다)",
-  박정일:"박정일(짭호)",
-  유규민:"유규민(초난강)",
-  빡죠스:"박종승(빡죠스)",
-  박종승:"박종승(빡죠스)",
-  장영근:"장영근(난수)",
-  박지호:"박지호(라박이)",
-  김동민:"김동민(액션구드론)",
-  윤호준:"윤호준(고도준)",
-  미동미동:"박준영(미동미동)",
-  박준영:"박준영(미동미동)",
-  허유진:"허유진(허유)",
-  박성용:"박성용(소룡)"
+  "손경훈(브신)": "손경훈",
+  철구: "이예준(철구)",
+  이예준: "이예준(철구)",
+  기뉴다: "박현재(기뉴다)",
+  박현재: "박현재(기뉴다)",
+  박정일: "박정일(짭호)",
+  유규민: "유규민(초난강)",
+  빡죠스: "박종승(빡죠스)",
+  박종승: "박종승(빡죠스)",
+  장영근: "장영근(난수)",
+  박지호: "박지호(라박이)",
+  김동민: "김동민(액션구드론)",
+  윤호준: "윤호준(고도준)",
+  미동미동: "박준영(미동미동)",
+  박준영: "박준영(미동미동)",
+  허유진: "허유진(허유)",
+  박성용: "박성용(소룡)",
 };
-function nickNameSwitch(gamer:string) {
+function nickNameSwitch(gamer: string) {
   return switchData[gamer];
 }
 export default function PlayerContainer() {
@@ -253,12 +258,11 @@ export default function PlayerContainer() {
       }
       if (searchValue.onair) {
         copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.afreeca);
-        if(searchValue.spon){
-        copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.afreeca.title.includes("스폰"));
-
+        if (searchValue.spon) {
+          copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.afreeca.title.includes("스폰"));
         }
       }
-      
+
       if (searchValue.recordExist) {
         copy[key] = copy[key].filter((e: any) => {
           if (selectedGamer !== e._id) {
@@ -278,28 +282,30 @@ export default function PlayerContainer() {
   const searchGamerDebounce = useCallback(debounce(searchGamer, 100), [initialGamerList]);
 
   useEffect(() => {
-    searchGamerDebounce(searchValue.inputText).then((result: any) => {
-      try {
-        let finded = "";
-        if (result?.length === 1) {
-          finded = result[0]["_id"];
-          finded = finded in switchData?nickNameSwitch(finded):finded;
-        }
-        if (searchValue.inputText) {
-          setGamerCount(result.length);
-        } else {
-          setGamerCount(0);
-        }
-        const elem = document.querySelector<HTMLElement>(`.gamer-${finded || searchValue.inputText}`);
-        const position = (elem?.offsetParent as HTMLElement)?.offsetTop;
-        if (position) {
-          scrollTo(0, (position as number) - 500);
-          elem?.click();
-        } else {
-          setBackgroundClick(true);
-        }
-      } catch {}
-    }).catch(e=>console.log('error:',e));
+    searchGamerDebounce(searchValue.inputText)
+      .then((result: any) => {
+        try {
+          let finded = "";
+          if (result?.length === 1) {
+            finded = result[0]["_id"];
+            finded = finded in switchData ? nickNameSwitch(finded) : finded;
+          }
+          if (searchValue.inputText) {
+            setGamerCount(result.length);
+          } else {
+            setGamerCount(0);
+          }
+          const elem = document.querySelector<HTMLElement>(`.gamer-${finded || searchValue.inputText}`);
+          const position = (elem?.offsetParent as HTMLElement)?.offsetTop;
+          if (position) {
+            scrollTo(0, (position as number) - 500);
+            elem?.click();
+          } else {
+            setBackgroundClick(true);
+          }
+        } catch {}
+      })
+      .catch((e) => console.log("error:", e));
   }, [searchValue.inputText]);
 
   function searchGamer(value: string) {
@@ -336,8 +342,8 @@ export default function PlayerContainer() {
 
   function renderGamer(gamerInfo: any, i: any) {
     const current = currentGamerRecord?.[gamerInfo._id]; // 현재 랜더링 하려는 게이머가 프로필클릭한 게이머의 상대전적 리스트에 있는 게이머라면 current에 정보 담김
-    let gamerClassName = gamerInfo._id in switchData ? nickNameSwitch(gamerInfo._id) : gamerInfo._id
-    
+    let gamerClassName = gamerInfo._id in switchData ? nickNameSwitch(gamerInfo._id) : gamerInfo._id;
+
     return (
       <div key={i} className={`gamer  ${selectedGamer && !backgroundClick && (current || selectedGamer === gamerInfo._id ? "" : "no-played")} `}>
         {showThumbNail && onAirGamer === gamerInfo._id && (
@@ -371,9 +377,9 @@ export default function PlayerContainer() {
           className={`gamer-image gamer-${gamerClassName} ${selectedGamer === gamerInfo._id && !backgroundClick ? "selected" : ""}`}
           ref={selectedGamer === gamerInfo._id && !backgroundClick ? selectedRef : null}
           src={`/images/gamer/${gamerInfo._id}.png`}
-          onError={({currentTarget})=>{
-            currentTarget.onerror=null;
-            currentTarget.src="/images/gamer/notfound.png"
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null;
+            currentTarget.src = "/images/gamer/notfound.png";
           }}
           onClick={(event) => {
             event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
@@ -411,11 +417,8 @@ export default function PlayerContainer() {
   const searchBarProps = { count, gamerCount, selectedGamer };
   return (
     <Wrapper>
-      <div className="search-bar">
-        <GamerSearchBar {...searchBarProps} />
-      </div>
       {isMobile ? (
-        <div className="w-[320px] mx-auto">
+        <aside className="w-[320px] mx-auto">
           <ins
             className="kakao_ad_area"
             style={{ display: "none" }}
@@ -423,9 +426,9 @@ export default function PlayerContainer() {
             data-ad-width="320"
             data-ad-height="100"
           ></ins>
-        </div>
+        </aside>
       ) : (
-        <div className="w-[728px]  mx-auto">
+        <aside className="w-[728px]  mx-auto">
           <ins
             className="kakao_ad_area"
             style={{ display: "none" }}
@@ -433,8 +436,14 @@ export default function PlayerContainer() {
             data-ad-width="320"
             data-ad-height="100"
           ></ins>
-        </div>
+        </aside>
       )}
+      <div className="stick-container">
+        <div className="search-bar">
+          <GamerSearchBar {...searchBarProps} />
+        </div>
+      </div>
+
       <div
         className="tier-container"
         onClick={() => {

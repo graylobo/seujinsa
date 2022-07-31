@@ -10,11 +10,11 @@ export default function Navigation({ setMenu }) {
   const [gamerInfo, setGamerInfo] = useRecoilState(gamerState);
   //모바일 사이즈여부 체크
   function handleWindowSizeChange() {
-    setIsMobile(window.innerWidth <= 768);
+    setIsMobile(window.innerWidth <= 1023);
   }
   useEffect(() => {
     window.addEventListener("resize", handleWindowSizeChange);
-
+    handleWindowSizeChange()
     var themeToggleDarkIcon = document.getElementById("theme-toggle-dark-icon");
     var themeToggleLightIcon = document.getElementById(
       "theme-toggle-light-icon"
