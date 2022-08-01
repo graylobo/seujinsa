@@ -98,6 +98,7 @@ const Wrapper = styled.main`
     display: grid;
     justify-items: center;
     align-items: center;
+
     .tier-subject {
       font-size: 30px;
       margin-bottom: 30px;
@@ -105,14 +106,15 @@ const Wrapper = styled.main`
     .gamer-container {
       padding: 30px;
       display: grid;
-      width: 100%;
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      text-align: center;
+
       .onair {
         width: 50px;
         height: 50px;
         position: absolute;
         top: -30px;
-        left: 10px;
+        left: 25px;
         z-index: 1;
         cursor: pointer;
       }
@@ -124,7 +126,10 @@ const Wrapper = styled.main`
         position: relative;
         .afreeca-icon {
           position: absolute;
-          right: 0;
+          width:20px;
+          height:20px;
+          right: -8px;
+          cursor: pointer;
           top: 0;
           display: none;
           &.active {
@@ -145,6 +150,9 @@ const Wrapper = styled.main`
           border: solid 1px red;
         }
         img {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
           border-radius: 10px;
         }
 
@@ -307,9 +315,9 @@ export default function PlayerContainer() {
     setCount(count);
   }, [searchValue, selectedGamer, intervalUpdateFlag]);
 
-  useEffect(()=>{
-    setShowThumbNail(false)
-  },[searchValue])
+  useEffect(() => {
+    setShowThumbNail(false);
+  }, [searchValue]);
 
   const searchGamerDebounce = useCallback(debounce(searchGamer, 100), [initialGamerList]);
 
@@ -483,11 +491,6 @@ export default function PlayerContainer() {
   const searchBarProps = { count, gamerCount, selectedGamer };
   return (
     <Wrapper>
-      <div className={`afreeca-container ${showThumbNail && onAirGamer === selectedGamer._id ? "" : "disable"}`} ref={onAirThumbNailRef}>
-        <div className="title">{selectedGamer["afreeca"]?.["title"]}</div>
-        <div className="viewers">{selectedGamer["afreeca"]?.["viewers"]}</div>
-        <img className="thumbnail" src={selectedGamer["afreeca"]?.["imgPath"]}></img>
-      </div>
       {isMobile ? (
         <aside className="w-[320px] mx-auto">
           <ins
@@ -509,6 +512,11 @@ export default function PlayerContainer() {
           ></ins>
         </aside>
       )}
+      <div className={`afreeca-container ${showThumbNail && onAirGamer === selectedGamer._id ? "" : "disable"}`} ref={onAirThumbNailRef}>
+        <div className="title">{selectedGamer["afreeca"]?.["title"]}</div>
+        <div className="viewers">{selectedGamer["afreeca"]?.["viewers"]}</div>
+        <img className="thumbnail" src={selectedGamer["afreeca"]?.["imgPath"]}></img>
+      </div>
       <div className="stick-container">
         <div className="search-bar">
           <GamerSearchBar {...searchBarProps} />
@@ -531,7 +539,7 @@ export default function PlayerContainer() {
               </div>
             )}
 
-            <div className="gamer-container">{gamerList[e].map((e: any, i: any) => renderGamer(e, i))}</div>
+            <div className="gamer-container" style={isMobile?{width:"100%"}:{width:"800px"}}>{gamerList[e].map((e: any, i: any) => renderGamer(e, i))}</div>
           </>
         ))}
       </div>
