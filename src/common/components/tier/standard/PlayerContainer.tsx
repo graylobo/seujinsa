@@ -9,7 +9,70 @@ import { debounce, sleep } from "../../../utils/utils";
 
 const Wrapper = styled.main`
   margin-top: 90px;
+  @media screen and (max-width: 1023px) {
+    .afreeca-container {
+      position: relative;
+      border: 3px solid red;
+      border-radius: 10px;
+      min-width: 100vw;
+      min-height: 250px;
+      display: flex;
+      justify-content: center;
+      z-index: 2;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+      &.disable {
+        display: none;
+      }
 
+      .title {
+        font-size: 20px;
+        position: absolute;
+        top: 10px;
+      }
+
+      .viewers {
+        position: absolute;
+        font-size: 20px;
+        bottom: 0px;
+      }
+      .thumbnail {
+        width: 100%;
+      }
+    }
+  }
+  @media screen and (min-width: 1024px) {
+    .afreeca-container {
+      position: absolute;
+      border: 3px solid red;
+      border-radius: 10px;
+      min-width: 600px;
+      display: flex;
+      justify-content: center;
+      z-index: 2;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+      &.disable {
+        display: none;
+      }
+      .title {
+        font-size: 25px;
+        position: absolute;
+        top: 10px;
+      }
+
+      .viewers {
+        position: absolute;
+        font-size: 30px;
+        bottom: 0px;
+      }
+      .thumbnail {
+        width: 100%;
+      }
+    }
+  }
   .테란 {
     color: blue;
   }
@@ -72,31 +135,6 @@ const Wrapper = styled.main`
           display: none;
           &.active {
             display: block;
-          }
-        }
-        .afreeca-container {
-          position: absolute;
-          border: 3px solid red;
-          border-radius: 10px;
-          min-width: 600px;
-          display: flex;
-          justify-content: center;
-          z-index: 2;
-          bottom: 150px;
-
-          .title {
-            font-size: 25px;
-            position: absolute;
-            top: 10px;
-          }
-
-          .viewers {
-            position: absolute;
-            font-size: 30px;
-            bottom: 0px;
-          }
-          .thumbnail {
-            width: 100%;
           }
         }
 
@@ -167,7 +205,7 @@ export default function PlayerContainer() {
   const [searchValue, setSearchValue] = useRecoilState(searchState);
   const [gamerList, setGamerList] = useState<any>(initTierValue);
   const [initialGamerList, setInitialGamerList] = useState<any>(initTierValue); // 서버에서 받아온 초기 데이터 (setGamerList 와 구분짓는 이유: [1] useEffect참고 )
-  const [selectedGamer, setSelectedGamer] = useState("");
+  const [selectedGamer, setSelectedGamer] = useState<any>({});
   const [currentGamerRecord, setCurrentGamerRecord] = useState<any>({}); // 현재 클릭한 게이머의 상대전적 정보가 있는 리스트
   const [backgroundClick, setBackgroundClick] = useState(false);
   const [showThumbNail, setShowThumbNail] = useState(false);
@@ -178,6 +216,7 @@ export default function PlayerContainer() {
   const setLoading = useSetRecoilState(loadingState);
   const isMobile = useRecoilValue(isMobileState);
   const selectedRef = useRef<any>();
+  const onAirThumbNailRef = useRef<any>();
 
   function getWholeGamerInfoWrapper() {
     return new Promise<void>((resolve, reject) => {
@@ -215,17 +254,6 @@ export default function PlayerContainer() {
     };
   }, []);
 
-  function setPriority(arr: any) {
-    let copy = _.cloneDeep(arr);
-    const priority: any = { 저그: 1, 테란: 2, 프로토스: 3 };
-    for (const key in copy) {
-      copy[key] = copy[key].sort((a: any, b: any) => {
-        return priority[a.race] - priority[b.race];
-      });
-    }
-    return copy;
-  }
-
   // [1]
   // 필터링 기능 함수
   useEffect(() => {
@@ -239,33 +267,33 @@ export default function PlayerContainer() {
       //   copy[key] = copy[key].filter((e: any) => e._id.includes(searchValue.inputText));
       // }
       if (searchValue.race !== "전체" && searchValue.race !== "") {
-        copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.race === searchValue.race);
+        copy[key] = copy[key].filter((e: any) => e._id === selectedGamer["_id"] || e.race === searchValue.race);
       }
       if (searchValue.tier !== "전체" && searchValue.tier !== "") {
         copy[key] = copy[key].filter((e: any) => {
           if (e.standardTier === "아기") {
             e.standardTier = "벌레";
           }
-          return e._id === selectedGamer || e.standardTier === searchValue.tier;
+          return e._id === selectedGamer["_id"] || e.standardTier === searchValue.tier;
         });
       }
       if (searchValue.univ !== "전체" && searchValue.univ !== "") {
         if (searchValue.univ === "무소속") {
-          copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.university === "무소속");
+          copy[key] = copy[key].filter((e: any) => e._id === selectedGamer["_id"] || e.university === "무소속");
         } else {
-          copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.university === searchValue.univ);
+          copy[key] = copy[key].filter((e: any) => e._id === selectedGamer["_id"] || e.university === searchValue.univ);
         }
       }
       if (searchValue.onair) {
-        copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.afreeca);
+        copy[key] = copy[key].filter((e: any) => e._id === selectedGamer["_id"] || e.afreeca);
         if (searchValue.spon) {
-          copy[key] = copy[key].filter((e: any) => e._id === selectedGamer || e.afreeca.title.includes("스폰"));
+          copy[key] = copy[key].filter((e: any) => e._id === selectedGamer["_id"] || e.afreeca.title.includes("스폰"));
         }
       }
 
       if (searchValue.recordExist) {
         copy[key] = copy[key].filter((e: any) => {
-          if (selectedGamer !== e._id) {
+          if (selectedGamer["_id"] !== e._id) {
             return e._id in currentGamerRecord;
           }
           return e;
@@ -278,6 +306,10 @@ export default function PlayerContainer() {
     setGamerList(copy);
     setCount(count);
   }, [searchValue, selectedGamer, intervalUpdateFlag]);
+
+  useEffect(()=>{
+    setShowThumbNail(false)
+  },[searchValue])
 
   const searchGamerDebounce = useCallback(debounce(searchGamer, 100), [initialGamerList]);
 
@@ -307,19 +339,6 @@ export default function PlayerContainer() {
       })
       .catch((e) => console.log("error:", e));
   }, [searchValue.inputText]);
-
-  function searchGamer(value: string) {
-    let copy = _.cloneDeep(initialGamerList);
-    let search: any = [];
-    for (const key in copy) {
-      const find = copy[key].filter((e: any) => e._id.includes(value));
-      if (find) {
-        search = [...search, ...find];
-      }
-    }
-    return search;
-  }
-
   let prev = useRef(0);
 
   useEffect(() => {
@@ -340,20 +359,43 @@ export default function PlayerContainer() {
     }
   }, [searchValue.recordExist]);
 
+  useEffect(() => {
+    if (backgroundClick) {
+      setShowThumbNail(false);
+    }
+  }, [backgroundClick]);
+
+  function setPriority(arr: any) {
+    let copy = _.cloneDeep(arr);
+    const priority: any = { 저그: 1, 테란: 2, 프로토스: 3 };
+    for (const key in copy) {
+      copy[key] = copy[key].sort((a: any, b: any) => {
+        return priority[a.race] - priority[b.race];
+      });
+    }
+    return copy;
+  }
+
+  function searchGamer(value: string) {
+    let copy = _.cloneDeep(initialGamerList);
+    let search: any = [];
+    for (const key in copy) {
+      const find = copy[key].filter((e: any) => e._id.includes(value));
+      if (find) {
+        search = [...search, ...find];
+      }
+    }
+    return search;
+  }
   function renderGamer(gamerInfo: any, i: any) {
     const current = currentGamerRecord?.[gamerInfo._id]; // 현재 랜더링 하려는 게이머가 프로필클릭한 게이머의 상대전적 리스트에 있는 게이머라면 current에 정보 담김
     let gamerClassName = gamerInfo._id in switchData ? nickNameSwitch(gamerInfo._id) : gamerInfo._id;
 
     return (
-      <div key={i} className={`gamer  ${selectedGamer && !backgroundClick && (current || selectedGamer === gamerInfo._id ? "" : "no-played")} `}>
-        {showThumbNail && onAirGamer === gamerInfo._id && (
-          <div className="afreeca-container">
-            <div className="title">{gamerInfo["afreeca"]["title"]}</div>
-            <div className="viewers">{gamerInfo["afreeca"]["viewers"]}</div>
-            <img className="thumbnail" src={gamerInfo["afreeca"]["imgPath"]}></img>
-          </div>
-        )}
-
+      <div
+        key={i}
+        className={`gamer  ${selectedGamer["_id"] && !backgroundClick && (current || selectedGamer["_id"] === gamerInfo._id ? "" : "no-played")}`}
+      >
         {gamerInfo.afreeca && (
           <img
             className="onair"
@@ -362,35 +404,59 @@ export default function PlayerContainer() {
             onClick={() => {
               window.open(`https://play.afreecatv.com/${gamerInfo["afreeca"]["bjID"]}`);
             }}
-            onMouseEnter={() => {
-              setOnAirGamer(gamerInfo._id);
-              setShowThumbNail(true);
-            }}
-            onMouseLeave={() => {
-              setOnAirGamer("");
-              setShowThumbNail(false);
-            }}
+            // onMouseEnter={() => {
+            //   setOnAirGamer(gamerInfo._id);
+            //   setShowThumbNail(true);
+            // }}
+            // onMouseLeave={() => {
+            //   setOnAirGamer("");
+            //   setShowThumbNail(false);
+            // }}
           />
         )}
 
         <img
-          className={`gamer-image gamer-${gamerClassName} ${selectedGamer === gamerInfo._id && !backgroundClick ? "selected" : ""}`}
-          ref={selectedGamer === gamerInfo._id && !backgroundClick ? selectedRef : null}
+          className={`gamer-image gamer-${gamerClassName} ${selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? "selected" : ""}`}
+          ref={selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? selectedRef : null}
           src={`/images/gamer/${gamerInfo._id}.png`}
           onError={({ currentTarget }) => {
             currentTarget.onerror = null;
             currentTarget.src = "/images/gamer/notfound.png";
           }}
-          onClick={(event) => {
+          onClick={(event: any) => {
             event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
             setBackgroundClick(false);
             setCurrentGamerRecord(gamerInfo.record);
-            setSelectedGamer(gamerInfo._id);
+            setSelectedGamer(gamerInfo);
+
+            if (gamerInfo.afreeca) {
+              if (onAirThumbNailRef.current) {
+                if (showThumbNail) {
+                  if (!isMobile) {
+                    onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
+                  }
+                  onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 250 + "px";
+                } else {
+                  if (isMobile) {
+                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop + "px";
+                  } else {
+                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 254 + "px";
+                    onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
+                  }
+                }
+              }
+
+              setOnAirGamer(gamerInfo._id);
+              setShowThumbNail(true);
+            } else {
+              setOnAirGamer("");
+              setShowThumbNail(false);
+            }
           }}
         />
 
         <img
-          className={`afreeca-icon ${selectedGamer === gamerInfo._id && gamerInfo["afreeca"]?.["bjID"] ? "active" : ""}`}
+          className={`afreeca-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["afreeca"]?.["bjID"] ? "active" : ""}`}
           src="/afreeca.png"
           onClick={() => {
             window.open(`https://bj.afreecatv.com/${gamerInfo["afreeca"]["bjID"]}`);
@@ -417,6 +483,11 @@ export default function PlayerContainer() {
   const searchBarProps = { count, gamerCount, selectedGamer };
   return (
     <Wrapper>
+      <div className={`afreeca-container ${showThumbNail && onAirGamer === selectedGamer._id ? "" : "disable"}`} ref={onAirThumbNailRef}>
+        <div className="title">{selectedGamer["afreeca"]?.["title"]}</div>
+        <div className="viewers">{selectedGamer["afreeca"]?.["viewers"]}</div>
+        <img className="thumbnail" src={selectedGamer["afreeca"]?.["imgPath"]}></img>
+      </div>
       {isMobile ? (
         <aside className="w-[320px] mx-auto">
           <ins

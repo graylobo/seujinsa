@@ -34,7 +34,7 @@ export default function Loading({
                     position: fixed;
                     z-index: 998;
                     width: 100vw;
-                    height: 100vw;
+                    height: 100vh;
                     background-color: gray;
                     opacity: 0.5;
                 }
