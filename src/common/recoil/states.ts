@@ -142,6 +142,11 @@ const loadingState = atom<LoadingProps>({
   default:{loading:false,msg:""},
 })
 
+const themeState = atom({
+  key:"themeState",
+  default:"normal"
+})
+
 const timerSelector = selector<ITimerProps[]>({
   key: "timerSelector",
   get: ({ get }) => {
@@ -182,4 +187,5 @@ export {
   topTenGamerList,
   searchState,
   loadingState,
+  themeState,
 };

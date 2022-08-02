@@ -3,7 +3,7 @@ import { getWholeGamerInfo } from "../../../utils/api-util";
 import styled from "@emotion/styled";
 import GamerSearchBar from "../../shared/GamerSearchBar";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { isMobileState, loadingState, searchState } from "../../../recoil/states";
+import { isMobileState, loadingState, searchState, themeState } from "../../../recoil/states";
 import _ from "lodash";
 import { debounce, sleep } from "../../../utils/utils";
 
@@ -23,6 +23,7 @@ const Wrapper = styled.main`
       left: 50%;
       transform: translate(-50%, -50%);
       text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+      color: white;
       &.disable {
         display: none;
       }
@@ -76,41 +77,27 @@ const Wrapper = styled.main`
     }
   }
   .테란 {
-    color: #fff;
-  text-shadow:
-      0 0 7px blue,
-      0 0 10px blue,
-      0 0 21px blue,
-      0 0 42px blue,
-      0 0 82px blue,
-      0 0 92px blue,
-      0 0 102px blue,
-      0 0 151px blue;
+    font-weight: 600;
+    color: blue;
+    &.dark {
+      font-weight: normal;
+      color: #13b4ea;
+    }
   }
   .저그 {
-    color: #fff;
-  text-shadow:
-      0 0 7px red,
-      0 0 10px red,
-      0 0 21px red,
-      0 0 42px red,
-      0 0 82px red,
-      0 0 92px red,
-      0 0 102px red,
-      0 0 151px red;
-
+    color: #ba15cc;
+    font-weight: 600;
+    &.dark {
+      font-weight: normal;
+    }
   }
   .프로토스 {
-    color: #fff;
-  text-shadow:
-      0 0 7px #ddc83d,
-      0 0 10px #ddc83d,
-      0 0 21px #ddc83d,
-      0 0 42px #ddc83d,
-      0 0 82px #ddc83d,
-      0 0 92px #ddc83d,
-      0 0 102px #ddc83d,
-      0 0 151px #ddc83d;
+    color: orange;
+    font-weight: 600;
+    &.dark {
+      color: yellow;
+      font-weight: normal;
+    }
   }
   .stick-container {
     position: sticky;
@@ -130,8 +117,11 @@ const Wrapper = styled.main`
     align-items: center;
 
     .tier-subject {
-      font-size: 30px;
+      font-size: 40px;
       margin-bottom: 30px;
+      &.dark {
+        text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa, 0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+      }
     }
     .gamer-container {
       padding: 30px;
@@ -219,22 +209,22 @@ const switchData: any = {
   "박상현(짭제)": "박상현",
   "윤찬희(몽군)": "윤찬희",
   "손경훈(브신)": "손경훈",
-  철구: "이예준(철구)",
-  이예준: "이예준(철구)",
-  기뉴다: "박현재(기뉴다)",
-  박현재: "박현재(기뉴다)",
-  박정일: "박정일(짭호)",
-  유규민: "유규민(초난강)",
-  빡죠스: "박종승(빡죠스)",
-  박종승: "박종승(빡죠스)",
-  장영근: "장영근(난수)",
-  박지호: "박지호(라박이)",
-  김동민: "김동민(액션구드론)",
-  윤호준: "윤호준(고도준)",
-  미동미동: "박준영(미동미동)",
-  박준영: "박준영(미동미동)",
-  허유진: "허유진(허유)",
-  박성용: "박성용(소룡)",
+  "이예준(철구)": "철구",
+  "박현재(기뉴다)": "기뉴다",
+  "오진식(짭뉴다)": "짭뉴다",
+  "박정일(짭호)": "짭호",
+  "유규민(초난강)": "초난강",
+  "박종승(빡죠스)": "박종승",
+  "장영근(난수)": "난수",
+  "박지호(라박이)": "라박이",
+  "김동민(액션구드론)": "김동민",
+  "윤호준(고도준)": "고도준",
+  "박준영(미동미동)": "박준영",
+  "박성용(소룡)": "박성용",
+  "이광용(프발)": "프발",
+  "임홍규(홍구)": "임홍규",
+  "김승현(오메킴)": "오메킴",
+  "송호영(도브)": "도브",
 };
 function nickNameSwitch(gamer: string) {
   return switchData[gamer];
@@ -251,6 +241,7 @@ export default function PlayerContainer() {
   const [count, setCount] = useState(0);
   const [intervalUpdateFlag, setIntervalUpdateFlag] = useState(false);
   const [gamerCount, setGamerCount] = useState(0); // 필터 > 이름검색시 결과 카운트 변수
+  const theme = useRecoilValue(themeState);
   const setLoading = useSetRecoilState(loadingState);
   const isMobile = useRecoilValue(isMobileState);
   const selectedRef = useRef<any>();
@@ -496,7 +487,7 @@ export default function PlayerContainer() {
           }}
           alt=""
         />
-        <span className={`${gamerInfo.race}`}>{gamerInfo._id}</span>
+        <span className={`${gamerInfo.race} ${theme === "dark" ? "dark" : ""}`}>{gamerInfo._id}</span>
 
         <div
           className={`record ${
@@ -512,7 +503,7 @@ export default function PlayerContainer() {
       </div>
     );
   }
-
+  console.log(theme);
   const searchBarProps = { count, gamerCount, selectedGamer };
   return (
     <Wrapper>
@@ -562,7 +553,7 @@ export default function PlayerContainer() {
         {tierList.map((e, i) => (
           <>
             {gamerList[e].length !== 0 && (
-              <div className="tier-subject" key={i}>
+              <div className={`tier-subject ${theme === "dark" ? "dark" : ""}`} key={i}>
                 {e === "아기" ? "개벌레" : e === "미지정" ? "미지정" : `${e} 티어`}
               </div>
             )}
