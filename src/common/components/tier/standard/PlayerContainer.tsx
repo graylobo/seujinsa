@@ -76,13 +76,41 @@ const Wrapper = styled.main`
     }
   }
   .테란 {
-    color: blue;
+    color: #fff;
+  text-shadow:
+      0 0 7px blue,
+      0 0 10px blue,
+      0 0 21px blue,
+      0 0 42px blue,
+      0 0 82px blue,
+      0 0 92px blue,
+      0 0 102px blue,
+      0 0 151px blue;
   }
   .저그 {
-    color: red;
+    color: #fff;
+  text-shadow:
+      0 0 7px red,
+      0 0 10px red,
+      0 0 21px red,
+      0 0 42px red,
+      0 0 82px red,
+      0 0 92px red,
+      0 0 102px red,
+      0 0 151px red;
+
   }
   .프로토스 {
-    color: yellow;
+    color: #fff;
+  text-shadow:
+      0 0 7px #ddc83d,
+      0 0 10px #ddc83d,
+      0 0 21px #ddc83d,
+      0 0 42px #ddc83d,
+      0 0 82px #ddc83d,
+      0 0 92px #ddc83d,
+      0 0 102px #ddc83d,
+      0 0 151px #ddc83d;
   }
   .stick-container {
     position: sticky;
@@ -440,7 +468,6 @@ export default function PlayerContainer() {
             setSelectedGamer(gamerInfo);
 
             if (gamerInfo.afreeca) {
-            
               if (!isMobile) {
                 onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
                 onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 200 + "px";

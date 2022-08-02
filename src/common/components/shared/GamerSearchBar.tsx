@@ -110,6 +110,16 @@ const univList = [
 export default function GamerSearchBar({ count,gamerCount,selectedGamer }: any) {
     const [state, setState] = useRecoilState(searchState);
     const [filterOn, setFilterOn] = useState(true);
+    useEffect(()=>{
+        setState({ inputText:"",
+        race:"",
+        tier:"",
+        onair:false,
+        thumbnail:true,
+        spon:false,
+        recordExist:false,
+        univ:""})
+    },[])
     return (
         <Wrapper>
             <div className="filter-container">
