@@ -14,7 +14,8 @@ const Wrapper = styled.main`
       position: relative;
       border: 3px solid red;
       border-radius: 10px;
-      min-width: 100vw;
+      max-width: 100vw;
+      width: 400px;
       min-height: 250px;
       display: flex;
       justify-content: center;
@@ -48,6 +49,7 @@ const Wrapper = styled.main`
       border: 3px solid red;
       border-radius: 10px;
       min-width: 600px;
+      height: 350px;
       display: flex;
       justify-content: center;
       z-index: 2;
@@ -438,22 +440,15 @@ export default function PlayerContainer() {
             setSelectedGamer(gamerInfo);
 
             if (gamerInfo.afreeca) {
-              if (onAirThumbNailRef.current) {
-                if (showThumbNail) {
-                  if (!isMobile) {
-                    onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
-                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 250 + "px";
-                  }
-                  else{
-                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 350 + "px";
-                  }
+            
+              if (!isMobile) {
+                onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
+                onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 200 + "px";
+              } else {
+                if (showThumbNail && searchValue.thumbnail && onAirGamer === selectedGamer._id) {
+                  onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 350 + "px";
                 } else {
-                  if (isMobile) {
-                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 100 + "px";
-                  } else {
-                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 250 + "px";
-                    onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
-                  }
+                  onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 100 + "px";
                 }
               }
 
@@ -515,6 +510,12 @@ export default function PlayerContainer() {
           ></ins>
         </aside>
       )}
+
+      <div className="stick-container">
+        <div className="search-bar">
+          <GamerSearchBar {...searchBarProps} />
+        </div>
+      </div>
       <div
         className={`afreeca-container ${showThumbNail && searchValue.thumbnail && onAirGamer === selectedGamer._id ? "" : "disable"}`}
         ref={onAirThumbNailRef}
@@ -523,12 +524,6 @@ export default function PlayerContainer() {
         <div className="viewers">{selectedGamer["afreeca"]?.["viewers"]}</div>
         <img className="thumbnail" src={selectedGamer["afreeca"]?.["imgPath"]}></img>
       </div>
-      <div className="stick-container">
-        <div className="search-bar">
-          <GamerSearchBar {...searchBarProps} />
-        </div>
-      </div>
-
       <div
         className="tier-container"
         onClick={() => {
