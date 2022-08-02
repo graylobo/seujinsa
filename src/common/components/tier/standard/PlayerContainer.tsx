@@ -126,8 +126,8 @@ const Wrapper = styled.main`
         position: relative;
         .afreeca-icon {
           position: absolute;
-          width:20px;
-          height:20px;
+          width: 20px;
+          height: 20px;
           right: -8px;
           cursor: pointer;
           top: 0;
@@ -442,13 +442,16 @@ export default function PlayerContainer() {
                 if (showThumbNail) {
                   if (!isMobile) {
                     onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
+                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 250 + "px";
                   }
-                  onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 250 + "px";
+                  else{
+                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 350 + "px";
+                  }
                 } else {
                   if (isMobile) {
-                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop + "px";
+                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 100 + "px";
                   } else {
-                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 254 + "px";
+                    onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 250 + "px";
                     onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
                   }
                 }
@@ -512,7 +515,10 @@ export default function PlayerContainer() {
           ></ins>
         </aside>
       )}
-      <div className={`afreeca-container ${showThumbNail && onAirGamer === selectedGamer._id ? "" : "disable"}`} ref={onAirThumbNailRef}>
+      <div
+        className={`afreeca-container ${showThumbNail && searchValue.thumbnail && onAirGamer === selectedGamer._id ? "" : "disable"}`}
+        ref={onAirThumbNailRef}
+      >
         <div className="title">{selectedGamer["afreeca"]?.["title"]}</div>
         <div className="viewers">{selectedGamer["afreeca"]?.["viewers"]}</div>
         <img className="thumbnail" src={selectedGamer["afreeca"]?.["imgPath"]}></img>
@@ -539,7 +545,9 @@ export default function PlayerContainer() {
               </div>
             )}
 
-            <div className="gamer-container" style={isMobile?{width:"100%"}:{width:"800px"}}>{gamerList[e].map((e: any, i: any) => renderGamer(e, i))}</div>
+            <div className="gamer-container" style={isMobile ? { width: "100%" } : { width: "800px" }}>
+              {gamerList[e].map((e: any, i: any) => renderGamer(e, i))}
+            </div>
           </>
         ))}
       </div>

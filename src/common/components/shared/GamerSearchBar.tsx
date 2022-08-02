@@ -27,22 +27,24 @@ const Wrapper = styled.nav`
         }
 
         .checkbox-container {
-            display:flex;
-            margin-left:90px;
             
+            margin-left:30px;
             .onair-box {
-                width:130px;
+                margin-right:5px;
+            }
+            .thumbnail-box{
+                margin-right:5px;
+
             }
             .spon-box{
-                width:100px;
+                margin-right:5px;
                 .disable{
                     color:gray;
                 }
 
             }
             .record-exist-box{
-                width:180px;
-
+                margin-right:5px;
                 .disable{
                     color:gray;
                 }
@@ -174,7 +176,7 @@ export default function GamerSearchBar({ count,gamerCount,selectedGamer }: any) 
                         </select>
                     </div>
                     <div className="checkbox-container">
-                        <div className="onair-box">
+                        <span className="onair-box">
                             <input
                                 type="checkbox"
                                 id="onair"
@@ -187,8 +189,23 @@ export default function GamerSearchBar({ count,gamerCount,selectedGamer }: any) 
                                 }}
                             />
                             <label htmlFor="onair">방송중</label>
-                        </div>
-                        <div className="spon-box">
+                        </span>
+                        <span className="thumbnail-box">
+                            <input
+                                type="checkbox"
+                                id="thumbnail"
+                                checked={state.thumbnail}
+                                disabled={!state.onair}
+                                onChange={(e) => {
+                                    setState({
+                                        ...state,
+                                        thumbnail: e.target.checked,
+                                    });
+                                }}
+                            />
+                            <label className={!state.onair?"disable":""} htmlFor="thumbnail">썸네일</label>
+                        </span>
+                        <span className="spon-box">
                             <input
                                 type="checkbox"
                                 id="spon"
@@ -202,8 +219,8 @@ export default function GamerSearchBar({ count,gamerCount,selectedGamer }: any) 
                                 }}
                             />
                             <label className={!state.onair?"disable":""} htmlFor="spon">스폰</label>
-                        </div>
-                        <div className="record-exist-box">
+                        </span>
+                        <span className="record-exist-box">
                             <input
                                 type="checkbox"
                                 id="record-exist"
@@ -217,7 +234,7 @@ export default function GamerSearchBar({ count,gamerCount,selectedGamer }: any) 
                                 }}
                             />
                             <label className={`${!selectedGamer?"disable":""}`} htmlFor="record-exist">전적존재</label>
-                        </div>
+                        </span>
                     </div>
 
                     <div className="count">count:{gamerCount||count}</div>
