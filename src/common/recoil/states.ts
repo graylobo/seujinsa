@@ -144,7 +144,7 @@ const loadingState = atom<LoadingProps>({
 
 const themeState = atom({
   key:"themeState",
-  default:"normal"
+  default:"dark"
 })
 
 const timerSelector = selector<ITimerProps[]>({

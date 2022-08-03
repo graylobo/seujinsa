@@ -24,8 +24,10 @@ export default function Navigation({ setMenu }) {
       localStorage.getItem("color-theme") === "dark" ||
       (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
     ) {
+      setTheme("dark");
       themeToggleLightIcon?.classList.remove("hidden");
     } else {
+      setTheme("normal");
       themeToggleDarkIcon?.classList.remove("hidden");
     }
 
@@ -53,9 +55,11 @@ export default function Navigation({ setMenu }) {
         if (document.documentElement.classList.contains("dark")) {
           document.documentElement.classList.remove("dark");
           localStorage.setItem("color-theme", "light");
+          setTheme("normal");
         } else {
           document.documentElement.classList.add("dark");
           localStorage.setItem("color-theme", "dark");
+          setTheme("dark");
         }
       }
     });

@@ -41,6 +41,7 @@ const Wrapper = styled.main`
       }
       .thumbnail {
         width: 100%;
+        border-radius:10px;
       }
     }
   }
@@ -73,30 +74,36 @@ const Wrapper = styled.main`
       }
       .thumbnail {
         width: 100%;
+        border-radius:10px;
       }
     }
   }
   .테란 {
-    font-weight: 600;
     color: blue;
+    font-weight: 600;
     &.dark {
+      color: #fff;
       font-weight: normal;
-      color: #13b4ea;
+      text-shadow: 0 0 7px blue, 0 0 10px blue, 0 0 21px blue, 0 0 42px blue, 0 0 82px blue, 0 0 92px blue, 0 0 102px blue, 0 0 151px blue;
     }
   }
   .저그 {
-    color: #ba15cc;
+    color: #d63deb;
     font-weight: 600;
     &.dark {
+      color: #fff;
       font-weight: normal;
+      text-shadow: 0 0 7px red, 0 0 10px red, 0 0 21px red, 0 0 42px red, 0 0 82px red, 0 0 92px red, 0 0 102px red, 0 0 151px red;
     }
   }
   .프로토스 {
     color: orange;
     font-weight: 600;
     &.dark {
-      color: yellow;
+      color: #fff;
       font-weight: normal;
+      text-shadow: 0 0 7px #ddc83d, 0 0 10px #ddc83d, 0 0 21px #ddc83d, 0 0 42px #ddc83d, 0 0 82px #ddc83d, 0 0 92px #ddc83d, 0 0 102px #ddc83d,
+        0 0 151px #ddc83d;
     }
   }
   .stick-container {
@@ -128,7 +135,6 @@ const Wrapper = styled.main`
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       text-align: center;
-
       .onair {
         width: 50px;
         height: 50px;
@@ -177,6 +183,7 @@ const Wrapper = styled.main`
         }
 
         .gamer-image {
+          cursor: pointer;
           width: 70px;
           height: 70px;
         }
@@ -270,19 +277,20 @@ export default function PlayerContainer() {
   }
 
   useEffect(() => {
+    let flag = true;
+    setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
     (async function inner() {
-      setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
-
-      while (true) {
+      while (flag) {
         await getWholeGamerInfoWrapper();
-        await sleep(60000);
+        await sleep(30000);
       }
     })();
+
     return () => {
+      flag = false;
       setLoading({ loading: false });
     };
   }, []);
-
   // [1]
   // 필터링 기능 함수
   useEffect(() => {
@@ -337,14 +345,21 @@ export default function PlayerContainer() {
   }, [searchValue, selectedGamer, intervalUpdateFlag]);
 
   useEffect(() => {
-    setShowThumbNail(false);
-  }, [searchValue]);
+      setShowThumbNail(false);
+  }, [searchValue.inputText,searchValue.onair,searchValue.race,searchValue.recordExist,searchValue.spon,searchValue.tier,searchValue.univ]);
 
   const searchGamerDebounce = useCallback(debounce(searchGamer, 100), [initialGamerList]);
-
   useEffect(() => {
     searchGamerDebounce(searchValue.inputText)
       .then((result: any) => {
+
+        setSearchValue({ ...searchValue,
+          race:"",
+          tier:"",
+          onair:false,
+          spon:false,
+          recordExist:false,
+          univ:""})
         try {
           let finded = "";
           if (result?.length === 1) {
@@ -416,6 +431,7 @@ export default function PlayerContainer() {
     }
     return search;
   }
+  console.log('showThumbNail',showThumbNail,'onAirGamer',onAirGamer)
   function renderGamer(gamerInfo: any, i: any) {
     const current = currentGamerRecord?.[gamerInfo._id]; // 현재 랜더링 하려는 게이머가 프로필클릭한 게이머의 상대전적 리스트에 있는 게이머라면 current에 정보 담김
     let gamerClassName = gamerInfo._id in switchData ? nickNameSwitch(gamerInfo._id) : gamerInfo._id;
@@ -503,7 +519,6 @@ export default function PlayerContainer() {
       </div>
     );
   }
-  console.log(theme);
   const searchBarProps = { count, gamerCount, selectedGamer };
   return (
     <Wrapper>
@@ -550,19 +565,20 @@ export default function PlayerContainer() {
           setSearchValue({ ...searchValue, recordExist: false });
         }}
       >
-        {tierList.map((e, i) => (
-          <>
-            {gamerList[e].length !== 0 && (
-              <div className={`tier-subject ${theme === "dark" ? "dark" : ""}`} key={i}>
-                {e === "아기" ? "개벌레" : e === "미지정" ? "미지정" : `${e} 티어`}
-              </div>
-            )}
+        {tierList.map(
+          (e, i) =>
+            gamerList[e].length !== 0 && (
+              <>
+                <div className={`tier-subject ${theme === "dark" ? "dark" : ""}`} key={i}>
+                  {e === "아기" ? "개벌레" : e === "미지정" ? "미지정" : `${e} 티어`}
+                </div>
 
-            <div className="gamer-container" style={isMobile ? { width: "100%" } : { width: "800px" }}>
-              {gamerList[e].map((e: any, i: any) => renderGamer(e, i))}
-            </div>
-          </>
-        ))}
+                <div className="gamer-container" style={isMobile ? { width: "100%" } : { width: "800px" }}>
+                  {gamerList[e].map((e: any, i: any) => renderGamer(e, i))}
+                </div>
+              </>
+            )
+        )}
       </div>
     </Wrapper>
   );
