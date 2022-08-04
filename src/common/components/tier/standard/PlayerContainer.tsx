@@ -241,10 +241,10 @@ export default function PlayerContainer() {
   const [gamerList, setGamerList] = useState<any>(initTierValue);
   const [initialGamerList, setInitialGamerList] = useState<any>(initTierValue); // 서버에서 받아온 초기 데이터 (setGamerList 와 구분짓는 이유: [1] useEffect참고 )
   const [selectedGamer, setSelectedGamer] = useState<any>({});
+  const [mouseOverGamer, setMouseOverGamer] = useState<any>({});
   const [currentGamerRecord, setCurrentGamerRecord] = useState<any>({}); // 현재 클릭한 게이머의 상대전적 정보가 있는 리스트
   const [backgroundClick, setBackgroundClick] = useState(false);
   const [showThumbNail, setShowThumbNail] = useState(false);
-  const [onAirGamer, setOnAirGamer] = useState("");
   const [count, setCount] = useState(0);
   const [intervalUpdateFlag, setIntervalUpdateFlag] = useState(false);
   const [gamerCount, setGamerCount] = useState(0); // 필터 > 이름검색시 결과 카운트 변수
@@ -431,7 +431,25 @@ export default function PlayerContainer() {
     }
     return search;
   }
-  console.log('showThumbNail',showThumbNail,'onAirGamer',onAirGamer)
+
+  function changeAfreecaThumbnailPosition(gamerInfo:any,event:any){
+    if (gamerInfo.afreeca) {
+      if (!isMobile) {
+        onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
+        onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 200 + "px";
+      } else {
+        if (showThumbNail && searchValue.thumbnail && selectedGamer["afreeca"]) {
+          onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 350 + "px";
+        } else {
+          onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 100 + "px";
+        }
+      }
+
+      setShowThumbNail(true);
+    } else {
+      setShowThumbNail(false);
+    }
+  }
   function renderGamer(gamerInfo: any, i: any) {
     const current = currentGamerRecord?.[gamerInfo._id]; // 현재 랜더링 하려는 게이머가 프로필클릭한 게이머의 상대전적 리스트에 있는 게이머라면 current에 정보 담김
     let gamerClassName = gamerInfo._id in switchData ? nickNameSwitch(gamerInfo._id) : gamerInfo._id;
@@ -449,14 +467,15 @@ export default function PlayerContainer() {
             onClick={() => {
               window.open(`https://play.afreecatv.com/${gamerInfo["afreeca"]["bjID"]}`);
             }}
-            // onMouseEnter={() => {
-            //   setOnAirGamer(gamerInfo._id);
-            //   setShowThumbNail(true);
-            // }}
-            // onMouseLeave={() => {
-            //   setOnAirGamer("");
-            //   setShowThumbNail(false);
-            // }}
+            onMouseEnter={(event:any)=>{
+              setMouseOverGamer(gamerInfo)
+              changeAfreecaThumbnailPosition(gamerInfo,event)
+              
+            }}
+            onMouseLeave={()=>{
+              setMouseOverGamer("")
+  
+            }}
           />
         )}
 
@@ -464,34 +483,18 @@ export default function PlayerContainer() {
           className={`gamer-image gamer-${gamerClassName} ${selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? "selected" : ""}`}
           ref={selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? selectedRef : null}
           src={`/images/gamer/${gamerInfo._id}.png`}
+
           onError={({ currentTarget }) => {
             currentTarget.onerror = null;
             currentTarget.src = "/images/gamer/notfound.png";
           }}
+          
           onClick={(event: any) => {
             event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
             setBackgroundClick(false);
             setCurrentGamerRecord(gamerInfo.record);
             setSelectedGamer(gamerInfo);
-
-            if (gamerInfo.afreeca) {
-              if (!isMobile) {
-                onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
-                onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 200 + "px";
-              } else {
-                if (showThumbNail && searchValue.thumbnail && onAirGamer === selectedGamer._id) {
-                  onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 350 + "px";
-                } else {
-                  onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 100 + "px";
-                }
-              }
-
-              setOnAirGamer(gamerInfo._id);
-              setShowThumbNail(true);
-            } else {
-              setOnAirGamer("");
-              setShowThumbNail(false);
-            }
+            changeAfreecaThumbnailPosition(gamerInfo,event)
           }}
         />
 
@@ -520,6 +523,7 @@ export default function PlayerContainer() {
     );
   }
   const searchBarProps = { count, gamerCount, selectedGamer };
+  console.log('mouse',mouseOverGamer,'sele',selectedGamer)
   return (
     <Wrapper>
       {isMobile ? (
@@ -550,12 +554,12 @@ export default function PlayerContainer() {
         </div>
       </div>
       <div
-        className={`afreeca-container ${showThumbNail && searchValue.thumbnail && onAirGamer === selectedGamer._id ? "" : "disable"}`}
+        className={`afreeca-container ${showThumbNail && searchValue.thumbnail && (mouseOverGamer["afreeca"]||selectedGamer["afreeca"] )? "" : "disable"}`}
         ref={onAirThumbNailRef}
       >
-        <div className="title">{selectedGamer["afreeca"]?.["title"]}</div>
-        <div className="viewers">{selectedGamer["afreeca"]?.["viewers"]}</div>
-        <img className="thumbnail" src={selectedGamer["afreeca"]?.["imgPath"]}></img>
+        <div className="title">{mouseOverGamer["afreeca"]? mouseOverGamer["afreeca"]?.["title"] :selectedGamer["afreeca"]?.["title"]}</div>
+        <div className="viewers">{mouseOverGamer["afreeca"]? mouseOverGamer["afreeca"]?.["viewers"] :selectedGamer["afreeca"]?.["viewers"]}</div>
+        <img className="thumbnail" src={mouseOverGamer["afreeca"]? mouseOverGamer["afreeca"]?.["imgPath"] :selectedGamer["afreeca"]?.["imgPath"]}></img>
       </div>
       <div
         className="tier-container"
