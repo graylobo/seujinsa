@@ -474,7 +474,6 @@ export default function PlayerContainer() {
             }}
             onMouseLeave={()=>{
               setMouseOverGamer("")
-  
             }}
           />
         )}
@@ -499,10 +498,10 @@ export default function PlayerContainer() {
         />
 
         <img
-          className={`afreeca-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["afreeca"]?.["bjID"] ? "active" : ""}`}
+          className={`afreeca-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["afreeca"] ? "active" : ""}`}
           src="/afreeca.png"
           onClick={() => {
-            window.open(`https://bj.afreecatv.com/${gamerInfo["afreeca"]["bjID"]}`);
+            window.open(`https://bj.afreecatv.com/${gamerInfo["platform"]["afreeca"]}`);
           }}
           alt=""
         />
@@ -523,7 +522,7 @@ export default function PlayerContainer() {
     );
   }
   const searchBarProps = { count, gamerCount, selectedGamer };
-  console.log('mouse',mouseOverGamer,'sele',selectedGamer)
+  console.log(initialGamerList)
   return (
     <Wrapper>
       {isMobile ? (
