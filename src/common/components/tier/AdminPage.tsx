@@ -7,19 +7,21 @@ const university = [
     "무소속",
     "철와대",
     "바스포드",
-    "염석대",
     "무친대",
     "우끼끼즈",
     "캄성여대",
-    "CP대",
+    "CP",
     "JSA",
     "NSU",
+    "아마대",
+    "츠나대",
+    "MSG",
+    "라저대",
+
 ];
-const tierList=["미지정","갓","킹","잭","조커","0",'1','2','3','4','5','6','7','8','벌레']
+const tierList=["미지정","갓","킹","잭","조커","0",'1','2','3','4','5','6','7','8','아기']
 export default function AdminPage() {
     const [gamerList, setGamerList] = useState([]);
-    const [filteredGamerList, setFilteredGamerList] = useState([]);
-
     async function updateGamer() {
         const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/all-gamer`, {
             method: "post",
@@ -67,14 +69,14 @@ export default function AdminPage() {
     return (
         <div className="absolute left-0 w-full pb-[80px] pt-[130px] p-[10px] ">
             {gamerList.map((e: GamerInfoType, i: number) => (
-                <div key={e._id} className="grid grid-cols-6 mb-3 box-border hover:bg-red-100 ">
+                <div key={e._id} className="grid grid-cols-6 mb-3 box-border hover:bg-red-100 dark:hover:bg-red-900 ">
                     <span>
                         이름:<span className="ml-[10px]">{e._id}</span>
                     </span>
 
                     <span>
                         종족:
-                        <select
+                        <select className="dark:text-black"
                             value={e.race}
                             onChange={(e) => {
                                 updateGamerInfo(e.target.value, i, "race");
@@ -90,6 +92,7 @@ export default function AdminPage() {
                     <span>
                         티어:
                         <select
+                        className="dark:text-black"
                             value={e.standardTier}
                             onChange={(e) => {
                                 updateGamerInfo(
@@ -109,6 +112,7 @@ export default function AdminPage() {
                     <span>
                         대학:
                         <select
+                        className="dark:text-black"
                             value={e.university}
                             onChange={(e) => {
                                 updateGamerInfo(
