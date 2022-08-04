@@ -474,6 +474,7 @@ export default function PlayerContainer() {
             }}
             onMouseLeave={()=>{
               setMouseOverGamer("")
+              setShowThumbNail(false);
             }}
           />
         )}
@@ -522,7 +523,6 @@ export default function PlayerContainer() {
     );
   }
   const searchBarProps = { count, gamerCount, selectedGamer };
-  console.log(initialGamerList)
   return (
     <Wrapper>
       {isMobile ? (
