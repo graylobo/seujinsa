@@ -489,7 +489,7 @@ export default function PlayerContainer() {
             setBackgroundClick(false);
             setCurrentGamerRecord(gamerInfo.record);
             setSelectedGamer(gamerInfo);
-            changeAfreecaThumbnailPosition(gamerInfo, event);
+            changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
           }}
         />
 
