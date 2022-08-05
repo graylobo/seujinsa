@@ -20,9 +20,7 @@ async function getUserInfo(id?: string) {
 }
 
 async function getGamerInfo(name?: string) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_DB_URL}/gamer-info/${name}`
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-info/${name}`);
   const json = await res.json();
   return json;
 }
@@ -30,6 +28,14 @@ async function getWholeGamerInfo() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/gamer-list`);
   const json = await res.json();
   return json;
+}
+
+async function getAfreecaLiveInfo() {
+  return new Promise(async (resolve, reject) => {
+    const res = await fetch(`https://afreeca.herokuapp.com/live`);
+    const json = await res.json();
+    resolve(json);
+  });
 }
 
 async function getRecord() {
@@ -172,12 +178,4 @@ async function checkNickNameExist(nickName: string) {
   }
   return false;
 }
-export {
-  getUserInfo,
-  getGamerInfo,
-  checkNickNameExist,
-  getWholeGamerInfo,
-  setGamerTierList,
-  getRecord,
-  fetchAPI,
-};
+export { getUserInfo, getGamerInfo, checkNickNameExist, getWholeGamerInfo, setGamerTierList, getRecord, fetchAPI, getAfreecaLiveInfo };

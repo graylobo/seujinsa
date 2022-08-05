@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { getWholeGamerInfo } from "../../../utils/api-util";
+import { getAfreecaLiveInfo, getWholeGamerInfo } from "../../../utils/api-util";
 import styled from "@emotion/styled";
 import GamerSearchBar from "../../shared/GamerSearchBar";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -41,7 +41,7 @@ const Wrapper = styled.main`
       }
       .thumbnail {
         width: 100%;
-        border-radius:10px;
+        border-radius: 10px;
       }
     }
   }
@@ -74,7 +74,7 @@ const Wrapper = styled.main`
       }
       .thumbnail {
         width: 100%;
-        border-radius:10px;
+        border-radius: 10px;
       }
     }
   }
@@ -136,11 +136,11 @@ const Wrapper = styled.main`
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       text-align: center;
       .onair {
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
         position: absolute;
-        top: -30px;
-        left: 25px;
+        top: -25px;
+        left: 28px;
         z-index: 1;
         cursor: pointer;
       }
@@ -179,10 +179,10 @@ const Wrapper = styled.main`
           display: block;
           margin-left: auto;
           margin-right: auto;
-          border-radius: 10px;
         }
-
+        
         .gamer-image {
+          border-radius: 10px;
           cursor: pointer;
           width: 70px;
           height: 70px;
@@ -248,6 +248,7 @@ export default function PlayerContainer() {
   const [count, setCount] = useState(0);
   const [intervalUpdateFlag, setIntervalUpdateFlag] = useState(false);
   const [gamerCount, setGamerCount] = useState(0); // 필터 > 이름검색시 결과 카운트 변수
+  const [afreecaLiveInfo, setAfreecaLiveInfo] = useState<any>({});
   const theme = useRecoilValue(themeState);
   const setLoading = useSetRecoilState(loadingState);
   const isMobile = useRecoilValue(isMobileState);
@@ -272,6 +273,7 @@ export default function PlayerContainer() {
         })
         .catch((err) => {
           console.log("err", err);
+          reject(err);
         });
     });
   }
@@ -280,9 +282,10 @@ export default function PlayerContainer() {
     let flag = true;
     setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
     (async function inner() {
+      await getWholeGamerInfoWrapper();
       while (flag) {
-        await getWholeGamerInfoWrapper();
-        await sleep(30000);
+        setAfreecaLiveInfo(await getAfreecaLiveInfo());
+        await sleep(60000);
       }
     })();
 
@@ -291,6 +294,7 @@ export default function PlayerContainer() {
       setLoading({ loading: false });
     };
   }, []);
+
   // [1]
   // 필터링 기능 함수
   useEffect(() => {
@@ -322,7 +326,7 @@ export default function PlayerContainer() {
         }
       }
       if (searchValue.onair) {
-        copy[key] = copy[key].filter((e: any) => e._id === selectedGamer["_id"] || e.afreeca);
+        copy[key] = copy[key].filter((e: any) => e._id === selectedGamer["_id"] || e._id in afreecaLiveInfo);
         if (searchValue.spon) {
           copy[key] = copy[key].filter((e: any) => e._id === selectedGamer["_id"] || e.afreeca.title.includes("스폰"));
         }
@@ -345,21 +349,14 @@ export default function PlayerContainer() {
   }, [searchValue, selectedGamer, intervalUpdateFlag]);
 
   useEffect(() => {
-      setShowThumbNail(false);
-  }, [searchValue.inputText,searchValue.onair,searchValue.race,searchValue.recordExist,searchValue.spon,searchValue.tier,searchValue.univ]);
+    setShowThumbNail(false);
+  }, [searchValue.inputText, searchValue.onair, searchValue.race, searchValue.recordExist, searchValue.spon, searchValue.tier, searchValue.univ]);
 
   const searchGamerDebounce = useCallback(debounce(searchGamer, 100), [initialGamerList]);
   useEffect(() => {
     searchGamerDebounce(searchValue.inputText)
       .then((result: any) => {
-
-        setSearchValue({ ...searchValue,
-          race:"",
-          tier:"",
-          onair:false,
-          spon:false,
-          recordExist:false,
-          univ:""})
+        setSearchValue({ ...searchValue, race: "", tier: "", onair: false, spon: false, recordExist: false, univ: "" });
         try {
           let finded = "";
           if (result?.length === 1) {
@@ -432,13 +429,13 @@ export default function PlayerContainer() {
     return search;
   }
 
-  function changeAfreecaThumbnailPosition(gamerInfo:any,event:any){
-    if (gamerInfo.afreeca) {
+  function changeAfreecaThumbnailPosition(gamerInfo: any, event: any) {
+    if (gamerInfo in afreecaLiveInfo) {
       if (!isMobile) {
         onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
         onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 200 + "px";
       } else {
-        if (showThumbNail && searchValue.thumbnail && selectedGamer["afreeca"]) {
+        if (showThumbNail && searchValue.thumbnail && gamerInfo in afreecaLiveInfo) {
           onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 350 + "px";
         } else {
           onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 100 + "px";
@@ -459,7 +456,7 @@ export default function PlayerContainer() {
         key={i}
         className={`gamer  ${selectedGamer["_id"] && !backgroundClick && (current || selectedGamer["_id"] === gamerInfo._id ? "" : "no-played")}`}
       >
-        {gamerInfo.afreeca && (
+        {gamerInfo["_id"] in afreecaLiveInfo && (
           <img
             className="onair"
             src="/on-air.png"
@@ -467,15 +464,7 @@ export default function PlayerContainer() {
             onClick={() => {
               window.open(`https://play.afreecatv.com/${gamerInfo["afreeca"]["bjID"]}`);
             }}
-            onMouseEnter={(event:any)=>{
-              setMouseOverGamer(gamerInfo)
-              changeAfreecaThumbnailPosition(gamerInfo,event)
-              
-            }}
-            onMouseLeave={()=>{
-              setMouseOverGamer("")
-              setShowThumbNail(false);
-            }}
+          
           />
         )}
 
@@ -483,18 +472,24 @@ export default function PlayerContainer() {
           className={`gamer-image gamer-${gamerClassName} ${selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? "selected" : ""}`}
           ref={selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? selectedRef : null}
           src={`/images/gamer/${gamerInfo._id}.png`}
-
           onError={({ currentTarget }) => {
             currentTarget.onerror = null;
             currentTarget.src = "/images/gamer/notfound.png";
           }}
-          
+          onMouseEnter={(event: any) => {
+            setMouseOverGamer(gamerInfo);
+            changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
+          }}
+          onMouseLeave={() => {
+            setMouseOverGamer("");
+            setShowThumbNail(false);
+          }}
           onClick={(event: any) => {
             event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
             setBackgroundClick(false);
             setCurrentGamerRecord(gamerInfo.record);
             setSelectedGamer(gamerInfo);
-            changeAfreecaThumbnailPosition(gamerInfo,event)
+            changeAfreecaThumbnailPosition(gamerInfo, event);
           }}
         />
 
@@ -553,12 +548,17 @@ export default function PlayerContainer() {
         </div>
       </div>
       <div
-        className={`afreeca-container ${showThumbNail && searchValue.thumbnail && (mouseOverGamer["afreeca"]||selectedGamer["afreeca"] )? "" : "disable"}`}
+        className={`afreeca-container ${
+          showThumbNail && searchValue.thumbnail && (mouseOverGamer["_id"] in afreecaLiveInfo || selectedGamer["_id"] in afreecaLiveInfo) ? "" : "disable"
+        }`}
         ref={onAirThumbNailRef}
       >
-        <div className="title">{mouseOverGamer["afreeca"]? mouseOverGamer["afreeca"]?.["title"] :selectedGamer["afreeca"]?.["title"]}</div>
-        <div className="viewers">{mouseOverGamer["afreeca"]? mouseOverGamer["afreeca"]?.["viewers"] :selectedGamer["afreeca"]?.["viewers"]}</div>
-        <img className="thumbnail" src={mouseOverGamer["afreeca"]? mouseOverGamer["afreeca"]?.["imgPath"] :selectedGamer["afreeca"]?.["imgPath"]}></img>
+        <div className="title">{mouseOverGamer["_id"] ? afreecaLiveInfo[mouseOverGamer["_id"]]?.["title"]  : afreecaLiveInfo[selectedGamer["_id"]]?.["title"]}</div>
+        <div className="viewers">{mouseOverGamer["_id"] ? afreecaLiveInfo[mouseOverGamer["_id"]]?.["viewers"]  : afreecaLiveInfo[selectedGamer["_id"]]?.["viewers"]}</div>
+        <img
+          className="thumbnail"
+          src={mouseOverGamer["_id"] ? afreecaLiveInfo[mouseOverGamer["_id"]]?.["imgPath"] : afreecaLiveInfo[selectedGamer["_id"]]?.["imgPath"]}
+        ></img>
       </div>
       <div
         className="tier-container"
