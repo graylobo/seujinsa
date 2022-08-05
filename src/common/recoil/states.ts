@@ -39,7 +39,7 @@ export type GamerInfoType = {
   nickName?: string;
   level?: string;
   standardTier?:"string";
-  platform?:{afreeca:string};
+  platform?:{afreeca:string,elo:string,youtube:string,twitch:string};
 };
 
 export type QnAProps = {

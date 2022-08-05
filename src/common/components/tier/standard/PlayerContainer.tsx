@@ -9,7 +9,100 @@ import { debounce, sleep } from "../../../utils/utils";
 
 const Wrapper = styled.main`
   margin-top: 90px;
+  // 모바일
   @media screen and (max-width: 1023px) {
+    .tier-container {
+    margin-top: 200px;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    .tier-subject {
+      font-size: 40px;
+      margin-bottom: 30px;
+      &.dark {
+        text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa, 0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+      }
+    }
+    
+  }
+    .gamer-container {
+      padding: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      text-align: center;
+      .onair {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        top: -35px;
+        left: 20px;
+        z-index: 1;
+        cursor: pointer;
+      }
+
+      .gamer {
+        margin-bottom: 100px;
+        width: 100px;
+        height: 100px;
+        position: relative;
+        .gamer-name{
+          font-size:15px;
+        }
+        .afreeca-icon {
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          right: -8px;
+          border-radius:10px;
+          cursor: pointer;
+          top: 0;
+          display: none;
+          &.active {
+            display: block;
+          }
+        }
+        .elo-icon{
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          right: -8px;
+
+          border-radius:10px;
+          cursor: pointer;
+          top: 25px;
+          display: none;
+          &.active {
+            display: block;
+          }
+        }
+        .record {
+          display: none;
+          &.active {
+            display: block;
+          }
+        }
+
+        &.no-played {
+          opacity: 0.3;
+        }
+        .selected {
+          border: solid 1px red;
+        }
+        img {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        
+        .gamer-image {
+          border-radius: 10px;
+          cursor: pointer;
+          width: 70px;
+          height: 70px;
+        }
+      }
+    }
     .afreeca-container {
       position: relative;
       border: 3px solid red;
@@ -45,7 +138,101 @@ const Wrapper = styled.main`
       }
     }
   }
+  // PC
   @media screen and (min-width: 1024px) {
+    .tier-container {
+    margin-top: 200px;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    .tier-subject {
+      font-size: 60px;
+      margin-bottom: 30px;
+      &.dark {
+        text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa, 0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+      }
+    }
+    
+  }
+    .gamer-container {
+      padding: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      text-align: center;
+      gap:0 20px;
+      .onair {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        top: -35px;
+        left: 20px;
+        z-index: 1;
+        cursor: pointer;
+      }
+
+      .gamer {
+        width: 100px;
+        margin-bottom: 100px;
+        height: 100px;
+        position: relative;
+        .gamer-name{
+          font-size:19px;
+        }
+        .afreeca-icon {
+          position: absolute;
+          width: 22px;
+          height: 22px;
+          right: -24px;
+          border-radius:10px;
+          cursor: pointer;
+          display: none;
+          top: 0;
+          &.active {
+            display: block;
+          }
+        }
+        .elo-icon{
+          position: absolute;
+          width: 22px;
+          height: 22px;
+          right: -24px;
+
+          border-radius:10px;
+          cursor: pointer;
+          top: 25px;
+          display: none;
+          &.active {
+            display: block;
+          }
+        }
+        .record {
+          display: none;
+          &.active {
+            display: block;
+          }
+        }
+
+        &.no-played {
+          opacity: 0.3;
+        }
+        .selected {
+          border: solid 1px red;
+        }
+        img {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        
+        .gamer-image {
+          border-radius: 10px;
+          cursor: pointer;
+          width: 100px;
+          height: 100px;
+        }
+      }
+    }
     .afreeca-container {
       position: absolute;
       border: 3px solid red;
@@ -117,79 +304,7 @@ const Wrapper = styled.main`
     }
   }
 
-  .tier-container {
-    margin-top: 200px;
-    display: grid;
-    justify-items: center;
-    align-items: center;
-
-    .tier-subject {
-      font-size: 40px;
-      margin-bottom: 30px;
-      &.dark {
-        text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa, 0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
-      }
-    }
-    .gamer-container {
-      padding: 30px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      text-align: center;
-      .onair {
-        width: 45px;
-        height: 45px;
-        position: absolute;
-        top: -25px;
-        left: 28px;
-        z-index: 1;
-        cursor: pointer;
-      }
-
-      .gamer {
-        width: 100px;
-        margin-bottom: 60px;
-        height: 100px;
-        position: relative;
-        .afreeca-icon {
-          position: absolute;
-          width: 20px;
-          height: 20px;
-          right: -8px;
-          cursor: pointer;
-          top: 0;
-          display: none;
-          &.active {
-            display: block;
-          }
-        }
-        .record {
-          display: none;
-          &.active {
-            display: block;
-          }
-        }
-
-        &.no-played {
-          opacity: 0.3;
-        }
-        .selected {
-          border: solid 1px red;
-        }
-        img {
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-        }
-        
-        .gamer-image {
-          border-radius: 10px;
-          cursor: pointer;
-          width: 70px;
-          height: 70px;
-        }
-      }
-    }
-  }
+  
 `;
 
 const tierList = ["갓", "킹", "잭", "조커", "0", "1", "2", "3", "4", "5", "6", "7", "8", "아기", "미지정"];
@@ -254,7 +369,6 @@ export default function PlayerContainer() {
   const isMobile = useRecoilValue(isMobileState);
   const selectedRef = useRef<any>();
   const onAirThumbNailRef = useRef<any>();
-
   function getWholeGamerInfoWrapper() {
     return new Promise<void>((resolve, reject) => {
       getWholeGamerInfo()
@@ -268,7 +382,6 @@ export default function PlayerContainer() {
           setInitialGamerList(copy);
           setGamerList(copy);
           setIntervalUpdateFlag((e) => !e);
-          setLoading({ loading: false });
           resolve();
         })
         .catch((err) => {
@@ -283,6 +396,8 @@ export default function PlayerContainer() {
     setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
     (async function inner() {
       await getWholeGamerInfoWrapper();
+      setAfreecaLiveInfo(await getAfreecaLiveInfo());
+      setLoading({ loading: false });
       while (flag) {
         setAfreecaLiveInfo(await getAfreecaLiveInfo());
         await sleep(60000);
@@ -328,7 +443,7 @@ export default function PlayerContainer() {
       if (searchValue.onair) {
         copy[key] = copy[key].filter((e: any) => e._id === selectedGamer["_id"] || e._id in afreecaLiveInfo);
         if (searchValue.spon) {
-          copy[key] = copy[key].filter((e: any) => e._id === selectedGamer["_id"] || e.afreeca.title.includes("스폰"));
+          copy[key] = copy[key].filter((e: any) => e._id === selectedGamer["_id"] || afreecaLiveInfo[e._id]["title"].includes("스폰"));
         }
       }
 
@@ -462,7 +577,7 @@ export default function PlayerContainer() {
             src="/on-air.png"
             alt=""
             onClick={() => {
-              window.open(`https://play.afreecatv.com/${gamerInfo["afreeca"]["bjID"]}`);
+              window.open(`https://play.afreecatv.com/${afreecaLiveInfo[gamerInfo["_id"]]["bjID"]}`);
             }}
           
           />
@@ -501,7 +616,15 @@ export default function PlayerContainer() {
           }}
           alt=""
         />
-        <span className={`${gamerInfo.race} ${theme === "dark" ? "dark" : ""}`}>{gamerInfo._id}</span>
+        <img
+          className={`elo-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["elo"] ? "active" : ""}`}
+          src="/eloboard.png"
+          onClick={() => {
+            window.open(`http://eloboard.com/${gamerInfo["platform"]?.["elo"].split("|")[0]}/bbs/board.php?bo_table=bj_list&wr_id=${gamerInfo["platform"]?.["elo"].split("|")[1]}`);
+          }}
+          alt=""
+        />
+        <span className={`gamer-name ${gamerInfo.race} ${theme === "dark" ? "dark" : ""}`}>{gamerInfo._id}</span>
 
         <div
           className={`record ${
@@ -518,6 +641,7 @@ export default function PlayerContainer() {
     );
   }
   const searchBarProps = { count, gamerCount, selectedGamer };
+  console.log(initialGamerList)
   return (
     <Wrapper>
       {isMobile ? (
@@ -576,7 +700,7 @@ export default function PlayerContainer() {
                   {e === "아기" ? "개벌레" : e === "미지정" ? "미지정" : `${e} 티어`}
                 </div>
 
-                <div className="gamer-container" style={isMobile ? { width: "100%" } : { width: "800px" }}>
+                <div className="gamer-container" style={isMobile ? { width: "100%" } : { width: "1300px" }}>
                   {gamerList[e].map((e: any, i: any) => renderGamer(e, i))}
                 </div>
               </>
