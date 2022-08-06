@@ -70,30 +70,30 @@ export default function Navigation({ setMenu }) {
   }, []);
 
   useEffect(() => {
-    setGamerTierList().then((gamerList) => {
-      gamerList = gamerList
-        .sort((a, b) => {
-          return b.totalPoint - a.totalPoint;
-        })
-        .slice(0, 10)
-        .map((e) => {
-          let race = "";
-          switch (e.race) {
-            case "저그":
-              race = "Z";
-              break;
-            case "테란":
-              race = "T";
-              break;
-            case "프로토스":
-              race = "P";
-              break;
-          }
-          return { ...e, race };
-        });
+    // setGamerTierList().then((gamerList) => {
+    //   gamerList = gamerList
+    //     .sort((a, b) => {
+    //       return b.totalPoint - a.totalPoint;
+    //     })
+    //     .slice(0, 10)
+    //     .map((e) => {
+    //       let race = "";
+    //       switch (e.race) {
+    //         case "저그":
+    //           race = "Z";
+    //           break;
+    //         case "테란":
+    //           race = "T";
+    //           break;
+    //         case "프로토스":
+    //           race = "P";
+    //           break;
+    //       }
+    //       return { ...e, race };
+    //     });
 
-      setTopTenGamerList(gamerList);
-    });
+    //   setTopTenGamerList(gamerList);
+    // });
   }, [gamerInfo]);
 
   return (

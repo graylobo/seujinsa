@@ -192,7 +192,7 @@ export default function Main() {
               </div>
             </div>
           </div> */}
-          <div className="most-voted">
+          {/* <div className="most-voted">
             <div className="text-center p-[20px] ">
               <span>최다 민심 득표</span>
             </div>
@@ -225,7 +225,7 @@ export default function Main() {
                 ))
               )}
             </ol>
-          </div>
+          </div> */}
           {/* <div className="">
             <div className="text-center  p-[20px]">
               <span>5월 다승 랭킹</span>

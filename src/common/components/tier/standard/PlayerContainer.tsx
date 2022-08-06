@@ -399,8 +399,8 @@ export default function PlayerContainer() {
       setAfreecaLiveInfo(await getAfreecaLiveInfo());
       setLoading({ loading: false });
       while (flag) {
+        await sleep(30000);
         setAfreecaLiveInfo(await getAfreecaLiveInfo());
-        await sleep(60000);
       }
     })();
 
