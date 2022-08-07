@@ -396,7 +396,8 @@ export default function PlayerContainer() {
     setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
     (async function inner() {
       await getWholeGamerInfoWrapper();
-      setAfreecaLiveInfo(await getAfreecaLiveInfo());
+      const liveInfo = await getAfreecaLiveInfo();
+      setAfreecaLiveInfo(liveInfo);
       setLoading({ loading: false });
       while (flag) {
         await sleep(30000);
