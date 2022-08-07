@@ -32,11 +32,11 @@ const Wrapper = styled.main`
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       text-align: center;
       .onair {
-        width: 60px;
-        height: 60px;
+        width: 40px;
+        height: 40px;
         position: absolute;
-        top: -35px;
-        left: 20px;
+        top: -23px;
+        left: 30px;
         z-index: 1;
         cursor: pointer;
       }
@@ -592,19 +592,28 @@ export default function PlayerContainer() {
             currentTarget.src = "/images/gamer/notfound.png";
           }}
           onMouseEnter={(event: any) => {
-            setMouseOverGamer(gamerInfo);
-            changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
+            if(!isMobile){
+              setMouseOverGamer(gamerInfo);
+              changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
+            }
+           
           }}
           onMouseLeave={() => {
-            setMouseOverGamer("");
-            setShowThumbNail(false);
+            if(!isMobile){
+              setMouseOverGamer("");
+              setShowThumbNail(false);
+            }
+           
           }}
           onClick={(event: any) => {
-            event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
-            setBackgroundClick(false);
-            setCurrentGamerRecord(gamerInfo.record);
-            setSelectedGamer(gamerInfo);
-            changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
+            if(isMobile){
+              event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
+              setBackgroundClick(false);
+              setCurrentGamerRecord(gamerInfo.record);
+              setSelectedGamer(gamerInfo);
+              changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
+            }
+         
           }}
         />
 

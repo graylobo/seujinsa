@@ -32,7 +32,7 @@ async function getWholeGamerInfo() {
 
 async function getAfreecaLiveInfo() {
   return new Promise(async (resolve, reject) => {
-    const res = await fetch(`https://afreeca.herokuapp.com/live`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/live`);
     const json = await res.json();
     resolve(json);
   });
