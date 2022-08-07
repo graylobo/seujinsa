@@ -608,12 +608,13 @@ export default function PlayerContainer() {
           }}
           onClick={(event: any) => {
             if(isMobile){
-              event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
-              setBackgroundClick(false);
-              setCurrentGamerRecord(gamerInfo.record);
-              setSelectedGamer(gamerInfo);
+             
               changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
             }
+            event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
+            setBackgroundClick(false);
+            setCurrentGamerRecord(gamerInfo.record);
+            setSelectedGamer(gamerInfo);
          
           }}
         />
