@@ -1,4 +1,6 @@
 import "../../styles/globals.css";
+import "../../styles/pc.scss";
+import "../../styles/mobile.scss";
 import Navigation from "../common/components/Navigation";
 import Head from "next/head";
 import { RecoilRoot, useRecoilValue } from "recoil";
@@ -49,7 +51,6 @@ function MyApp({ Component, pageProps }) {
           href="//cdn.jsdelivr.net/npm/katex@0.13.3/dist/katex.min.css"
           rel="stylesheet"
         />
-
         <link
           rel="stylesheet"
           href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/styles/default.min.css"

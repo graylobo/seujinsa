@@ -7,25 +7,39 @@ import { isMobileState, loadingState, searchState, themeState } from "../../../r
 import _ from "lodash";
 import { debounce, sleep } from "../../../utils/utils";
 
+const PlayformIconImg = styled.img<any>`
+  position: absolute;
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  right: ${(props) => props.right};
+  right: ${(props) => props.top};
+
+  border-radius: 10px;
+  cursor: pointer;
+  display: none;
+  &.active {
+    display: block;
+  }
+`;
+
 const Wrapper = styled.main`
   margin-top: 90px;
   // 모바일
   @media screen and (max-width: 1023px) {
     .tier-container {
-    margin-top: 200px;
-    display: grid;
-    justify-items: center;
-    align-items: center;
+      margin-top: 200px;
+      display: grid;
+      justify-items: center;
+      align-items: center;
 
-    .tier-subject {
-      font-size: 40px;
-      margin-bottom: 30px;
-      &.dark {
-        text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa, 0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+      .tier-subject {
+        font-size: 40px;
+        margin-bottom: 30px;
+        &.dark {
+          text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa, 0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+        }
       }
     }
-    
-  }
     .gamer-container {
       padding: 30px;
       display: grid;
@@ -46,36 +60,10 @@ const Wrapper = styled.main`
         width: 100px;
         height: 100px;
         position: relative;
-        .gamer-name{
-          font-size:15px;
+        .gamer-name {
+          font-size: 15px;
         }
-        .afreeca-icon {
-          position: absolute;
-          width: 20px;
-          height: 20px;
-          right: -8px;
-          border-radius:10px;
-          cursor: pointer;
-          top: 0;
-          display: none;
-          &.active {
-            display: block;
-          }
-        }
-        .elo-icon{
-          position: absolute;
-          width: 20px;
-          height: 20px;
-          right: -8px;
-
-          border-radius:10px;
-          cursor: pointer;
-          top: 25px;
-          display: none;
-          &.active {
-            display: block;
-          }
-        }
+       
         .record {
           display: none;
           &.active {
@@ -94,7 +82,7 @@ const Wrapper = styled.main`
           margin-left: auto;
           margin-right: auto;
         }
-        
+
         .gamer-image {
           border-radius: 10px;
           cursor: pointer;
@@ -141,26 +129,25 @@ const Wrapper = styled.main`
   // PC
   @media screen and (min-width: 1024px) {
     .tier-container {
-    margin-top: 200px;
-    display: grid;
-    justify-items: center;
-    align-items: center;
+      margin-top: 200px;
+      display: grid;
+      justify-items: center;
+      align-items: center;
 
-    .tier-subject {
-      font-size: 60px;
-      margin-bottom: 30px;
-      &.dark {
-        text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa, 0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+      .tier-subject {
+        font-size: 60px;
+        margin-bottom: 30px;
+        &.dark {
+          text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa, 0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+        }
       }
     }
-    
-  }
     .gamer-container {
       padding: 30px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       text-align: center;
-      gap:0 20px;
+      gap: 0 20px;
       .onair {
         width: 60px;
         height: 60px;
@@ -176,36 +163,10 @@ const Wrapper = styled.main`
         margin-bottom: 100px;
         height: 100px;
         position: relative;
-        .gamer-name{
-          font-size:19px;
+        .gamer-name {
+          font-size: 19px;
         }
-        .afreeca-icon {
-          position: absolute;
-          width: 22px;
-          height: 22px;
-          right: -24px;
-          border-radius:10px;
-          cursor: pointer;
-          display: none;
-          top: 0;
-          &.active {
-            display: block;
-          }
-        }
-        .elo-icon{
-          position: absolute;
-          width: 22px;
-          height: 22px;
-          right: -24px;
-
-          border-radius:10px;
-          cursor: pointer;
-          top: 25px;
-          display: none;
-          &.active {
-            display: block;
-          }
-        }
+        
         .record {
           display: none;
           &.active {
@@ -224,7 +185,7 @@ const Wrapper = styled.main`
           margin-left: auto;
           margin-right: auto;
         }
-        
+
         .gamer-image {
           border-radius: 10px;
           cursor: pointer;
@@ -303,8 +264,6 @@ const Wrapper = styled.main`
       right: 5%;
     }
   }
-
-  
 `;
 
 const tierList = ["갓", "킹", "잭", "조커", "0", "1", "2", "3", "4", "5", "6", "7", "8", "아기", "미지정"];
@@ -580,7 +539,6 @@ export default function PlayerContainer() {
             onClick={() => {
               window.open(`https://play.afreecatv.com/${afreecaLiveInfo[gamerInfo["_id"]]["bjID"]}`);
             }}
-          
           />
         )}
 
@@ -593,29 +551,25 @@ export default function PlayerContainer() {
             currentTarget.src = "/images/gamer/notfound.png";
           }}
           onMouseEnter={(event: any) => {
-            if(!isMobile){
+            if (!isMobile) {
               setMouseOverGamer(gamerInfo);
               changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
             }
-           
           }}
           onMouseLeave={() => {
-            if(!isMobile){
+            if (!isMobile) {
               setMouseOverGamer("");
               setShowThumbNail(false);
             }
-           
           }}
           onClick={(event: any) => {
-            if(isMobile){
-             
+            if (isMobile) {
               changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
             }
             event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
             setBackgroundClick(false);
             setCurrentGamerRecord(gamerInfo.record);
             setSelectedGamer(gamerInfo);
-         
           }}
         />
 
@@ -631,7 +585,11 @@ export default function PlayerContainer() {
           className={`elo-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["elo"] ? "active" : ""}`}
           src="/eloboard.png"
           onClick={() => {
-            window.open(`http://eloboard.com/${gamerInfo["platform"]?.["elo"].split("|")[0]}/bbs/board.php?bo_table=bj_list&wr_id=${gamerInfo["platform"]?.["elo"].split("|")[1]}`);
+            window.open(
+              `http://eloboard.com/${gamerInfo["platform"]?.["elo"].split("|")[0]}/bbs/board.php?bo_table=bj_list&wr_id=${
+                gamerInfo["platform"]?.["elo"].split("|")[1]
+              }`
+            );
           }}
           alt=""
         />
@@ -652,7 +610,7 @@ export default function PlayerContainer() {
     );
   }
   const searchBarProps = { count, gamerCount, selectedGamer };
-  console.log(initialGamerList)
+  console.log(initialGamerList);
   return (
     <Wrapper>
       {isMobile ? (
@@ -684,12 +642,18 @@ export default function PlayerContainer() {
       </div>
       <div
         className={`afreeca-container ${
-          showThumbNail && searchValue.thumbnail && (mouseOverGamer["_id"] in afreecaLiveInfo || selectedGamer["_id"] in afreecaLiveInfo) ? "" : "disable"
+          showThumbNail && searchValue.thumbnail && (mouseOverGamer["_id"] in afreecaLiveInfo || selectedGamer["_id"] in afreecaLiveInfo)
+            ? ""
+            : "disable"
         }`}
         ref={onAirThumbNailRef}
       >
-        <div className="title">{mouseOverGamer["_id"] ? afreecaLiveInfo[mouseOverGamer["_id"]]?.["title"]  : afreecaLiveInfo[selectedGamer["_id"]]?.["title"]}</div>
-        <div className="viewers">{mouseOverGamer["_id"] ? afreecaLiveInfo[mouseOverGamer["_id"]]?.["viewers"]  : afreecaLiveInfo[selectedGamer["_id"]]?.["viewers"]}</div>
+        <div className="title">
+          {mouseOverGamer["_id"] ? afreecaLiveInfo[mouseOverGamer["_id"]]?.["title"] : afreecaLiveInfo[selectedGamer["_id"]]?.["title"]}
+        </div>
+        <div className="viewers">
+          {mouseOverGamer["_id"] ? afreecaLiveInfo[mouseOverGamer["_id"]]?.["viewers"] : afreecaLiveInfo[selectedGamer["_id"]]?.["viewers"]}
+        </div>
         <img
           className="thumbnail"
           src={mouseOverGamer["_id"] ? afreecaLiveInfo[mouseOverGamer["_id"]]?.["imgPath"] : afreecaLiveInfo[selectedGamer["_id"]]?.["imgPath"]}

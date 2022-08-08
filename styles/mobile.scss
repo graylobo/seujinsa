@@ -1,0 +1,23 @@
+@media screen and (max-width: 1023px) {
+    @mixin platformIconMixin($width, $height, $right, $top) {
+        position: absolute;
+        width: $width;
+        height: $height;
+        right: $right;
+    
+        border-radius: 10px;
+        cursor: pointer;
+        top: $top;
+        display: none !important;
+        &.active {
+          display: block !important;
+        }
+      }
+    
+      .elo-icon {
+        @include platformIconMixin(20px, 20px, -8px, 25px);
+      }
+      .afreeca-icon{
+        @include platformIconMixin(20px, 20px, -8px, 0px);
+      }
+}
