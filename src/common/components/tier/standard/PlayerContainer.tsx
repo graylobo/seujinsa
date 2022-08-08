@@ -60,7 +60,16 @@ const Wrapper = styled.main`
           opacity: 0.3;
         }
         .selected {
-          border: solid 1px red;
+          border-radius: 10px;
+          &.테란 {
+            box-shadow: 0 0 0.2rem blue, 0 0 0.2rem blue, 0 0 2rem blue, 0 0 0.8rem blue, 0 0 2.8rem blue, inset 0 0 1.3rem blue;
+          }
+          &.저그 {
+            box-shadow: 0 0 0.2rem red, 0 0 0.2rem red, 0 0 2rem red, 0 0 0.8rem red, 0 0 2.8rem red, inset 0 0 1.3rem red;
+          }
+          &.프로토스 {
+            box-shadow: 0 0 0.2rem yellow, 0 0 0.2rem yellow, 0 0 2rem yellow, 0 0 0.8rem yellow, 0 0 2.8rem yellow, inset 0 0 1.3rem yellow;
+          }
         }
         img {
           display: block;
