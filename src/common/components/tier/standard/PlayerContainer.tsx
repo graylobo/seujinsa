@@ -7,21 +7,6 @@ import { isMobileState, loadingState, searchState, themeState } from "../../../r
 import _ from "lodash";
 import { debounce, sleep } from "../../../utils/utils";
 
-const PlayformIconImg = styled.img<any>`
-  position: absolute;
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  right: ${(props) => props.right};
-  right: ${(props) => props.top};
-
-  border-radius: 10px;
-  cursor: pointer;
-  display: none;
-  &.active {
-    display: block;
-  }
-`;
-
 const Wrapper = styled.main`
   margin-top: 90px;
   // 모바일
@@ -63,7 +48,7 @@ const Wrapper = styled.main`
         .gamer-name {
           font-size: 15px;
         }
-       
+
         .record {
           display: none;
           &.active {
@@ -149,11 +134,11 @@ const Wrapper = styled.main`
       text-align: center;
       gap: 0 20px;
       .onair {
-        width: 60px;
-        height: 60px;
+        width: 55px;
+        height: 55px;
         position: absolute;
-        top: -35px;
-        left: 20px;
+        top: -32px;
+        left: 23px;
         z-index: 1;
         cursor: pointer;
       }
@@ -166,7 +151,7 @@ const Wrapper = styled.main`
         .gamer-name {
           font-size: 19px;
         }
-        
+
         .record {
           display: none;
           &.active {
@@ -178,7 +163,16 @@ const Wrapper = styled.main`
           opacity: 0.3;
         }
         .selected {
-          border: solid 1px red;
+          border-radius: 10px;
+          &.테란 {
+            box-shadow: 0 0 0.2rem blue, 0 0 0.2rem blue, 0 0 2rem blue, 0 0 0.8rem blue, 0 0 2.8rem blue, inset 0 0 1.3rem blue;
+          }
+          &.저그 {
+            box-shadow: 0 0 0.2rem red, 0 0 0.2rem red, 0 0 2rem red, 0 0 0.8rem red, 0 0 2.8rem red, inset 0 0 1.3rem red;
+          }
+          &.프로토스 {
+            box-shadow: 0 0 0.2rem yellow, 0 0 0.2rem yellow, 0 0 2rem yellow, 0 0 0.8rem yellow, 0 0 2.8rem yellow, inset 0 0 1.3rem yellow;
+          }
         }
         img {
           display: block;
@@ -189,8 +183,8 @@ const Wrapper = styled.main`
         .gamer-image {
           border-radius: 10px;
           cursor: pointer;
-          width: 100px;
-          height: 100px;
+          width: 90px;
+          height: 90px;
         }
       }
     }
@@ -543,7 +537,9 @@ export default function PlayerContainer() {
         )}
 
         <img
-          className={`gamer-image gamer-${gamerClassName} ${selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? "selected" : ""}`}
+          className={`gamer-image gamer-${gamerClassName} ${
+            selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? `selected ${gamerInfo.race}` : ""
+          }`}
           ref={selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? selectedRef : null}
           src={`/images/gamer/${gamerInfo._id}.png`}
           onError={({ currentTarget }) => {
