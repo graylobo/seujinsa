@@ -8,22 +8,33 @@ const Wrapper = styled.main`
   justify-content: center;
 
   .container {
-    width: 500px;
-    height: 500px;
-    background-color: darkred;
+    width: 90vw;
+    height: 90vw;
+    max-width:500px;
+    max-height:200px;
     border-radius: 10px;
+    border:1px solid white;
+    background-color:black;
+    opacity:0.9;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    h2 {
-      font-size: 20px;
-      text-align: center;
-    }
+   
     .title {
-      font-size: 20px;
+      font-size: 25px;
       margin-top: 20px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+    }
+    .content{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    .close{
+      position:absolute;
+      top:17px;
+      right:0;
     }
   }
 `;
@@ -34,23 +45,24 @@ export default function TierInfoPopup() {
     <Wrapper>
       <div className="container">
         <div className="title">티어표 정보</div>
-        <div>
+        <div className="content">
           <div>
-            * 티어표 상대전적 데이터 출처: <a href="http://eloboard.com"> http://eloboard.com </a>
+            티어표 상대전적 데이터 출처: <a href="http://eloboard.com" target="_blank"> http://eloboard.com </a>
           </div>
-          <div>* 상대전적데이터는 하루주기로 갱신됩니다.</div>
+          <div>아프리카 정보 1~2분 주기 갱신</div>
+          <div>상대전적데이터 1일 주기 갱신</div>
         </div>
         <div>
             
         </div>
 
         <div
-          className=""
+          className="close"
           onClick={() => {
             setPopup({ ...popup, show: false });
           }}
         >
-          X
+         X
         </div>
       </div>
     </Wrapper>

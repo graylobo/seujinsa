@@ -37,11 +37,7 @@ function MyApp({ Component, pageProps }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <link rel="icon" href="/staricon.ico" />
-        <link
-          href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-          rel="stylesheet"
-          crossOrigin="anonymous"
-        ></link>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
         <link
           rel="stylesheet"
           type="text/css"

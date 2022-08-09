@@ -13,28 +13,28 @@ export default function FooterBar() {
       <div className="max-w-[700px] flex items-center w-full justify-around">
         <Link href={"/"}>
           <div className={iconContainerCSS}>
-            <span className="material-icons-outlined text-[19px]">home</span>
+            <span className="material-symbols-outlined text-[19px]">home</span>
             <span className="text-[12px]">홈</span>
           </div>
         </Link>
 
         <Link href={"/tier/standard"}>
           <div className={iconContainerCSS}>
-            <span className="material-icons-outlined text-[19px]">search</span>
+            <span className="material-symbols-outlined text-[19px]">search</span>
             <span className="text-[12px]">검색</span>
           </div>
         </Link>
 
         <Link href={"/qna"}>
           <div className={iconContainerCSS}>
-            <span className="material-icons-outlined text-[19px]">sms</span>
+            <span className="material-symbols-outlined text-[19px]">sms</span>
             <span className="text-[12px]">건의사항</span>
           </div>
         </Link>
         {userState.isLogin ? (
           <Link href={"/mypage"}>
             <div className={iconContainerCSS}>
-              <span className="material-icons-outlined text-[19px]">
+              <span className="material-symbols-outlined text-[19px]">
                 person
               </span>
               <span className="text-[12px]">마이페이지</span>
@@ -43,7 +43,7 @@ export default function FooterBar() {
         ) : (
           <Link href={"/signin"}>
             <div className={iconContainerCSS}>
-              <span className="material-icons-outlined text-[19px]">login</span>
+              <span className="material-symbols-outlined text-[19px]">login</span>
               <span className="text-[12px]">로그인</span>
             </div>
           </Link>

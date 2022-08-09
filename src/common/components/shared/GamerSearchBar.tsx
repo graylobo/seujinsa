@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { useRecoilState } from "recoil";
-import { searchState } from "../../recoil/states";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { popupState, searchState } from "../../recoil/states";
 import _ from "lodash";
+import TierInfoPopup from "../popup/TierInfoPopup";
 
 const Wrapper = styled.nav`
   #filter-box {
@@ -19,6 +20,10 @@ const Wrapper = styled.nav`
     border-radius: 10px;
     position: relative;
 
+    .notice {
+      position: absolute;
+      cursor: pointer;
+    }
     .line1 {
       margin-bottom: 5px;
     }
@@ -90,6 +95,7 @@ const univList = [
 ];
 export default function GamerSearchBar({ count, gamerCount, selectedGamer }: any) {
   const [state, setState] = useRecoilState(searchState);
+  const setPopup = useSetRecoilState(popupState);
   const [filterOn, setFilterOn] = useState(true);
   useEffect(() => {
     setState({ inputText: "", race: "", tier: "", onair: false, thumbnail: true, spon: false, recordExist: false, univ: "" });
@@ -229,7 +235,14 @@ export default function GamerSearchBar({ count, gamerCount, selectedGamer }: any
               </label>
             </span>
           </div>
-
+          <div
+            className="notice material-symbols-outlined"
+            onClick={() => {
+              setPopup({ show: true, component: TierInfoPopup });
+            }}
+          >
+            info
+          </div>
           <div className="count">count:{gamerCount || count}</div>
         </div>
       )}

@@ -124,7 +124,7 @@ export default function Navigation({ setMenu }) {
           </svg>
         </button>
         <span
-          className="material-icons-outlined cursor-pointer absolute right-[0px] top-[10px] text-[30px] "
+          className="material-symbols-outlined cursor-pointer absolute right-[0px] top-[10px] text-[30px] "
           onClick={() => {
             setMenu((e) => !e);
           }}
