@@ -345,6 +345,11 @@ export default function PlayerContainer() {
   }
 
   useEffect(() => {
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (err) {
+      console.log(err);
+    }
     let flag = true;
     setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
     (async function inner() {
@@ -630,6 +635,15 @@ export default function PlayerContainer() {
           ></ins>
         </aside>
       )}
+
+      <ins
+        className="adsbygoogle"
+        style={{ display: "block" }}
+        data-ad-client="ca-pub-1544015487048934"
+        data-ad-slot="3225843573"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
 
       <div className="stick-container">
         <div className="search-bar">

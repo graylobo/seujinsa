@@ -78,14 +78,7 @@ export default function LeftControl() {
         </aside>
       )}
 
-      {/* <ins
-        className="adsbygoogle"
-        style={{ display: "block" }}
-        data-ad-client="ca-pub-1544015487048934"
-        data-ad-slot="9049143837"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      ></ins> */}
+     
 
       <div className="relative p-[30px] self-center  flex flex-col w-full max-w-[550px] ">
         <div className="relative self-center  w-full ">
