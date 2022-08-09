@@ -1,3 +1,4 @@
+import { jsx } from "@emotion/react";
 import { atom, DefaultValue, selector } from "recoil";
 import { OptionProp } from "../utils/tts";
 
@@ -35,11 +36,11 @@ export type GamerInfoType = {
   race?: string;
   university?: string;
   totalPoint?: number;
-  position?:string,
+  position?: string;
   nickName?: string;
   level?: string;
-  standardTier?:"string";
-  platform?:{afreeca:string,elo:string,youtube:string,twitch:string};
+  standardTier?: "string";
+  platform?: { afreeca: string; elo: string; youtube: string; twitch: string };
 };
 
 export type QnAProps = {
@@ -51,16 +52,16 @@ export type QnAProps = {
   body: string;
 };
 
-export type SearchProps ={
-  inputText:string;
-  race:string;
-  tier:string;
-  onair:boolean;
-  thumbnail:boolean;
-  spon:boolean;
-  recordExist:boolean;
-  univ:string;
-}
+export type SearchProps = {
+  inputText: string;
+  race: string;
+  tier: string;
+  onair: boolean;
+  thumbnail: boolean;
+  spon: boolean;
+  recordExist: boolean;
+  univ: string;
+};
 
 const menuState = atom<boolean>({
   key: "menuState",
@@ -120,33 +121,33 @@ const qnaInfoState = atom<QnAProps>({
 });
 
 const searchState = atom<SearchProps>({
-  key:"searchState",
-  default:{
-    inputText:"",
-    race:"",
-    tier:"",
-    onair:false,
-    thumbnail:true,
-    spon:false,
-    recordExist:false,
-    univ:"",
-  }
-})
+  key: "searchState",
+  default: {
+    inputText: "",
+    race: "",
+    tier: "",
+    onair: false,
+    thumbnail: true,
+    spon: false,
+    recordExist: false,
+    univ: "",
+  },
+});
 
-interface LoadingProps{
-  loading:boolean,
-  msg?:string,
+interface LoadingProps {
+  loading: boolean;
+  msg?: string;
 }
 
 const loadingState = atom<LoadingProps>({
-  key:"loadingState",
-  default:{loading:false,msg:""},
-})
+  key: "loadingState",
+  default: { loading: false, msg: "" },
+});
 
 const themeState = atom({
-  key:"themeState",
-  default:"dark"
-})
+  key: "themeState",
+  default: "dark",
+});
 
 const timerSelector = selector<ITimerProps[]>({
   key: "timerSelector",
@@ -171,6 +172,18 @@ const timerSelector = selector<ITimerProps[]>({
       });
       return [...timerCopy];
     });
+  },
+});
+
+interface PopupProps {
+  show :boolean;
+  component: JSX.Element | null;
+}
+const popupState = atom<PopupProps>({
+  key: "popupState",
+  default: {
+    show:false,
+    component: null,
   },
 });
 

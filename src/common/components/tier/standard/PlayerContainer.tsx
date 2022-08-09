@@ -489,6 +489,21 @@ export default function PlayerContainer() {
     }
   }, [backgroundClick]);
 
+  // let imgpath = "";
+  const [imgPath,setImgPath] = useState("")
+  useEffect(()=>{
+    if(mouseOverGamer["_id"]){
+      const path = afreecaLiveInfo[mouseOverGamer["_id"]]?.["imgPath"];
+      const imgpath = path ==="비번방" ? "/secretroom.png" : path;
+      setImgPath(imgpath)
+    }
+    else{
+      const path = afreecaLiveInfo[selectedGamer["_id"]]?.["imgPath"];
+      const imgpath = path ==="비번방" ? "/secretroom.png" : path;
+      setImgPath(imgpath)
+    }
+  },[mouseOverGamer,selectedGamer])
+
   function setPriority(arr: any) {
     let copy = _.cloneDeep(arr);
     const priority: any = { 저그: 1, 테란: 2, 프로토스: 3 };
@@ -620,7 +635,6 @@ export default function PlayerContainer() {
     );
   }
   const searchBarProps = { count, gamerCount, selectedGamer };
-  console.log(initialGamerList);
   return (
     <Wrapper>
       {isMobile ? (
@@ -675,7 +689,7 @@ export default function PlayerContainer() {
         </div>
         <img
           className="thumbnail"
-          src={mouseOverGamer["_id"] ? afreecaLiveInfo[mouseOverGamer["_id"]]?.["imgPath"] : afreecaLiveInfo[selectedGamer["_id"]]?.["imgPath"]}
+          src={imgPath}
         ></img>
       </div>
       <div
