@@ -11,6 +11,7 @@ import FooterBar from "../common/components/FooterBar";
 import Script from "next/script";
 import Loading from "../common/components/shared/Loading";
 import { loadingState } from "../common/recoil/states";
+import Popup from "../common/components/popup/base/Popup";
 
 function MyApp({ Component, pageProps }) {
   const [menu, setMenu] = useState(false);
@@ -76,6 +77,7 @@ function MyApp({ Component, pageProps }) {
           <div className=" w-full  min-w-[300px] ">
             <Loading/>
             {!menu ? <Component {...pageProps} /> : <More />}
+            <Popup/>
           </div>
           <FooterBar />
         </div>
