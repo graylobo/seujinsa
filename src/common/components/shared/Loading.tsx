@@ -22,12 +22,13 @@ export default function Loading({
                 </div>
             <div className="loading-bar">
                
-                <ReactLoading
+                {/* <ReactLoading
                     type={type}
                     color={color}
                     height={"100px"}
                     width={"100px"}
-                />
+                /> */}
+                <img src="/loading.gif" alt="" />
             </div>
             <style jsx>{`
                 .background {
