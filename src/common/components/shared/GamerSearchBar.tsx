@@ -120,6 +120,7 @@ export default function GamerSearchBar({ count, gamerCount, selectedGamer }: any
             <input
               type="text"
               className="name-input"
+              value={state.inputText}
               onChange={(e) => {
                 setState({
                   ...state,

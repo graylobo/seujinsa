@@ -1,168 +1,193 @@
 import React, { useEffect, useState } from "react";
-import { setGamerTierList } from "../utils/api-util";
+import { getWholeGamerInfo } from "../utils/api-util";
 import { SyncLoader } from "react-spinners";
 import { useRecoilValue } from "recoil";
-import { isMobileState } from "../recoil/states";
+import { isMobileState, themeState } from "../recoil/states";
 import HeadMeta from "./shared/HeadMeta";
+import styled from "@emotion/styled";
 
-type GamerType = {
-  [key: string]: [];
+const Wrapper = styled.main`
+  .gamer-name{
+    width:50px;
+  }
+  .테란{
+    color: blue;
+    font-weight: 600;
+    &.dark {
+      color: #fff;
+      font-weight: normal;
+      text-shadow: 0 0 7px blue, 0 0 10px blue, 0 0 21px blue, 0 0 42px blue, 0 0 82px blue, 0 0 92px blue, 0 0 102px blue, 0 0 151px blue;
+    }
+  }
+  .저그{
+    color: #d63deb;
+    font-weight: 600;
+    &.dark {
+      color: #fff;
+      font-weight: normal;
+      text-shadow: 0 0 7px red, 0 0 10px red, 0 0 21px red, 0 0 42px red, 0 0 82px red, 0 0 92px red, 0 0 102px red, 0 0 151px red;
+    }
+  }
+  .프로토스{
+    color: orange;
+    font-weight: 600;
+    &.dark {
+      color: #fff;
+      font-weight: normal;
+      text-shadow: 0 0 7px #ddc83d, 0 0 10px #ddc83d, 0 0 21px #ddc83d, 0 0 42px #ddc83d, 0 0 82px #ddc83d, 0 0 92px #ddc83d, 0 0 102px #ddc83d,
+        0 0 151px #ddc83d;
+    }
+  }
+`;
+const headerProps = {
+  title: "스타대학표",
+  description:
+    "스타대학,스타크래프트 대학,아프리카 스타대학,아프리카 대학,쳘기중대,바스포드,무친대,염석대,JSA,NSU,캄성여대,보신대,학버드,우끼끼즈,파이스트",
+  url: "https://seujinsa.com/univ",
 };
-
-const universityList = [
-  "무친대",
-  "바스포드",
-  "염석대",
-  "우끼끼즈",
-  "철기중대",
-  "캄성여대",
-  "파이스트",
-  "학버드",
-  "CP대",
-  "JSA",
-  "NSU",
-];
+const universityList = ["철와대", "바스포드", "무친대", "우끼끼즈", "캄성여대", "CP", "JSA", "NSU", "아마대", "츠나대", "MSG", "라저대"];
+const tierPriority:any = { 갓: 1, 킹: 2, 잭: 3, 조커: 4, 0: 5, 1: 6, 2: 7, 3: 8, 4: 9, 5: 10, 6: 11, 7: 12, 8: 13, 아기: 14 };
 export default function University() {
   const [gamerList, setGamerList] = useState<any>();
+  const theme = useRecoilValue(themeState);
   const [loading, setLoading] = useState(true);
   const [gamerCount, setGamerCount] = useState(0);
   const isMobile = useRecoilValue(isMobileState);
 
   let loadCount = 0;
-  function onAllImageLoad(i: number) {
+  function onAllImageLoad() {
     loadCount++;
+    console.log(loadCount, gamerCount);
     if (loadCount === gamerCount) {
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    setGamerTierList().then((e) => {
+    getWholeGamerInfo().then((e) => {
       e = e.reduce(
         (acc: any, cur: any) => {
           switch (cur.university) {
-            case "무친대":
-              acc["무친대"].push({
+            case "철와대":
+              acc["철와대"].push({
                 [cur._id]: {
                   race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
+                  tier: cur.standardTier,
                 },
               });
-              return { ...acc };
+              return acc;
             case "바스포드":
               acc["바스포드"].push({
                 [cur._id]: {
                   race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
+                  tier: cur.standardTier,
                 },
               });
-              return { ...acc };
-            case "염석대":
-              acc["염석대"].push({
+              return acc;
+            case "무친대":
+              acc["무친대"].push({
                 [cur._id]: {
                   race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
+                  tier: cur.standardTier,
                 },
               });
-              return { ...acc };
+              return acc;
             case "우끼끼즈":
               acc["우끼끼즈"].push({
                 [cur._id]: {
                   race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
+                  tier: cur.standardTier,
                 },
               });
-              return { ...acc };
-            case "철기중대":
-              acc["철기중대"].push({
-                [cur._id]: {
-                  race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
-                },
-              });
-              return { ...acc };
+              return acc;
             case "캄성여대":
               acc["캄성여대"].push({
                 [cur._id]: {
                   race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
+                  tier: cur.standardTier,
                 },
               });
-              return { ...acc };
-            case "파이스트":
-              acc["파이스트"].push({
+              return acc;
+            case "CP":
+              acc["CP"].push({
                 [cur._id]: {
                   race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
+                  tier: cur.standardTier,
                 },
               });
-              return { ...acc };
-            case "학버드":
-              acc["학버드"].push({
-                [cur._id]: {
-                  race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
-                },
-              });
-              return { ...acc };
-            case "CP대":
-              acc["CP대"].push({
-                [cur._id]: {
-                  race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
-                },
-              });
-              return { ...acc };
+              return acc;
             case "JSA":
               acc["JSA"].push({
                 [cur._id]: {
                   race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
+                  tier: cur.standardTier,
                 },
               });
-              return { ...acc };
+              return acc;
             case "NSU":
               acc["NSU"].push({
                 [cur._id]: {
                   race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
+                  tier: cur.standardTier,
                 },
               });
-              return { ...acc };
+              return acc;
+            case "아마대":
+              acc["아마대"].push({
+                [cur._id]: {
+                  race: cur.race,
+                  tier: cur.standardTier,
+                },
+              });
+              return acc;
+            case "츠나대":
+              acc["츠나대"].push({
+                [cur._id]: {
+                  race: cur.race,
+                  tier: cur.standardTier,
+                },
+              });
+              return acc;
+            case "MSG":
+              acc["MSG"].push({
+                [cur._id]: {
+                  race: cur.race,
+                  tier: cur.standardTier,
+                },
+              });
+              return acc;
+            case "라저대":
+              acc["라저대"].push({
+                [cur._id]: {
+                  race: cur.race,
+                  tier: cur.standardTier,
+                },
+              });
+              return acc;
+
             default:
               acc["무소속"].push({
                 [cur._id]: {
                   race: cur.race,
-                  tier: cur.tier,
-                  tierPoint: cur.tierPoint,
+                  tier: cur.standardTier,
                 },
               });
-              return { ...acc };
+              return acc;
           }
         },
         {
-          무친대: [],
+          철와대: [],
           바스포드: [],
+          무친대: [],
           우끼끼즈: [],
-          염석대: [],
-          철기중대: [],
           캄성여대: [],
-          파이스트: [],
-          학버드: [],
-          CP대: [],
+          CP: [],
           JSA: [],
           NSU: [],
+          아마대: [],
+          츠나대: [],
+          MSG: [],
+          라저대: [],
           무소속: [],
         }
       );
@@ -172,10 +197,9 @@ export default function University() {
         sortedGamerList = {
           ...sortedGamerList,
           [key]: e[key].sort((a: any, b: any) => {
-            return (
-              b[Object.keys(b) as unknown as string].tierPoint -
-              a[Object.keys(a) as unknown as string].tierPoint
-            );
+            const key1 =  a[Object.keys(a) as unknown as string].tier;
+            const key2 =  b[Object.keys(b) as unknown as string].tier;
+            return tierPriority[key1] - tierPriority[key2];
           }),
         };
       }
@@ -191,16 +215,10 @@ export default function University() {
     });
   }, []);
 
-  const props = {
-    title: "스타대학표",
-    description:
-      "스타대학,스타크래프트 대학,아프리카 스타대학,아프리카 대학,쳘기중대,바스포드,무친대,염석대,JSA,NSU,캄성여대,보신대,학버드,우끼끼즈,파이스트",
-    url: "https://seujinsa.com/univ",
-  };
-
+  console.log("gamer", gamerList);
   return (
-    <main className="mx-auto pb-[100px] mt-[76px]">
-      <HeadMeta {...props} />
+    <Wrapper className="mx-auto pb-[100px] mt-[76px]">
+      <HeadMeta {...headerProps} />
       <div className="mb-[30px]">
         {isMobile ? (
           <aside className="w-[320px] mx-auto">
@@ -227,16 +245,11 @@ export default function University() {
       {universityList.map((university: any) => (
         <section className="mx-auto w-full max-w-[800px] border-[10px] border-black dark:border-white rounded-[10px] p-[20px] mb-[30px]">
           <div className="w-[250px] h-[250px] mx-auto mb-[30px]">
-            <img
-              className="w-full h-full"
-              src={`/images/university/${university}.gif`}
-              alt=""
-            />
+            <img className="w-full h-full" src={`/images/university/${university}.gif`} alt="" />
           </div>
-          {/* <div>{gamerList && gamerList[university].length}</div> */}
-          <div className="mx-auto w-[62px] mt-[100px] mb-[100px] ">
-            {loading && <SyncLoader color="gold" />}
-          </div>
+          <h2>{university}</h2>
+          <div>{gamerList && gamerList[university].length}</div>
+          <div className="mx-auto w-[62px] mt-[100px] mb-[100px] ">{loading && <SyncLoader color="gold" />}</div>
           <div className="student-container">
             {gamerList !== undefined &&
               gamerList[university]?.map((e: any, i: number) => (
@@ -246,17 +259,20 @@ export default function University() {
                       className="w-full h-full mr-[5px] rounded-[10%]"
                       src={`/images/gamer/${Object.keys(e)}.png`}
                       onLoad={() => {
-                        onAllImageLoad(i);
+                        onAllImageLoad();
+                      }}
+                      onError={({ currentTarget }) => {
+                        onAllImageLoad();
+                        currentTarget.onerror = null;
+                        currentTarget.src = "/images/gamer/notfound.png";
                       }}
                       alt=""
                     />
                   </span>
                   <div className="ml-[5px] text-[15px]">
-                    <div className="neonText">
-                      {e[Object.keys(e) as unknown as string]?.tier}
-                    </div>
-                    <div>{Object.keys(e)}</div>
-                    <div>{e[Object.keys(e) as unknown as string]?.race}</div>
+                    <div className={`${e[Object.keys(e) as unknown as string]?.race} ${theme==="dark"?"dark":""}` } >{e[Object.keys(e) as unknown as string]?.tier} Tier</div>
+                    <div className={`gamer-name ${e[Object.keys(e) as unknown as string]?.race} ${theme==="dark"?"dark":""}`}>{Object.keys(e)}</div>
+                    {/* <div>{e[Object.keys(e) as unknown as string]?.race}</div> */}
                   </div>
                 </div>
               ))}
@@ -270,6 +286,6 @@ export default function University() {
           grid-gap: 10px;
         }
       `}</style>
-    </main>
+    </Wrapper>
   );
 }
