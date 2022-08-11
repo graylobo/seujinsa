@@ -11,6 +11,7 @@ export default function HeadMeta({ title, description, url, image }: any) {
       <meta property="og:url" content={url || "https://seujinsa.com"} />
       <meta property="og:image" content={image} />
       <meta property="og:article:author" content="스타에진심인사이트" />
+      
     </Head>
   );
 }

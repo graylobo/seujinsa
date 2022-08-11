@@ -486,7 +486,6 @@ export default function PlayerContainer() {
   useEffect(() => {
     if (backgroundClick) {
       setShowThumbNail(false);
-      console.log("asdas")
       setSearchValue({...searchValue,inputText:""})
     }
   }, [backgroundClick]);

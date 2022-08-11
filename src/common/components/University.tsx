@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { getAfreecaLiveInfo, getWholeGamerInfo } from "../utils/api-util";
 import { SyncLoader } from "react-spinners";
@@ -7,12 +8,12 @@ import HeadMeta from "./shared/HeadMeta";
 import styled from "@emotion/styled";
 
 const Wrapper = styled.main`
-.gamer-image{
-  cursor: pointer;
-}
+  .gamer-image {
+    cursor: pointer;
+  }
   @media screen and (max-width: 1023px) {
     .gamer-container {
-      position:relative;
+      position: relative;
       .gamer-img-container {
         position: relative;
         .onair {
@@ -25,12 +26,12 @@ const Wrapper = styled.main`
           cursor: pointer;
         }
       }
-      .record-container{
-        margin:0 auto;
-        .record{
-          display:flex;
+      .record-container {
+        margin: 0 auto;
+        .record {
+          display: flex;
         }
-        position:absolute;
+        position: absolute;
       }
     }
 
@@ -48,7 +49,7 @@ const Wrapper = styled.main`
   }
   @media screen and (min-width: 1024px) {
     .gamer-container {
-      position:relative;
+      position: relative;
       .gamer-img-container {
         position: relative;
         .onair {
@@ -61,12 +62,12 @@ const Wrapper = styled.main`
           cursor: pointer;
         }
       }
-      .record-container{
-        margin:0 auto;
-        .record{
-          display:flex;
+      .record-container {
+        margin: 0 auto;
+        .record {
+          display: flex;
         }
-        position:absolute;
+        position: absolute;
       }
     }
 
@@ -142,27 +143,28 @@ const universityList = ["철와대", "바스포드", "무친대", "우끼끼즈"
 const tierPriority: any = { 갓: 1, 킹: 2, 잭: 3, 조커: 4, 0: 5, 1: 6, 2: 7, 3: 8, 4: 9, 5: 10, 6: 11, 7: 12, 8: 13, 아기: 14 };
 export default function University() {
   const [gamerList, setGamerList] = useState<any>();
+  const [loadingState, setLoadingState] = useState<any>([]);
   const theme = useRecoilValue(themeState);
-  const [loading, setLoading] = useState(true);
   const [gamerCount, setGamerCount] = useState(0);
   const isMobile = useRecoilValue(isMobileState);
   const [afreecaInfo, setAfreecaInfo] = useState<any>({});
   const [recordInfo, setRecordInfo] = useState<any>();
 
-  let loadCount = 0;
-  function onAllImageLoad() {
-    loadCount++;
-    if (loadCount === gamerCount) {
-      setLoading(false);
+  let copy = loadingState;
+  function loadingCheckHandler(univ:string){
+    copy[univ]["imgLoadCount"] = copy[univ]["imgLoadCount"]+=1;
+    if(copy[univ]["total"]===copy[univ]["imgLoadCount"]){
+
+      copy[univ]["showLoading"]=false;
+      setLoadingState({...loadingState,...copy})
     }
   }
-  console.log("afreecaInfo", afreecaInfo);
+
   useEffect(() => {
     getAfreecaLiveInfo().then((e) => {
       setAfreecaInfo(e);
     });
     getWholeGamerInfo().then((e) => {
-      console.log("e", e);
       e = e.reduce(
         (acc: any, cur: any) => {
           switch (cur.university) {
@@ -251,8 +253,10 @@ export default function University() {
         }
       );
       let sortedGamerList = {};
-      // 대학별로 티어점수가 가장 높은순으로 정렬
+      const loadingStatus: any = {};
       for (const key in e) {
+        loadingStatus[key] = { total: e[key].length ,imgLoadCount:0,showLoading:true};
+      // 대학별로 티어점수가 가장 높은순으로 정렬
         sortedGamerList = {
           ...sortedGamerList,
           [key]: e[key].sort((a: any, b: any) => {
@@ -269,12 +273,12 @@ export default function University() {
         }
         count += e[key].length;
       }
+      setLoadingState(loadingStatus);
       setGamerList(sortedGamerList);
       setGamerCount(count);
     });
   }, []);
 
-  console.log("rec", recordInfo);
   return (
     <Wrapper className="mx-auto pb-[100px] mt-[76px]">
       <HeadMeta {...headerProps} />
@@ -301,12 +305,15 @@ export default function University() {
           </aside>
         )}
       </div>
-      {universityList.map((university: any) => (
-        <section className="univ-container mx-auto w-full max-w-[800px] border-[10px] border-black dark:border-white rounded-[10px] p-[20px] mb-[30px]">
+      {universityList.map((university: any, i) => (
+        <section
+          key={i}
+          className="univ-container mx-auto w-full max-w-[800px] border-[10px] border-black dark:border-white rounded-[10px] p-[20px] mb-[30px]"
+        >
           <div className="univ-image w-[250px] h-[250px] mx-auto mb-[10px]">
             <img className="w-full h-full" src={univImgPath[university]} alt="" />
           </div>
-          {loading && (
+          {loadingState[university]?.["showLoading"] && (
             <div className="mx-auto w-[62px] mt-[100px] mb-[100px] ">
               <SyncLoader color="gold" />
             </div>
@@ -321,28 +328,33 @@ export default function University() {
           </div>
 
           <div className="student-container">
-            {gamerList !== undefined &&
+            {gamerList &&
               gamerList[university]?.map((e: any, i: number) => (
                 <div className="gamer-container w-[170px] flex mb-[30px]" key={i}>
                   <div className="w-[80px] h-[80px] gamer-img-container">
-                    {Object.keys(e)[0] in afreecaInfo && <img className="onair" src="/on-air.png" onClick={()=>{
-              window.open(`https://play.afreecatv.com/${afreecaInfo[Object.keys(e)[0]]["bjID"]}`);
-
-                    }} />}
+                    {Object.keys(e)[0] in afreecaInfo && (
+                      <img
+                        className="onair"
+                        src="/on-air.png"
+                        onClick={() => {
+                          window.open(`https://play.afreecatv.com/${afreecaInfo[Object.keys(e)[0]]["bjID"]}`);
+                        }}
+                      />
+                    )}
                     <img
                       onClick={() => {
                         setRecordInfo(e[Object.keys(e)[0]]["record"]);
                       }}
                       className="gamer-image w-full h-full mr-[5px] rounded-[10%]"
-                      src={`/images/gamer/${Object.keys(e)}.png`}
                       onLoad={() => {
-                        onAllImageLoad();
+                        loadingCheckHandler(university)
+
                       }}
                       onError={({ currentTarget }) => {
-                        onAllImageLoad();
                         currentTarget.onerror = null;
                         currentTarget.src = "/images/gamer/notfound.png";
                       }}
+                      src={`/images/gamer/${Object.keys(e)}.png`}
                       alt=""
                     />
                   </div>
@@ -355,14 +367,15 @@ export default function University() {
                     </div>
                     {/* <div>{e[Object.keys(e) as unknown as string]?.race}</div> */}
                   </div>
-                  {recordInfo&& Object.keys(e)[0] in recordInfo&&<div className="record-container">
-                    <div className="record">
-                      <div>{recordInfo[Object.keys(e)[0]]["win"]}</div>
-                      <div>{recordInfo[Object.keys(e)[0]]["lose"]}</div>
+                  {recordInfo && Object.keys(e)[0] in recordInfo && (
+                    <div className="record-container">
+                      <div className="record">
+                        <div>{recordInfo[Object.keys(e)[0]]["win"]}</div>
+                        <div>{recordInfo[Object.keys(e)[0]]["lose"]}</div>
+                      </div>
+                      <div className="rate">{recordInfo[Object.keys(e)[0]]["rate"]}</div>
                     </div>
-                    <div className="rate">{recordInfo[Object.keys(e)[0]]["rate"]}</div>
-                  </div>}
-                  
+                  )}
                 </div>
               ))}
           </div>

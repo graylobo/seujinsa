@@ -55,7 +55,8 @@ function MyApp({ Component, pageProps }) {
         <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css" />
       </Head>
 
-      <Script src="../path/to/flowbite/dist/flowbite.bundle.js"></Script>
+      {/* <Script src="../path/to/flowbite/dist/flowbite.bundle.js"></Script> */}
+      
       <Script
         type="text/javascript"
         onError={(e) => {
