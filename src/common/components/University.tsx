@@ -8,8 +8,66 @@ import HeadMeta from "./shared/HeadMeta";
 import styled from "@emotion/styled";
 
 const Wrapper = styled.main`
+  .afreeca-thumbnail {
+    width: 500px;
+    height: 300px;
+    z-index: 1;
+    position: absolute;
+    bottom: 100px;
+    left: -230px;
+    border: 1px solid red;
+    font-size:22px;
+    border-radius:10px;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+
+    .title {
+      width:100%;
+      text-align:center;
+      position: absolute;
+    }
+    .viewers {
+      position: absolute;
+      bottom:0;
+      width:100%;
+      text-align:center;
+
+    }
+
+    img {
+    border-radius:10px;
+
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .record-container {
+    width: 80px;
+    text-align: center;
+
+    .record {
+    }
+    .rate {
+    }
+    position: absolute;
+    top: 80px;
+  }
   .gamer-image {
     cursor: pointer;
+    &.disable {
+      opacity: 0.3;
+    }
+    &.selected {
+      border-radius: 10px;
+      &.테란 {
+        box-shadow: 0 0 0.2rem blue, 0 0 0.2rem blue, 0 0 2rem blue, 0 0 0.8rem blue, 0 0 2.8rem blue, inset 0 0 1.3rem blue;
+      }
+      &.저그 {
+        box-shadow: 0 0 0.2rem red, 0 0 0.2rem red, 0 0 2rem red, 0 0 0.8rem red, 0 0 2.8rem red, inset 0 0 1.3rem red;
+      }
+      &.프로토스 {
+        box-shadow: 0 0 0.2rem yellow, 0 0 0.2rem yellow, 0 0 2rem yellow, 0 0 0.8rem yellow, 0 0 2.8rem yellow, inset 0 0 1.3rem yellow;
+      }
+    }
   }
   @media screen and (max-width: 1023px) {
     .gamer-container {
@@ -25,13 +83,6 @@ const Wrapper = styled.main`
           z-index: 1;
           cursor: pointer;
         }
-      }
-      .record-container {
-        margin: 0 auto;
-        .record {
-          display: flex;
-        }
-        position: absolute;
       }
     }
 
@@ -61,13 +112,6 @@ const Wrapper = styled.main`
           z-index: 1;
           cursor: pointer;
         }
-      }
-      .record-container {
-        margin: 0 auto;
-        .record {
-          display: flex;
-        }
-        position: absolute;
       }
     }
 
@@ -145,18 +189,19 @@ export default function University() {
   const [gamerList, setGamerList] = useState<any>();
   const [loadingState, setLoadingState] = useState<any>([]);
   const theme = useRecoilValue(themeState);
-  const [gamerCount, setGamerCount] = useState(0);
   const isMobile = useRecoilValue(isMobileState);
   const [afreecaInfo, setAfreecaInfo] = useState<any>({});
   const [recordInfo, setRecordInfo] = useState<any>();
+  const [backgroundClick, setBackgroundClick] = useState(true);
+  const [selectedGamer, setSelectedGamer] = useState<any>({});
+  const [mouseOverGamer, setMouseOverGamer] = useState<any>({});
 
   let copy = loadingState;
-  function loadingCheckHandler(univ:string){
-    copy[univ]["imgLoadCount"] = copy[univ]["imgLoadCount"]+=1;
-    if(copy[univ]["total"]===copy[univ]["imgLoadCount"]){
-
-      copy[univ]["showLoading"]=false;
-      setLoadingState({...loadingState,...copy})
+  function loadingCheckHandler(univ: string) {
+    copy[univ]["imgLoadCount"] = copy[univ]["imgLoadCount"] += 1;
+    if (copy[univ]["total"] === copy[univ]["imgLoadCount"]) {
+      copy[univ]["showLoading"] = false;
+      setLoadingState({ ...loadingState, ...copy });
     }
   }
 
@@ -255,8 +300,8 @@ export default function University() {
       let sortedGamerList = {};
       const loadingStatus: any = {};
       for (const key in e) {
-        loadingStatus[key] = { total: e[key].length ,imgLoadCount:0,showLoading:true};
-      // 대학별로 티어점수가 가장 높은순으로 정렬
+        loadingStatus[key] = { total: e[key].length, imgLoadCount: 0, showLoading: true };
+        // 대학별로 티어점수가 가장 높은순으로 정렬
         sortedGamerList = {
           ...sortedGamerList,
           [key]: e[key].sort((a: any, b: any) => {
@@ -275,10 +320,9 @@ export default function University() {
       }
       setLoadingState(loadingStatus);
       setGamerList(sortedGamerList);
-      setGamerCount(count);
     });
   }, []);
-
+  console.log(mouseOverGamer, afreecaInfo);
   return (
     <Wrapper className="mx-auto pb-[100px] mt-[76px]">
       <HeadMeta {...headerProps} />
@@ -307,6 +351,11 @@ export default function University() {
       </div>
       {universityList.map((university: any, i) => (
         <section
+          onClick={() => {
+            setBackgroundClick(true);
+            setSelectedGamer(null);
+            setRecordInfo({});
+          }}
           key={i}
           className="univ-container mx-auto w-full max-w-[800px] border-[10px] border-black dark:border-white rounded-[10px] p-[20px] mb-[30px]"
         >
@@ -329,51 +378,74 @@ export default function University() {
 
           <div className="student-container">
             {gamerList &&
-              gamerList[university]?.map((e: any, i: number) => (
-                <div className="gamer-container w-[170px] flex mb-[30px]" key={i}>
+              gamerList[university]?.map((gamerInfo: any, i: number) => (
+                <div className="gamer-container w-[170px] flex mb-[70px]" key={i}>
+                  {mouseOverGamer?.["_id"] in afreecaInfo && Object.keys(gamerInfo)[0] === mouseOverGamer?.["_id"] && (
+                    <div className="afreeca-thumbnail">
+                      <div className="title">{afreecaInfo[mouseOverGamer["_id"]]["title"]}</div>
+                      <div className="viewers">{afreecaInfo[mouseOverGamer["_id"]]["viewers"]}</div>
+                      <img src={afreecaInfo[mouseOverGamer["_id"]]["imgPath"]} alt="" />
+                    </div>
+                  )}
                   <div className="w-[80px] h-[80px] gamer-img-container">
-                    {Object.keys(e)[0] in afreecaInfo && (
+                    {Object.keys(gamerInfo)[0] in afreecaInfo && (
                       <img
                         className="onair"
                         src="/on-air.png"
                         onClick={() => {
-                          window.open(`https://play.afreecatv.com/${afreecaInfo[Object.keys(e)[0]]["bjID"]}`);
+                          window.open(`https://play.afreecatv.com/${afreecaInfo[Object.keys(gamerInfo)[0]]["bjID"]}`);
                         }}
                       />
                     )}
                     <img
-                      onClick={() => {
-                        setRecordInfo(e[Object.keys(e)[0]]["record"]);
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setRecordInfo(gamerInfo[Object.keys(gamerInfo)[0]]["record"]);
+                        setBackgroundClick(false);
+                        setSelectedGamer(gamerInfo[Object.keys(gamerInfo)[0]]);
                       }}
-                      className="gamer-image w-full h-full mr-[5px] rounded-[10%]"
+                      className={`gamer-image ${selectedGamer?.["_id"] === Object.keys(gamerInfo)[0] ? "selected" : ""} ${selectedGamer?.["race"]} ${
+                        // 게이머 이미지 클릭시 선택게이머와 전적이 없는 유저는 opacity 감소(선택한 게이머는 opacity 감소 제외)
+                        selectedGamer?.["_id"] !== Object.keys(gamerInfo)[0] &&
+                        !(recordInfo && Object.keys(gamerInfo)[0] in recordInfo) &&
+                        !backgroundClick
+                          ? "disable"
+                          : ""
+                      } w-full h-full mr-[5px] rounded-[10%]`}
                       onLoad={() => {
-                        loadingCheckHandler(university)
-
+                        loadingCheckHandler(university);
                       }}
                       onError={({ currentTarget }) => {
                         currentTarget.onerror = null;
                         currentTarget.src = "/images/gamer/notfound.png";
                       }}
-                      src={`/images/gamer/${Object.keys(e)}.png`}
+                      onMouseEnter={() => {
+                        setMouseOverGamer(gamerInfo[Object.keys(gamerInfo)[0]]);
+                      }}
+                      onMouseLeave={() => {
+                        // setMouseOverGamer(null);
+                      }}
+                      src={`/images/gamer/${Object.keys(gamerInfo)}.png`}
                       alt=""
                     />
                   </div>
                   <div className="ml-[5px] text-[15px]">
-                    <div className={`${e[Object.keys(e) as unknown as string]?.race} ${theme === "dark" ? "dark" : ""}`}>
-                      {e[Object.keys(e) as unknown as string]?.standardTier} Tier
+                    <div className={`${gamerInfo[Object.keys(gamerInfo) as unknown as string]?.race} ${theme === "dark" ? "dark" : ""}`}>
+                      {gamerInfo[Object.keys(gamerInfo) as unknown as string]?.standardTier} Tier
                     </div>
-                    <div className={`gamer-name ${e[Object.keys(e) as unknown as string]?.race} ${theme === "dark" ? "dark" : ""}`}>
-                      {Object.keys(e)}
+                    <div className={`gamer-name ${gamerInfo[Object.keys(gamerInfo) as unknown as string]?.race} ${theme === "dark" ? "dark" : ""}`}>
+                      {Object.keys(gamerInfo)}
                     </div>
-                    {/* <div>{e[Object.keys(e) as unknown as string]?.race}</div> */}
+                    {/* <div>{gamerInfo[Object.keys(gamerInfo) as unknown as string]?.race}</div> */}
                   </div>
-                  {recordInfo && Object.keys(e)[0] in recordInfo && (
+                  {/* 전적표시 */}
+                  {recordInfo && Object.keys(gamerInfo)[0] in recordInfo && (
                     <div className="record-container">
                       <div className="record">
-                        <div>{recordInfo[Object.keys(e)[0]]["win"]}</div>
-                        <div>{recordInfo[Object.keys(e)[0]]["lose"]}</div>
+                        {recordInfo[Object.keys(gamerInfo)[0]]["win"]}
+                        {recordInfo[Object.keys(gamerInfo)[0]]["lose"]}
                       </div>
-                      <div className="rate">{recordInfo[Object.keys(e)[0]]["rate"]}</div>
+                      <div className="rate">{recordInfo[Object.keys(gamerInfo)[0]]["rate"]}</div>
                     </div>
                   )}
                 </div>
