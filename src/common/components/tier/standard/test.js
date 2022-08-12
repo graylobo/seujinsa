@@ -1,4 +1,6 @@
-const some = ["박상현(짭제)","박상현","하위"]
-
-let test = some.filter(e=>e.includes("짭제"))
+const test = [1,2,3,4,5];
+const some = test.reduce((acc,cur)=>{
+    return acc+cur
+})
+some
 test

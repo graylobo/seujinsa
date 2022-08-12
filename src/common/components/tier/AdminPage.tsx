@@ -1,6 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { getWholeGamerInfo } from "../../utils/api-util";
 import { GamerInfoType } from "../../recoil/states";
+import styled from "@emotion/styled";
+
+const Wrapper = styled.main`
+  input {
+    background-color: black;
+    color: gray;
+  }
+  select {
+    background-color: black;
+    color: gray;
+  }
+  option {
+    color: gray;
+  }
+  span {
+    color: #afaeae;
+  }
+`;
 
 const race = ["", "저그", "프로토스", "테란"];
 const university = ["무소속", "철와대", "바스포드", "무친대", "우끼끼즈", "캄성여대", "CP", "JSA", "NSU", "아마대", "츠나대", "MSG", "라저대"];
@@ -64,7 +82,7 @@ export default function AdminPage() {
     setGamerList(copyGamerList);
   }
   return (
-    <div className="absolute left-0 w-full pb-[80px] pt-[130px] p-[10px] ">
+    <Wrapper className="absolute left-0 w-full pb-[80px] pt-[130px] p-[10px] ">
       {gamerList.map((e: GamerInfoType, i: number) => (
         <div key={e._id} className="grid grid-cols-10 mb-3 box-border hover:bg-red-100 dark:hover:bg-red-900 ">
           <span>
@@ -74,7 +92,7 @@ export default function AdminPage() {
           <span>
             종족:
             <select
-              className="dark:text-black"
+              className=""
               value={e.race}
               onChange={(e) => {
                 updateGamerInfo(e.target.value, i, "race");
@@ -90,7 +108,7 @@ export default function AdminPage() {
           <span>
             티어:
             <select
-              className="dark:text-black"
+              className=""
               value={e.standardTier}
               onChange={(e) => {
                 updateGamerInfo(e.target.value, i, "standardTier");
@@ -106,7 +124,7 @@ export default function AdminPage() {
           <span>
             대학:
             <select
-              className="dark:text-black"
+              className=""
               value={e.university}
               onChange={(e) => {
                 updateGamerInfo(e.target.value, i, "university");
@@ -189,6 +207,6 @@ export default function AdminPage() {
       >
         수정
       </button>
-    </div>
+    </Wrapper>
   );
 }

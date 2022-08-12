@@ -175,15 +175,17 @@ const timerSelector = selector<ITimerProps[]>({
   },
 });
 
-  interface PopupProps {
+interface PopupProps {
   show: boolean;
-  component?: (...args:any) => JSX.Element | null;
+  component?: (...args: any) => JSX.Element | null;
+  content?: any;
 }
 const popupState = atom<PopupProps>({
   key: "popupState",
   default: {
     show: false,
-    component: ()=>null
+    component: () => null,
+    content: null,
   },
 });
 
@@ -205,6 +207,4 @@ export {
   popupState,
 };
 
-export type{
-  PopupProps
-}
+export type { PopupProps };
