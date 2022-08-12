@@ -146,12 +146,7 @@ export default function QNA() {
       <div className="px-[20px] pt-[24px] h-full flex flex-col">
         <div className="max-w-[700px] w-full mx-auto">
           <h1 className="font-bold text-[22px] mb-[8px]">건의 사항</h1>
-          <p className="text-[14px] text-gray-600">
-            서비스를 이용하면서 궁금하신 점이나 건의사항 등에 대한
-          </p>
-          <p className="text-[14px] text-gray-600">
-            여러분들의 의견을 자유롭게 남겨주세요.
-          </p>
+          
         </div>
         <div className="grid grid-cols-1 gap-[20px] py-[20px] max-w-[700px] w-full mx-auto">
           {loading && (
