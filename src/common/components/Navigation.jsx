@@ -19,6 +19,9 @@ export default function Navigation({ setMenu }) {
     var themeToggleDarkIcon = document.getElementById("theme-toggle-dark-icon");
     var themeToggleLightIcon = document.getElementById("theme-toggle-light-icon");
 
+    document.documentElement.classList.add("dark");
+    localStorage.setItem("color-theme", "dark");
+    setTheme("dark");
     // Change the icons inside the button based on previous settings
     if (
       localStorage.getItem("color-theme") === "dark" ||
@@ -91,7 +94,6 @@ export default function Navigation({ setMenu }) {
     //       }
     //       return { ...e, race };
     //     });
-
     //   setTopTenGamerList(gamerList);
     // });
   }, [gamerInfo]);

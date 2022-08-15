@@ -28,11 +28,7 @@ export default function Document() {
           crossOrigin="anonymous"
         ></script>
 
-        <script
-          dangerouslySetInnerHTML={{
-            __html: ` document.documentElement.classList.add('dark')`,
-          }}
-        />
+       
 
         <body>
           <Main />
