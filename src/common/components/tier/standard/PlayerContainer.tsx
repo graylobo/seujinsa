@@ -5,7 +5,7 @@ import GamerSearchBar from "../../shared/GamerSearchBar";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { isMobileState, loadingState, searchState, themeState } from "../../../recoil/states";
 import _ from "lodash";
-import { debounce, sleep } from "../../../utils/utils";
+import { debounce, nickNameSwitch, sleep, switchData } from "../../../utils/utils";
 
 const Wrapper = styled.main`
   margin-top: 90px;
@@ -300,30 +300,7 @@ const initTierValue = {
   미지정: [],
 };
 
-const switchData: any = {
-  "박상현(짭제)": "박상현",
-  "윤찬희(몽군)": "윤찬희",
-  "손경훈(브신)": "손경훈",
-  "이예준(철구)": "철구",
-  "박현재(기뉴다)": "기뉴다",
-  "오진식(짭뉴다)": "짭뉴다",
-  "박정일(짭호)": "짭호",
-  "유규민(초난강)": "초난강",
-  "박종승(빡죠스)": "박종승",
-  "장영근(난수)": "난수",
-  "박지호(라박이)": "라박이",
-  "김동민(액션구드론)": "김동민",
-  "윤호준(고도준)": "고도준",
-  "박준영(미동미동)": "박준영",
-  "박성용(소룡)": "박성용",
-  "이광용(프발)": "프발",
-  "임홍규(홍구)": "임홍규",
-  "김승현(오메킴)": "오메킴",
-  "송호영(도브)": "도브",
-};
-function nickNameSwitch(gamer: string) {
-  return switchData[gamer];
-}
+
 export default function PlayerContainer() {
   const [searchValue, setSearchValue] = useRecoilState(searchState);
   const [gamerList, setGamerList] = useState<any>(initTierValue);
@@ -442,7 +419,7 @@ export default function PlayerContainer() {
     copy = setPriority(copy);
     setGamerList(copy);
     setCount(count);
-  }, [searchValue, selectedGamer, intervalUpdateFlag]);
+  }, [searchValue.race,searchValue.tier,searchValue.univ,searchValue.onair,searchValue.recordExist, selectedGamer, intervalUpdateFlag]);
 
   useEffect(() => {
     setShowThumbNail(false);
@@ -650,7 +627,6 @@ export default function PlayerContainer() {
     );
   }
   const searchBarProps = { count, gamerCount, selectedGamer };
-  console.log("할로")
   return (
     <Wrapper>
       {isMobile ? (

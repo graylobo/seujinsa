@@ -1,15 +1,27 @@
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { getAfreecaLiveInfo, getWholeGamerInfo } from "../utils/api-util";
 import { SyncLoader } from "react-spinners";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { isMobileState, popupState, themeState } from "../recoil/states";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { isMobileState, popupState, searchState, themeState } from "../recoil/states";
 import HeadMeta from "./shared/HeadMeta";
 import styled from "@emotion/styled";
 import UnivInfoPopup from "./popup/UnivInfoPopup";
 import _ from "lodash";
+import GamerSearchBar from "./shared/GamerSearchBar";
+import { debounce, nickNameSwitch, switchData } from "../utils/utils";
 
 const Wrapper = styled.main`
+  .stick-container {
+    position: sticky;
+    top: 10%;
+    z-index: 2;
+
+    .search-bar {
+      position: absolute;
+      right: 5%;
+    }
+  }
   .afreeca-thumbnail {
     width: 500px;
     height: 300px;
@@ -46,7 +58,7 @@ const Wrapper = styled.main`
     text-align: center;
     font-size: 30px;
     cursor: pointer;
-    margin-bottom:50px;
+    margin-bottom: 50px;
   }
   .record-container {
     width: 80px;
@@ -142,7 +154,7 @@ const Wrapper = styled.main`
   .테란 {
     color: blue;
     font-weight: 600;
-    &.dark {
+    &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px blue, 0 0 10px blue, 0 0 21px blue, 0 0 42px blue, 0 0 82px blue, 0 0 92px blue, 0 0 102px blue, 0 0 151px blue;
@@ -151,7 +163,7 @@ const Wrapper = styled.main`
   .저그 {
     color: #d63deb;
     font-weight: 600;
-    &.dark {
+    &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px red, 0 0 10px red, 0 0 21px red, 0 0 42px red, 0 0 82px red, 0 0 92px red, 0 0 102px red, 0 0 151px red;
@@ -160,7 +172,7 @@ const Wrapper = styled.main`
   .프로토스 {
     color: orange;
     font-weight: 600;
-    &.dark {
+    &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px #ddc83d, 0 0 10px #ddc83d, 0 0 21px #ddc83d, 0 0 42px #ddc83d, 0 0 82px #ddc83d, 0 0 92px #ddc83d, 0 0 102px #ddc83d,
@@ -187,20 +199,27 @@ const univImgPath: any = {
   츠나대: "/images/university/츠나대.png",
   MSG: "/images/university/MSG.png",
 };
-const universityList = ["철와대", "바스포드", "무친대", "우끼끼즈", "캄성여대", "CP", "JSA", "NSU", "아마대", "츠나대", "MSG",];
+
+const universityList = ["철와대", "바스포드", "무친대", "우끼끼즈", "캄성여대", "CP", "JSA", "NSU", "아마대", "츠나대", "MSG"];
 const tierPriority: any = { 갓: 1, 킹: 2, 잭: 3, 조커: 4, 0: 5, 1: 6, 2: 7, 3: 8, 4: 9, 5: 10, 6: 11, 7: 12, 8: 13, 아기: 14 };
 export default function University() {
   const [gamerList, setGamerList] = useState<any>();
+  const [initialGamerList, setInitialGamerList] = useState<any>();
   const [loadingState, setLoadingState] = useState<any>([]);
   const theme = useRecoilValue(themeState);
   const isMobile = useRecoilValue(isMobileState);
   const setPopup = useSetRecoilState(popupState);
+  const [searchValue, setSearchValue] = useRecoilState(searchState);
   const [afreecaInfo, setAfreecaInfo] = useState<any>({});
   const [recordInfo, setRecordInfo] = useState<any>();
   const [backgroundClick, setBackgroundClick] = useState(true);
   const [selectedGamer, setSelectedGamer] = useState<any>({});
   const [mouseOverGamer, setMouseOverGamer] = useState<any>({});
-  const [statistics,setStatistics] = useState<any>({});
+  const [statistics, setStatistics] = useState<any>({});
+  const [count, setCount] = useState(0);
+  const [gamerCount, setGamerCount] = useState(0); // 필터 > 이름검색시 결과 카운트 변수
+
+  const searchGamerDebounce = useCallback(debounce(searchGamer, 100), [initialGamerList]);
 
   let copy = loadingState;
   function loadingCheckHandler(univ: string) {
@@ -216,7 +235,7 @@ export default function University() {
       setAfreecaInfo(e);
     });
     getWholeGamerInfo().then((e) => {
-      const univInfo  = e.reduce(
+      const univInfo = e.reduce(
         (acc: any, cur: any) => {
           switch (cur.university) {
             case "철와대":
@@ -319,26 +338,109 @@ export default function University() {
       }
       setLoadingState(loadingStatus);
       setGamerList(sortedGamerList);
+      setInitialGamerList(sortedGamerList);
     });
   }, []);
-  useEffect(()=>{
-    if(gamerList){
-      const univStatistic:any = {};
+  useEffect(() => {
+    if (gamerList) {
+      const univStatistic: any = {};
       for (const university in gamerList) {
         univStatistic[university] = getStatistics(university);
       }
       setStatistics(univStatistic);
     }
-  },[gamerList])
-  function getStatistics(university:string){
+  }, [gamerList]);
+  useEffect(() => {
+    const copy = _.cloneDeep(initialGamerList);
+    let count = 0;
+
+    for (const key in copy) {
+      if (searchValue.inputText) {
+        copy[key] = copy[key].filter((e: any) => e[Object.keys(e)[0]]._id.includes(searchValue.inputText));
+      }
+      if (searchValue.tier !== "전체" && searchValue.tier) {
+        copy[key] = copy[key].filter((e: any) => {
+          return selectedGamer?.["_id"] === e[Object.keys(e)[0]]._id || e[Object.keys(e)[0]].standardTier === searchValue.tier;
+        });
+      }
+      if (searchValue.race !== "전체" && searchValue.race) {
+        copy[key] = copy[key].filter((e: any) => {
+          return selectedGamer?.["_id"] === e[Object.keys(e)[0]]._id || e[Object.keys(e)[0]].race === searchValue.race;
+        });
+      }
+      if (searchValue.univ !== "전체" && searchValue.univ) {
+        copy[key] = copy[key].filter((e: any) => {
+          return selectedGamer?.["_id"] === e[Object.keys(e)[0]]._id || e[Object.keys(e)[0]].university === searchValue.univ;
+        });
+      }
+      if (searchValue.onair) {
+        copy[key] = copy[key].filter((e: any) => {
+          return selectedGamer?.["_id"] === e[Object.keys(e)[0]]._id || e[Object.keys(e)[0]]._id in afreecaInfo;
+        });
+      }
+      if (searchValue.recordExist) {
+        copy[key] = copy[key].filter((e: any) => {
+          if (selectedGamer?.["_id"]) {
+            return selectedGamer?.["_id"] === e[Object.keys(e)[0]]._id || e[Object.keys(e)[0]]._id in recordInfo;
+          }
+          return e;
+        });
+      }
+      count += copy[key].length;
+    }
+    setCount(count);
+    setGamerList(copy);
+  }, [
+    searchValue.inputText,
+    searchValue.tier,
+    searchValue.onair,
+    searchValue.race,
+    searchValue.recordExist,
+    searchValue.univ,
+    selectedGamer,
+    backgroundClick,
+  ]);
+  // useEffect(() => {
+  //   searchGamerDebounce(searchValue.inputText)
+  //     .then((result: any) => {
+  //       setSearchValue({ ...searchValue, race: "", tier: "", onair: false, spon: false, recordExist: false, univ: "" });
+  //       try {
+  //         let finded = "";
+  //         if (result?.length === 1) {
+  //           const resultInfo = result[0];
+  //           finded = resultInfo[Object.keys(resultInfo)[0]]["_id"];
+  //           finded = finded in switchData ? nickNameSwitch(finded) : finded;
+  //         }
+  //         if (searchValue.inputText) {
+  //           setGamerCount(result.length);
+  //         } else {
+  //           setGamerCount(0);
+  //         }
+  //         const elem = document.querySelector<HTMLElement>(`.gamer-${finded || searchValue.inputText}`);
+  //         if (elem) {
+  //           let parent = elem?.offsetParent as HTMLElement;
+  //           parent = parent.offsetParent as HTMLElement;
+  //           const position = parent.offsetTop;
+  //           if (position) {
+  //             scrollTo(0, (position as number) - 500);
+  //             elem?.click();
+  //           }
+  //         } else {
+  //           setBackgroundClick(true);
+  //         }
+  //       } catch {}
+  //     })
+  //     .catch((e) => console.log("error:", e));
+  // }, [searchValue.inputText]);
+
+  function getStatistics(university: string) {
     let copy = _.cloneDeep(gamerList);
     const positionTotal = copy?.[university].reduce((acc: any, cur: any) => {
       const position = cur[Object.keys(cur)[0]]["position"];
-      if(position){
-        if(position in acc){
-          acc[position] =  acc[position] += 1;
-        }
-        else{
+      if (position) {
+        if (position in acc) {
+          acc[position] = acc[position] += 1;
+        } else {
           acc[position] = 1;
         }
       }
@@ -367,14 +469,33 @@ export default function University() {
         8: gamerList?.[university].filter((e: any) => e[Object.keys(e)[0]]["standardTier"] === "8").length,
         아기: gamerList?.[university].filter((e: any) => e[Object.keys(e)[0]]["standardTier"] === "아기").length,
       },
-      position:positionTotal,
+      position: positionTotal,
     };
     return statistics;
   }
-  console.log("hello")
+  function searchGamer(value: string) {
+    let copy = _.cloneDeep(initialGamerList);
+    let search: any = [];
+    for (const key in copy) {
+      const find = copy[key].filter((e: any) => {
+        const gamerName = e[Object.keys(e)[0]]["_id"];
+        return gamerName.includes(value);
+      });
+      if (find) {
+        search = [...search, ...find];
+      }
+    }
+    return search;
+  }
+  const searchBarProps = { count, selectedGamer };
   return (
     <Wrapper className="mx-auto pb-[100px] mt-[76px]">
       <HeadMeta {...headerProps} />
+      <div className="stick-container">
+        <div className="search-bar">
+          <GamerSearchBar {...searchBarProps} />
+        </div>
+      </div>
       <div className="mb-[30px]">
         {isMobile ? (
           <aside className="w-[320px] mx-auto">
@@ -399,122 +520,134 @@ export default function University() {
         )}
       </div>
       {universityList.map((university: any, i) => {
-      
         return (
-          <section
-            onClick={() => {
-              setBackgroundClick(true);
-              setSelectedGamer(null);
-              setMouseOverGamer(null);
-              setRecordInfo({});
-            }}
-            key={i}
-            className="univ-container mx-auto w-full max-w-[800px] border-[10px] border-black dark:border-white rounded-[10px] p-[20px] mb-[30px]"
-          >
-            <div className="univ-image w-[250px] h-[250px] mx-auto mb-[30px]">
-              <img className="w-full h-full" src={univImgPath[university]} alt="" />
-            </div>
-            <div
-              className="info-icon material-symbols-outlined"
+          gamerList?.[university]?.length > 0 && (
+            <section
               onClick={() => {
-                setPopup({ show: true, component: UnivInfoPopup, content:{[university]:statistics[university]} });
+                setBackgroundClick(true);
+                setSelectedGamer(null);
+                setMouseOverGamer(null);
+                setRecordInfo({});
               }}
+              key={i}
+              className="univ-container mx-auto w-full max-w-[800px] border-[10px] border-black dark:border-white rounded-[10px] p-[20px] mb-[30px]"
             >
-              info
-            </div>
-            {loadingState[university]?.["showLoading"] && (
-              <div className="mx-auto w-[62px] mt-[100px] mb-[100px] ">
-                <SyncLoader color="gold" />
+              <div className="univ-image w-[250px] h-[250px] mx-auto mb-[30px]">
+                <img className="w-full h-full" src={univImgPath[university]} alt="" />
               </div>
-            )}
+              <div
+                className="info-icon material-symbols-outlined"
+                onClick={() => {
+                  setPopup({ show: true, component: UnivInfoPopup, content: { [university]: statistics[university] } });
+                }}
+              >
+                info
+              </div>
+              {loadingState[university]?.["showLoading"] && (
+                <div className="mx-auto w-[62px] mt-[100px] mb-[100px] ">
+                  <SyncLoader color="gold" />
+                </div>
+              )}
 
-            <div className="student-container">
-              {gamerList &&
-                gamerList[university]?.map((gamerInfo: any, i: number) => (
-                  <div className="gamer-container w-[170px] flex mb-[70px]" key={i}>
-                    {mouseOverGamer?.["_id"] in afreecaInfo && Object.keys(gamerInfo)[0] === mouseOverGamer?.["_id"] && (
-                      <div className="afreeca-thumbnail">
-                        <div className="title">{afreecaInfo[mouseOverGamer["_id"]]["title"]}</div>
-                        <div className="viewers">{afreecaInfo[mouseOverGamer["_id"]]["viewers"]}</div>
-                        <img src={afreecaInfo[mouseOverGamer["_id"]]["imgPath"]} alt="" />
-                      </div>
-                    )}
-                    <div className="w-[80px] h-[80px] gamer-img-container">
-                      {Object.keys(gamerInfo)[0] in afreecaInfo && (
-                        <img
-                          className="onair"
-                          src="/on-air.png"
-                          onClick={() => {
-                            window.open(`https://play.afreecatv.com/${afreecaInfo[Object.keys(gamerInfo)[0]]["bjID"]}`);
-                          }}
-                        />
-                      )}
-                      <img
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          setRecordInfo(gamerInfo[Object.keys(gamerInfo)[0]]["record"]);
-                          setBackgroundClick(false);
-                          setSelectedGamer(gamerInfo[Object.keys(gamerInfo)[0]]);
-                          setMouseOverGamer(gamerInfo[Object.keys(gamerInfo)[0]]);
-                        }}
-                        className={`gamer-image ${selectedGamer?.["_id"] === Object.keys(gamerInfo)[0] ? "selected" : ""} ${
-                          selectedGamer?.["race"]
-                        } ${
-                          // 게이머 이미지 클릭시 선택게이머와 전적이 없는 유저는 opacity 감소(선택한 게이머는 opacity 감소 제외)
-                          selectedGamer?.["_id"] !== Object.keys(gamerInfo)[0] &&
-                          !(recordInfo && Object.keys(gamerInfo)[0] in recordInfo) &&
-                          !backgroundClick
-                            ? "disable"
-                            : ""
-                        } w-full h-full mr-[5px] rounded-[10%]`}
-                        onLoad={() => {
-                          loadingCheckHandler(university);
-                        }}
-                        onError={({ currentTarget }) => {
-                          currentTarget.onerror = null;
-                          currentTarget.src = "/images/gamer/notfound.png";
-                        }}
-                        onMouseEnter={() => {
-                          if (!isMobile) {
-                            setMouseOverGamer(gamerInfo[Object.keys(gamerInfo)[0]]);
-                          }
-                        }}
-                        onMouseLeave={() => {
-                          if (!isMobile) {
-                            setMouseOverGamer(null);
-                          }
-                        }}
-                        src={`/images/gamer/${Object.keys(gamerInfo)}.png`}
-                        alt=""
-                      />
-                    </div>
-                    <div className="ml-[5px] text-[15px]">
-                      {/* 티어 */}
-                      <div className={`${gamerInfo[Object.keys(gamerInfo) as unknown as string]?.race} ${theme === "dark" ? "dark" : ""}`}>
-                        {gamerInfo[Object.keys(gamerInfo) as unknown as string]?.standardTier} Tier
-                      </div>
-                      {/* 이름 */}
-                      <div className={`gamer-name ${gamerInfo[Object.keys(gamerInfo) as unknown as string]?.race} ${theme === "dark" ? "dark" : ""}`}>
-                        {Object.keys(gamerInfo)}
-                      </div>
-                      <div className="position">
-                      {gamerInfo[Object.keys(gamerInfo) as unknown as string]?.position}
-                      </div>
-                    </div>
-                    {/* 전적표시 */}
-                    {recordInfo && Object.keys(gamerInfo)[0] in recordInfo && (
-                      <div className="record-container">
-                        <div className="record">
-                          {recordInfo[Object.keys(gamerInfo)[0]]["win"]}
-                          {recordInfo[Object.keys(gamerInfo)[0]]["lose"]}
+              <div className="student-container">
+                {gamerList &&
+                  gamerList[university]?.map((gamerInfo: any, i: number) => {
+                    const gamerName = gamerInfo[Object.keys(gamerInfo)[0]]["_id"];
+                    let gamerClassName = gamerName in switchData ? nickNameSwitch(gamerName) : gamerName;
+
+                    return (
+                      <div className="gamer-container w-[170px] flex mb-[70px]" key={i}>
+                        {mouseOverGamer?.["_id"] in afreecaInfo && Object.keys(gamerInfo)[0] === mouseOverGamer?.["_id"] && (
+                          <div className="afreeca-thumbnail">
+                            <div className="title">{afreecaInfo[mouseOverGamer["_id"]]["title"]}</div>
+                            <div className="viewers">{afreecaInfo[mouseOverGamer["_id"]]["viewers"]}</div>
+                            <img src={afreecaInfo[mouseOverGamer["_id"]]["imgPath"]} alt="" />
+                          </div>
+                        )}
+                        <div className="w-[80px] h-[80px] gamer-img-container">
+                          {Object.keys(gamerInfo)[0] in afreecaInfo && (
+                            <img
+                              className="onair"
+                              src="/on-air.png"
+                              onClick={() => {
+                                window.open(`https://play.afreecatv.com/${afreecaInfo[Object.keys(gamerInfo)[0]]["bjID"]}`);
+                              }}
+                            />
+                          )}
+                          <img
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              setRecordInfo(gamerInfo[Object.keys(gamerInfo)[0]]["record"]);
+                              setBackgroundClick(false);
+                              setSelectedGamer(gamerInfo[Object.keys(gamerInfo)[0]]);
+                              setMouseOverGamer(gamerInfo[Object.keys(gamerInfo)[0]]);
+                            }}
+                            className={`gamer-image gamer-${gamerClassName} ${
+                              selectedGamer?.["_id"] === Object.keys(gamerInfo)[0] ? "selected" : ""
+                            } ${selectedGamer?.["race"]} ${
+                              // 게이머 이미지 클릭시 선택게이머와 전적이 없는 유저는 opacity 감소(선택한 게이머는 opacity 감소 제외)
+                              selectedGamer?.["_id"] !== Object.keys(gamerInfo)[0] &&
+                              !(recordInfo && Object.keys(gamerInfo)[0] in recordInfo) &&
+                              !backgroundClick
+                                ? "disable"
+                                : ""
+                            } w-full h-full mr-[5px] rounded-[10%]`}
+                            onLoad={() => {
+                              loadingCheckHandler(university);
+                            }}
+                            onError={({ currentTarget }) => {
+                              currentTarget.onerror = null;
+                              currentTarget.src = "/images/gamer/notfound.png";
+                            }}
+                            onMouseEnter={() => {
+                              if (!isMobile) {
+                                setMouseOverGamer(gamerInfo[Object.keys(gamerInfo)[0]]);
+                              }
+                            }}
+                            onMouseLeave={() => {
+                              if (!isMobile) {
+                                setMouseOverGamer(null);
+                              }
+                            }}
+                            src={`/images/gamer/${Object.keys(gamerInfo)}.png`}
+                            alt=""
+                          />
                         </div>
-                        <div className="rate">{recordInfo[Object.keys(gamerInfo)[0]]["rate"]}</div>
+                        <div className="ml-[5px] text-[15px]">
+                          {/* 티어 */}
+                          <div
+                            className={`${searchValue.neon ? "neon" : ""} ${gamerInfo[Object.keys(gamerInfo) as unknown as string]?.race} ${
+                              theme === "dark" ? "dark" : ""
+                            }`}
+                          >
+                            {gamerInfo[Object.keys(gamerInfo) as unknown as string]?.standardTier} Tier
+                          </div>
+                          {/* 이름 */}
+                          <div
+                            className={`${searchValue.neon ? "neon" : ""} gamer-name ${
+                              gamerInfo[Object.keys(gamerInfo) as unknown as string]?.race
+                            } ${theme === "dark" ? "dark" : ""}`}
+                          >
+                            {Object.keys(gamerInfo)}
+                          </div>
+                          <div className="position">{gamerInfo[Object.keys(gamerInfo) as unknown as string]?.position}</div>
+                        </div>
+                        {/* 전적표시 */}
+                        {recordInfo && Object.keys(gamerInfo)[0] in recordInfo && (
+                          <div className="record-container">
+                            <div className="record">
+                              {recordInfo[Object.keys(gamerInfo)[0]]["win"]}
+                              {recordInfo[Object.keys(gamerInfo)[0]]["lose"]}
+                            </div>
+                            <div className="rate">{recordInfo[Object.keys(gamerInfo)[0]]["rate"]}</div>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                ))}
-            </div>
-          </section>
+                    );
+                  })}
+              </div>
+            </section>
+          )
         );
       })}
       <style jsx>{`
