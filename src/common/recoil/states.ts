@@ -61,6 +61,7 @@ export type SearchProps = {
   spon: boolean;
   recordExist: boolean;
   univ: string;
+  neon:boolean;
 };
 
 const menuState = atom<boolean>({
@@ -131,6 +132,7 @@ const searchState = atom<SearchProps>({
     spon: false,
     recordExist: false,
     univ: "",
+    neon:false,
   },
 });
 

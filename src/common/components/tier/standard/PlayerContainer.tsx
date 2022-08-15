@@ -243,7 +243,7 @@ const Wrapper = styled.main`
   .테란 {
     color: blue;
     font-weight: 600;
-    &.dark {
+    &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px blue, 0 0 10px blue, 0 0 21px blue, 0 0 42px blue, 0 0 82px blue, 0 0 92px blue, 0 0 102px blue, 0 0 151px blue;
@@ -252,7 +252,7 @@ const Wrapper = styled.main`
   .저그 {
     color: #d63deb;
     font-weight: 600;
-    &.dark {
+    &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px red, 0 0 10px red, 0 0 21px red, 0 0 42px red, 0 0 82px red, 0 0 92px red, 0 0 102px red, 0 0 151px red;
@@ -261,7 +261,7 @@ const Wrapper = styled.main`
   .프로토스 {
     color: orange;
     font-weight: 600;
-    &.dark {
+    &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px #ddc83d, 0 0 10px #ddc83d, 0 0 21px #ddc83d, 0 0 42px #ddc83d, 0 0 82px #ddc83d, 0 0 92px #ddc83d, 0 0 102px #ddc83d,
@@ -342,6 +342,8 @@ export default function PlayerContainer() {
   const isMobile = useRecoilValue(isMobileState);
   const selectedRef = useRef<any>();
   const onAirThumbNailRef = useRef<any>();
+  const searchGamerDebounce = useCallback(debounce(searchGamer, 100), [initialGamerList]);
+
   function getWholeGamerInfoWrapper() {
     return new Promise<void>((resolve, reject) => {
       getWholeGamerInfo()
@@ -446,7 +448,6 @@ export default function PlayerContainer() {
     setShowThumbNail(false);
   }, [searchValue.inputText, searchValue.onair, searchValue.race, searchValue.recordExist, searchValue.spon, searchValue.tier, searchValue.univ]);
 
-  const searchGamerDebounce = useCallback(debounce(searchGamer, 100), [initialGamerList]);
   useEffect(() => {
     searchGamerDebounce(searchValue.inputText)
       .then((result: any) => {
@@ -630,7 +631,7 @@ export default function PlayerContainer() {
           }}
           alt=""
         />
-        <span className={`gamer-name ${gamerInfo.race} ${theme === "dark" ? "dark" : ""}`}>{gamerInfo._id}</span>
+        <span className={`gamer-name ${gamerInfo.race} ${searchValue.neon?"neon":""} ${theme === "dark" ? "dark" : ""}`}>{gamerInfo._id}</span>
 
         <div
           className={`record ${
@@ -649,6 +650,7 @@ export default function PlayerContainer() {
     );
   }
   const searchBarProps = { count, gamerCount, selectedGamer };
+  console.log("할로")
   return (
     <Wrapper>
       {isMobile ? (

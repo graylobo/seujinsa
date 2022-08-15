@@ -51,6 +51,11 @@ const Wrapper = styled.nav`
           color: gray;
         }
       }
+      .neon-box {
+        position: absolute;
+        left: 40px;
+        bottom:10px;
+      }
     }
 
     .name-input {
@@ -98,7 +103,7 @@ export default function GamerSearchBar({ count, gamerCount, selectedGamer }: any
   const setPopup = useSetRecoilState(popupState);
   const [filterOn, setFilterOn] = useState(true);
   useEffect(() => {
-    setState({ inputText: "", race: "", tier: "", onair: false, thumbnail: true, spon: false, recordExist: false, univ: "" });
+    setState({ inputText: "", race: "", tier: "", onair: false, thumbnail: true, spon: false, recordExist: false, univ: "", neon: false });
   }, []);
   return (
     <Wrapper>
@@ -235,6 +240,20 @@ export default function GamerSearchBar({ count, gamerCount, selectedGamer }: any
                 전적존재
               </label>
             </span>
+            <span className="neon-box">
+              <input
+                type="checkbox"
+                id="neon"
+                checked={state.neon}
+                onChange={(e) => {
+                  setState({
+                    ...state,
+                    neon: e.target.checked,
+                  });
+                }}
+              />
+              <label htmlFor="neon">네온</label>
+            </span>
           </div>
           <div
             className="notice material-symbols-outlined"
@@ -244,6 +263,7 @@ export default function GamerSearchBar({ count, gamerCount, selectedGamer }: any
           >
             info
           </div>
+
           <div className="count">count:{gamerCount || count}</div>
         </div>
       )}
