@@ -15,9 +15,9 @@
       }
     
       .elo-icon {
-        @include platformIconMixin(20px, 20px, -8px, 25px);
+        @include platformIconMixin(20px, 20px, -22px, 25px);
       }
       .afreeca-icon{
-        @include platformIconMixin(20px, 20px, -8px, 0px);
+        @include platformIconMixin(20px, 20px, -22px, 0px);
       }
 }

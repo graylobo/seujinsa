@@ -9,9 +9,8 @@ const Wrapper = styled.main`
 
   .container {
     width: 90vw;
-    height: 90vw;
+    height: 100%;
     max-width: 500px;
-    max-height: 400px;
     border-radius: 10px;
     border: 1px solid white;
     background-color: black;
@@ -22,14 +21,17 @@ const Wrapper = styled.main`
     align-items: center;
 
     .title {
-      font-size: 25px;
+      font-size: 20px;
       margin-top: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa, 0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+
     }
     .content {
       display: flex;
       flex-direction: column;
       align-items: center;
+      font-size:15px;
     }
     .close {
       position: absolute;

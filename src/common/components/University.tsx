@@ -22,37 +22,7 @@ const Wrapper = styled.main`
       right: 5%;
     }
   }
-  .afreeca-thumbnail {
-    width: 500px;
-    height: 300px;
-    z-index: 1;
-    position: absolute;
-    bottom: 100px;
-    left: -230px;
-    border: 1px solid red;
-    font-size: 22px;
-    border-radius: 10px;
-    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-
-    .title {
-      width: 100%;
-      text-align: center;
-      position: absolute;
-    }
-    .viewers {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      text-align: center;
-    }
-
-    img {
-      border-radius: 10px;
-
-      width: 100%;
-      height: 100%;
-    }
-  }
+  
   .info-icon {
     width: 100%;
     text-align: center;
@@ -90,6 +60,37 @@ const Wrapper = styled.main`
     }
   }
   @media screen and (max-width: 1023px) {
+    .afreeca-thumbnail {
+    width: 100vw;
+    height: 300px;
+    z-index: 1;
+    position: absolute;
+    bottom: 100px;
+    left: -230px;
+    border: 1px solid red;
+    font-size: 22px;
+    border-radius: 10px;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+
+    .title {
+      width: 100%;
+      text-align: center;
+      position: absolute;
+    }
+    .viewers {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    img {
+      border-radius: 10px;
+
+      width: 100%;
+      height: 100%;
+    }
+  }
     .gamer-container {
       position: relative;
       .gamer-img-container {
@@ -119,6 +120,37 @@ const Wrapper = styled.main`
     }
   }
   @media screen and (min-width: 1024px) {
+    .afreeca-thumbnail {
+    width: 500px;
+    height: 300px;
+    z-index: 1;
+    position: absolute;
+    bottom: 100px;
+    left: -230px;
+    border: 1px solid red;
+    font-size: 22px;
+    border-radius: 10px;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+
+    .title {
+      width: 100%;
+      text-align: center;
+      position: absolute;
+    }
+    .viewers {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    img {
+      border-radius: 10px;
+
+      width: 100%;
+      height: 100%;
+    }
+  }
     .gamer-container {
       position: relative;
       .gamer-img-container {
@@ -152,32 +184,42 @@ const Wrapper = styled.main`
     width: 50px;
   }
   .테란 {
-    color: blue;
-    font-weight: 600;
+    color: skyblue;
     &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px blue, 0 0 10px blue, 0 0 21px blue, 0 0 42px blue, 0 0 82px blue, 0 0 92px blue, 0 0 102px blue, 0 0 151px blue;
     }
+    &.light{
+      color:blue;
+      font-weight: 600;
+    }
   }
   .저그 {
     color: #d63deb;
-    font-weight: 600;
     &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px red, 0 0 10px red, 0 0 21px red, 0 0 42px red, 0 0 82px red, 0 0 92px red, 0 0 102px red, 0 0 151px red;
     }
+    &.light{
+      font-weight: 600;
+
+    }
   }
   .프로토스 {
-    color: orange;
-    font-weight: 600;
+    color: yellow;
     &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px #ddc83d, 0 0 10px #ddc83d, 0 0 21px #ddc83d, 0 0 42px #ddc83d, 0 0 82px #ddc83d, 0 0 92px #ddc83d, 0 0 102px #ddc83d,
-        0 0 151px #ddc83d;
+      0 0 151px #ddc83d;
     }
+    &.light{
+    font-weight: 600;
+    color:orange;
+
+  }
   }
 `;
 const headerProps = {
@@ -617,7 +659,7 @@ export default function University() {
                           {/* 티어 */}
                           <div
                             className={`${searchValue.neon ? "neon" : ""} ${gamerInfo[Object.keys(gamerInfo) as unknown as string]?.race} ${
-                              theme === "dark" ? "dark" : ""
+                              theme === "dark" ? "dark" : "light"
                             }`}
                           >
                             {gamerInfo[Object.keys(gamerInfo) as unknown as string]?.standardTier} Tier
@@ -626,7 +668,7 @@ export default function University() {
                           <div
                             className={`${searchValue.neon ? "neon" : ""} gamer-name ${
                               gamerInfo[Object.keys(gamerInfo) as unknown as string]?.race
-                            } ${theme === "dark" ? "dark" : ""}`}
+                            } ${theme === "dark" ? "dark" : "light"}`}
                           >
                             {Object.keys(gamerInfo)}
                           </div>

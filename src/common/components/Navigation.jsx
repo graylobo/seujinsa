@@ -107,7 +107,7 @@ export default function Navigation({ setMenu }) {
           <span className="text-[18px]">심인</span>사
           <span className="text-[18px]">이트</span>
         </span> */}
-          <span className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}>SEUJINSA</span>
+          <span className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}>스진사</span>
         </Link>
         <button
           id="theme-toggle"

@@ -39,21 +39,22 @@ const Wrapper = styled.main`
     .gamer-container {
       padding: 30px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
       text-align: center;
+      gap: 0 5px;
       .onair {
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
         position: absolute;
-        top: -23px;
-        left: 30px;
+        top: -25px;
+        left: 19px;
         z-index: 1;
         cursor: pointer;
       }
 
       .gamer {
         margin-bottom: 100px;
-        width: 100px;
+        width: 80px;
         height: 100px;
         position: relative;
         .gamer-name {
@@ -91,8 +92,8 @@ const Wrapper = styled.main`
         .gamer-image {
           border-radius: 10px;
           cursor: pointer;
-          width: 70px;
-          height: 70px;
+          width: 80px;
+          height: 80px;
         }
       }
     }
@@ -150,26 +151,26 @@ const Wrapper = styled.main`
     .gamer-container {
       padding: 30px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
       text-align: center;
-      gap: 0 20px;
+      gap:0 5px;
       .onair {
-        width: 55px;
-        height: 55px;
+        width: 45px;
+        height: 45px;
         position: absolute;
-        top: -32px;
-        left: 23px;
+        top: -22px;
+        left: 16px;
         z-index: 1;
         cursor: pointer;
       }
 
       .gamer {
-        width: 100px;
+        width: 75px;
         margin-bottom: 100px;
         height: 100px;
         position: relative;
         .gamer-name {
-          font-size: 19px;
+          font-size: 15px;
         }
 
         .record {
@@ -203,8 +204,8 @@ const Wrapper = styled.main`
         .gamer-image {
           border-radius: 10px;
           cursor: pointer;
-          width: 90px;
-          height: 90px;
+          width: 75px;
+          height: 75px;
         }
       }
     }
@@ -241,31 +242,40 @@ const Wrapper = styled.main`
     }
   }
   .테란 {
-    color: blue;
-    font-weight: 600;
+    color: skyblue;
     &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px blue, 0 0 10px blue, 0 0 21px blue, 0 0 42px blue, 0 0 82px blue, 0 0 92px blue, 0 0 102px blue, 0 0 151px blue;
     }
+    &.light{
+      font-weight: 600;
+      color:blue;
+    }
   }
   .저그 {
     color: #d63deb;
-    font-weight: 600;
     &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px red, 0 0 10px red, 0 0 21px red, 0 0 42px red, 0 0 82px red, 0 0 92px red, 0 0 102px red, 0 0 151px red;
     }
+    &.light{
+      font-weight: 600;
+
+    }
   }
   .프로토스 {
-    color: orange;
-    font-weight: 600;
+    color: yellow;
     &.dark.neon {
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px #ddc83d, 0 0 10px #ddc83d, 0 0 21px #ddc83d, 0 0 42px #ddc83d, 0 0 82px #ddc83d, 0 0 92px #ddc83d, 0 0 102px #ddc83d,
-        0 0 151px #ddc83d;
+      0 0 151px #ddc83d;
+    }
+    &.light{
+      font-weight: 600;
+      color:orange;
     }
   }
   .stick-container {
@@ -608,7 +618,7 @@ export default function PlayerContainer() {
           }}
           alt=""
         />
-        <span className={`gamer-name ${gamerInfo.race} ${searchValue.neon?"neon":""} ${theme === "dark" ? "dark" : ""}`}>{gamerInfo._id}</span>
+        <span className={`gamer-name ${gamerInfo.race} ${searchValue.neon?"neon":""} ${theme === "dark" ? "dark" : "light"}`}>{gamerInfo._id}</span>
 
         <div
           className={`record ${
@@ -694,10 +704,10 @@ export default function PlayerContainer() {
             gamerList[e].length !== 0 && (
               <>
                 <div className={`tier-subject ${theme === "dark" ? "dark" : ""}`} key={i}>
-                  {e === "아기" ? "개벌레" : e === "미지정" ? "미지정" : `${e} 티어`}
+                  {e === "아기" ? "개벌레" : e === "미지정" ? "미지정" : `${e} ${(["갓","킹","잭","조커"].includes(e))?"":"티어"}`}
                 </div>
 
-                <div className="gamer-container" style={isMobile ? { width: "100%" } : { width: "1300px" }}>
+                <div className="gamer-container" style={isMobile ? { width: "100%" } : { width: "1050px" }}>
                   {gamerList[e].map((e: any, i: any) => renderGamer(e, i))}
                 </div>
               </>
