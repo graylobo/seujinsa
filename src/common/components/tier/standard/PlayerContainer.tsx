@@ -9,6 +9,17 @@ import { debounce, sleep } from "../../../utils/utils";
 
 const Wrapper = styled.main`
   margin-top: 90px;
+  .rate {
+    &.down {
+      color: blue;
+    }
+    &.up {
+      color: red;
+    }
+    &.same {
+      color: yellow;
+    }
+  }
   // 모바일
   @media screen and (max-width: 1023px) {
     .tier-container {
@@ -486,24 +497,23 @@ export default function PlayerContainer() {
   useEffect(() => {
     if (backgroundClick) {
       setShowThumbNail(false);
-      setSearchValue({...searchValue,inputText:""})
+      setSearchValue({ ...searchValue, inputText: "" });
     }
   }, [backgroundClick]);
 
   // let imgpath = "";
-  const [imgPath,setImgPath] = useState("")
-  useEffect(()=>{
-    if(mouseOverGamer["_id"]){
+  const [imgPath, setImgPath] = useState("");
+  useEffect(() => {
+    if (mouseOverGamer["_id"]) {
       const path = afreecaLiveInfo[mouseOverGamer["_id"]]?.["imgPath"];
-      const imgpath = path ==="비번방" ? "/secretroom.png" : path;
-      setImgPath(imgpath)
-    }
-    else{
+      const imgpath = path === "비번방" ? "/secretroom.png" : path;
+      setImgPath(imgpath);
+    } else {
       const path = afreecaLiveInfo[selectedGamer["_id"]]?.["imgPath"];
-      const imgpath = path ==="비번방" ? "/secretroom.png" : path;
-      setImgPath(imgpath)
+      const imgpath = path === "비번방" ? "/secretroom.png" : path;
+      setImgPath(imgpath);
     }
-  },[mouseOverGamer,selectedGamer])
+  }, [mouseOverGamer, selectedGamer]);
 
   function setPriority(arr: any) {
     let copy = _.cloneDeep(arr);
@@ -548,6 +558,7 @@ export default function PlayerContainer() {
   }
   function renderGamer(gamerInfo: any, i: any) {
     const current = currentGamerRecord?.[gamerInfo._id]; // 현재 랜더링 하려는 게이머가 프로필클릭한 게이머의 상대전적 리스트에 있는 게이머라면 current에 정보 담김
+    const rate = Number(current?.["rate"].split("%")[0]);
     let gamerClassName = gamerInfo._id in switchData ? nickNameSwitch(gamerInfo._id) : gamerInfo._id;
 
     return (
@@ -630,7 +641,9 @@ export default function PlayerContainer() {
             {current?.["win"]}
             {current?.["lose"]}
           </div>
-          <div>{current?.["rate"]}</div>
+          <div>
+            {rate}% <span className={`rate ${rate < 50 ? "down" : rate === 50 ? "same" : "up"}`}> {rate < 50 ? "▼" : rate === 50 ? "●" : "▲"}</span>
+          </div>
         </div>
       </div>
     );
@@ -688,10 +701,7 @@ export default function PlayerContainer() {
         <div className="viewers">
           {mouseOverGamer["_id"] ? afreecaLiveInfo[mouseOverGamer["_id"]]?.["viewers"] : afreecaLiveInfo[selectedGamer["_id"]]?.["viewers"]}
         </div>
-        <img
-          className="thumbnail"
-          src={imgPath}
-        ></img>
+        <img className="thumbnail" src={imgPath}></img>
       </div>
       <div
         className="tier-container"

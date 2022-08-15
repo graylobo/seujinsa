@@ -186,9 +186,8 @@ const univImgPath: any = {
   아마대: "/images/university/아마대.png",
   츠나대: "/images/university/츠나대.png",
   MSG: "/images/university/MSG.png",
-  라저대: "/images/university/라저대.png",
 };
-const universityList = ["철와대", "바스포드", "무친대", "우끼끼즈", "캄성여대", "CP", "JSA", "NSU", "아마대", "츠나대", "MSG", "라저대"];
+const universityList = ["철와대", "바스포드", "무친대", "우끼끼즈", "캄성여대", "CP", "JSA", "NSU", "아마대", "츠나대", "MSG",];
 const tierPriority: any = { 갓: 1, 킹: 2, 잭: 3, 조커: 4, 0: 5, 1: 6, 2: 7, 3: 8, 4: 9, 5: 10, 6: 11, 7: 12, 8: 13, 아기: 14 };
 export default function University() {
   const [gamerList, setGamerList] = useState<any>();
@@ -275,12 +274,6 @@ export default function University() {
                 [cur._id]: cur,
               });
               return acc;
-            case "라저대":
-              acc["라저대"].push({
-                [cur._id]: cur,
-              });
-              return acc;
-
             default:
               acc["무소속"].push({
                 [cur._id]: cur,
@@ -300,7 +293,6 @@ export default function University() {
           아마대: [],
           츠나대: [],
           MSG: [],
-          라저대: [],
           무소속: [],
         }
       );

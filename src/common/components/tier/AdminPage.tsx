@@ -21,7 +21,7 @@ const Wrapper = styled.main`
 `;
 
 const race = ["", "저그", "프로토스", "테란"];
-const university = ["무소속", "철와대", "바스포드", "무친대", "우끼끼즈", "캄성여대", "CP", "JSA", "NSU", "아마대", "츠나대", "MSG", "라저대"];
+const university = ["무소속", "철와대", "바스포드", "무친대", "우끼끼즈", "캄성여대", "CP", "JSA", "NSU", "아마대", "츠나대", "MSG"];
 const tierList = ["미지정", "갓", "킹", "잭", "조커", "0", "1", "2", "3", "4", "5", "6", "7", "8", "아기"];
 export default function AdminPage() {
   const [gamerList, setGamerList] = useState([]);
