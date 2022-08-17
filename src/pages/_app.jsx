@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <div className="">
       <Head>
-        <title>스진사 스타티어표</title>
+        <title>스타티어표</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <link rel="icon" href="/staricon.ico" />
