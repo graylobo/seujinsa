@@ -182,6 +182,7 @@ const Wrapper = styled.main`
 
   .gamer-name {
     width: 50px;
+    font-weight:600;
   }
   .테란 {
     color: skyblue;
@@ -196,7 +197,7 @@ const Wrapper = styled.main`
     }
   }
   .저그 {
-    color: #d63deb;
+    color: #c43ced;
     &.dark.neon {
       color: #fff;
       font-weight: normal;
@@ -582,7 +583,7 @@ export default function University() {
                 setRecordInfo({});
               }}
               key={i}
-              className="univ-container mx-auto w-full max-w-[800px] border-[10px] border-black dark:border-white rounded-[10px] p-[20px] mb-[30px]"
+              className="univ-container mx-auto w-full max-w-[1100px] border-[10px] border-black dark:border-white rounded-[10px] p-[20px] mb-[30px]"
             >
               <div className="univ-image w-[250px] h-[250px] mx-auto mb-[30px]">
                 <img className="w-full h-full" src={univImgPath[university]} alt="" />
@@ -616,7 +617,7 @@ export default function University() {
                             <img src={afreecaInfo[mouseOverGamer["_id"]]["imgPath"]} alt="" />
                           </div>
                         )}
-                        <div className="w-[80px] h-[80px] gamer-img-container">
+                        <div className="w-[70px] h-[70px] gamer-img-container">
                           {Object.keys(gamerInfo)[0] in afreecaInfo && (
                             <img
                               className="onair"
@@ -665,7 +666,7 @@ export default function University() {
                             alt=""
                           />
                         </div>
-                        <div className="ml-[5px] text-[15px]">
+                        <div className="player-info-container ml-[5px] text-[14px]">
                           {/* 티어 */}
                           <div
                             className={`${searchValue.neon ? "neon" : ""} ${gamerInfo[Object.keys(gamerInfo) as unknown as string]?.race} ${
@@ -682,6 +683,7 @@ export default function University() {
                           >
                             {Object.keys(gamerInfo)}
                           </div>
+                          {/* 직급 */}
                           <div className="position">{gamerInfo[Object.keys(gamerInfo) as unknown as string]?.position}</div>
                         </div>
                         {/* 전적표시 */}
@@ -705,8 +707,7 @@ export default function University() {
       <style jsx>{`
         .student-container {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-          grid-gap: 10px;
+          grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
         }
       `}</style>
     </Wrapper>
