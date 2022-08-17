@@ -38,6 +38,7 @@ export const switchData: any = {
   "임홍규(홍구)": "임홍규",
   "김승현(오메킴)": "오메킴",
   "송호영(도브)": "도브",
+  "이성은(흑운장)": "흑운장",
 };
 export function nickNameSwitch(gamer: string) {
   return switchData[gamer];

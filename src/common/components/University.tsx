@@ -33,13 +33,14 @@ const Wrapper = styled.main`
   .record-container {
     width: 80px;
     text-align: center;
+    font-size:13px;
 
     .record {
     }
     .rate {
     }
     position: absolute;
-    top: 80px;
+    top: 75px;
   }
   .gamer-image {
     cursor: pointer;
@@ -93,14 +94,15 @@ const Wrapper = styled.main`
     }
     .gamer-container {
       position: relative;
+      height:70px;
       .gamer-img-container {
         position: relative;
         .onair {
           width: 40px;
           height: 40px;
           position: absolute;
-          top: -23px;
-          left: 21px;
+          top: -20px;
+          left: 15px;
           z-index: 1;
           cursor: pointer;
         }
@@ -159,8 +161,8 @@ const Wrapper = styled.main`
           width: 40px;
           height: 40px;
           position: absolute;
-          top: -23px;
-          left: 21px;
+          top: -20px;
+          left: 14px;
           z-index: 1;
           cursor: pointer;
         }
@@ -609,7 +611,7 @@ export default function University() {
                     let gamerClassName = gamerName in switchData ? nickNameSwitch(gamerName) : gamerName;
 
                     return (
-                      <div className="gamer-container w-[170px] flex mb-[70px]" key={i}>
+                      <div className="gamer-container  flex mb-[40px]" key={i}>
                         {mouseOverGamer?.["_id"] in afreecaInfo && Object.keys(gamerInfo)[0] === mouseOverGamer?.["_id"] && (
                           <div className="afreeca-thumbnail">
                             <div className="title">{afreecaInfo[mouseOverGamer["_id"]]["title"]}</div>
@@ -666,7 +668,7 @@ export default function University() {
                             alt=""
                           />
                         </div>
-                        <div className="player-info-container ml-[5px] text-[14px]">
+                        <div className="player-info-container  ml-[5px] text-[14px]">
                           {/* 티어 */}
                           <div
                             className={`${searchValue.neon ? "neon" : ""} ${gamerInfo[Object.keys(gamerInfo) as unknown as string]?.race} ${
