@@ -153,7 +153,7 @@ const Wrapper = styled.main`
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
       text-align: center;
-      gap:0 5px;
+      gap: 0 5px;
       .onair {
         width: 45px;
         height: 45px;
@@ -248,9 +248,9 @@ const Wrapper = styled.main`
       font-weight: normal;
       text-shadow: 0 0 7px blue, 0 0 10px blue, 0 0 21px blue, 0 0 42px blue, 0 0 82px blue, 0 0 92px blue, 0 0 102px blue, 0 0 151px blue;
     }
-    &.light{
+    &.light {
       font-weight: 600;
-      color:blue;
+      color: blue;
     }
   }
   .저그 {
@@ -260,9 +260,8 @@ const Wrapper = styled.main`
       font-weight: normal;
       text-shadow: 0 0 7px red, 0 0 10px red, 0 0 21px red, 0 0 42px red, 0 0 82px red, 0 0 92px red, 0 0 102px red, 0 0 151px red;
     }
-    &.light{
+    &.light {
       font-weight: 600;
-
     }
   }
   .프로토스 {
@@ -271,11 +270,11 @@ const Wrapper = styled.main`
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px #ddc83d, 0 0 10px #ddc83d, 0 0 21px #ddc83d, 0 0 42px #ddc83d, 0 0 82px #ddc83d, 0 0 92px #ddc83d, 0 0 102px #ddc83d,
-      0 0 151px #ddc83d;
+        0 0 151px #ddc83d;
     }
-    &.light{
+    &.light {
       font-weight: 600;
-      color:orange;
+      color: orange;
     }
   }
   .stick-container {
@@ -309,7 +308,6 @@ const initTierValue = {
   아기: [],
   미지정: [],
 };
-
 
 export default function PlayerContainer() {
   const [searchValue, setSearchValue] = useRecoilState(searchState);
@@ -429,7 +427,7 @@ export default function PlayerContainer() {
     copy = setPriority(copy);
     setGamerList(copy);
     setCount(count);
-  }, [searchValue.race,searchValue.tier,searchValue.univ,searchValue.onair,searchValue.recordExist, selectedGamer, intervalUpdateFlag]);
+  }, [searchValue.race, searchValue.tier, searchValue.univ, searchValue.onair, searchValue.recordExist, selectedGamer, intervalUpdateFlag]);
 
   useEffect(() => {
     setShowThumbNail(false);
@@ -598,28 +596,35 @@ export default function PlayerContainer() {
           }}
         />
 
-        <img
-          className={`afreeca-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["afreeca"] ? "active" : ""}`}
-          src="/afreeca.png"
-          onClick={() => {
-            window.open(`https://bj.afreecatv.com/${gamerInfo["platform"]["afreeca"]}`);
-          }}
-          alt=""
-        />
-        <img
-          className={`elo-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["elo"] ? "active" : ""}`}
-          src="/eloboard.png"
-          onClick={() => {
-            window.open(
-              `http://eloboard.com/${gamerInfo["platform"]?.["elo"].split("|")[0]}/bbs/board.php?bo_table=bj_list&wr_id=${
-                gamerInfo["platform"]?.["elo"].split("|")[1]
-              }`
-            );
-          }}
-          alt=""
-        />
-        <span className={`gamer-name ${gamerInfo.race} ${searchValue.neon?"neon":""} ${theme === "dark" ? "dark" : "light"}`}>{gamerInfo._id}</span>
+        
 
+        <span className={`gamer-name ${gamerInfo.race} ${searchValue.neon ? "neon" : ""} ${theme === "dark" ? "dark" : "light"}`}>
+          {gamerInfo._id}
+        </span>
+        <div className="icon-container">
+          <img
+            className={`afreeca-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["afreeca"] ? "active" : ""}`}
+            src="/afreeca.png"
+            onClick={() => {
+              window.open(`https://bj.afreecatv.com/${gamerInfo["platform"]["afreeca"]}`);
+            }}
+            alt=""
+          />
+          <img
+            className={`elo-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["elo"] ? "active" : ""}`}
+            src="/eloboard.png"
+            onClick={() => {
+              window.open(
+                `http://eloboard.com/${gamerInfo["platform"]?.["elo"].split("|")[0]}/bbs/board.php?bo_table=bj_list&wr_id=${
+                  gamerInfo["platform"]?.["elo"].split("|")[1]
+                }`
+              );
+            }}
+            alt=""
+          />
+          
+          
+        </div>
         <div
           className={`record ${
             current && !backgroundClick ? "active" : "" // 상대전적이 있고 배경화면 클릭한게 아니면 전적 보여주기
@@ -704,7 +709,7 @@ export default function PlayerContainer() {
             gamerList[e].length !== 0 && (
               <>
                 <div className={`tier-subject ${theme === "dark" ? "dark" : ""}`} key={i}>
-                  {e === "아기" ? "개벌레" : e === "미지정" ? "미지정" : `${e} ${(["갓","킹","잭","조커"].includes(e))?"":"티어"}`}
+                  {e === "아기" ? "개벌레" : e === "미지정" ? "미지정" : `${e} ${["갓", "킹", "잭", "조커"].includes(e) ? "" : "티어"}`}
                 </div>
 
                 <div className="gamer-container" style={isMobile ? { width: "100%" } : { width: "1050px" }}>
