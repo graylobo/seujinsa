@@ -22,7 +22,7 @@ const Wrapper = styled.main`
       right: 5%;
     }
   }
-  
+
   .info-icon {
     width: 100%;
     text-align: center;
@@ -61,36 +61,36 @@ const Wrapper = styled.main`
   }
   @media screen and (max-width: 1023px) {
     .afreeca-thumbnail {
-    width: 100vw;
-    height: 300px;
-    z-index: 1;
-    position: absolute;
-    bottom: 100px;
-    left: -230px;
-    border: 1px solid red;
-    font-size: 22px;
-    border-radius: 10px;
-    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-
-    .title {
-      width: 100%;
-      text-align: center;
+      width: 100vw;
+      height: 300px;
+      z-index: 1;
       position: absolute;
-    }
-    .viewers {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      text-align: center;
-    }
-
-    img {
+      bottom: 100px;
+      left: -230px;
+      border: 1px solid red;
+      font-size: 22px;
       border-radius: 10px;
+      text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
 
-      width: 100%;
-      height: 100%;
+      .title {
+        width: 100%;
+        text-align: center;
+        position: absolute;
+      }
+      .viewers {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+      }
+
+      img {
+        border-radius: 10px;
+
+        width: 100%;
+        height: 100%;
+      }
     }
-  }
     .gamer-container {
       position: relative;
       .gamer-img-container {
@@ -121,36 +121,36 @@ const Wrapper = styled.main`
   }
   @media screen and (min-width: 1024px) {
     .afreeca-thumbnail {
-    width: 500px;
-    height: 300px;
-    z-index: 1;
-    position: absolute;
-    bottom: 100px;
-    left: -230px;
-    border: 1px solid red;
-    font-size: 22px;
-    border-radius: 10px;
-    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-
-    .title {
-      width: 100%;
-      text-align: center;
+      width: 500px;
+      height: 300px;
+      z-index: 1;
       position: absolute;
-    }
-    .viewers {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      text-align: center;
-    }
-
-    img {
+      bottom: 100px;
+      left: -230px;
+      border: 1px solid red;
+      font-size: 22px;
       border-radius: 10px;
+      text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
 
-      width: 100%;
-      height: 100%;
+      .title {
+        width: 100%;
+        text-align: center;
+        position: absolute;
+      }
+      .viewers {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+      }
+
+      img {
+        border-radius: 10px;
+
+        width: 100%;
+        height: 100%;
+      }
     }
-  }
     .gamer-container {
       position: relative;
       .gamer-img-container {
@@ -190,8 +190,8 @@ const Wrapper = styled.main`
       font-weight: normal;
       text-shadow: 0 0 7px blue, 0 0 10px blue, 0 0 21px blue, 0 0 42px blue, 0 0 82px blue, 0 0 92px blue, 0 0 102px blue, 0 0 151px blue;
     }
-    &.light{
-      color:blue;
+    &.light {
+      color: blue;
       font-weight: 600;
     }
   }
@@ -202,9 +202,8 @@ const Wrapper = styled.main`
       font-weight: normal;
       text-shadow: 0 0 7px red, 0 0 10px red, 0 0 21px red, 0 0 42px red, 0 0 82px red, 0 0 92px red, 0 0 102px red, 0 0 151px red;
     }
-    &.light{
+    &.light {
       font-weight: 600;
-
     }
   }
   .프로토스 {
@@ -213,13 +212,12 @@ const Wrapper = styled.main`
       color: #fff;
       font-weight: normal;
       text-shadow: 0 0 7px #ddc83d, 0 0 10px #ddc83d, 0 0 21px #ddc83d, 0 0 42px #ddc83d, 0 0 82px #ddc83d, 0 0 92px #ddc83d, 0 0 102px #ddc83d,
-      0 0 151px #ddc83d;
+        0 0 151px #ddc83d;
     }
-    &.light{
-    font-weight: 600;
-    color:orange;
-
-  }
+    &.light {
+      font-weight: 600;
+      color: orange;
+    }
   }
 `;
 const headerProps = {
@@ -402,28 +400,39 @@ export default function University() {
       }
       if (searchValue.tier !== "전체" && searchValue.tier) {
         copy[key] = copy[key].filter((e: any) => {
-          return selectedGamer?.["_id"] === e[Object.keys(e)[0]]._id || e[Object.keys(e)[0]].standardTier === searchValue.tier;
+          const gamerName = Object.keys(e)[0];
+          return selectedGamer?.["_id"] === e[gamerName]._id || e[gamerName].standardTier === searchValue.tier;
         });
       }
       if (searchValue.race !== "전체" && searchValue.race) {
         copy[key] = copy[key].filter((e: any) => {
-          return selectedGamer?.["_id"] === e[Object.keys(e)[0]]._id || e[Object.keys(e)[0]].race === searchValue.race;
+          const gamerName = Object.keys(e)[0];
+          return selectedGamer?.["_id"] === e[gamerName]._id || e[gamerName].race === searchValue.race;
         });
       }
       if (searchValue.univ !== "전체" && searchValue.univ) {
         copy[key] = copy[key].filter((e: any) => {
-          return selectedGamer?.["_id"] === e[Object.keys(e)[0]]._id || e[Object.keys(e)[0]].university === searchValue.univ;
+          const gamerName = Object.keys(e)[0];
+          return selectedGamer?.["_id"] === e[gamerName]._id || e[gamerName].university === searchValue.univ;
         });
       }
       if (searchValue.onair) {
         copy[key] = copy[key].filter((e: any) => {
-          return selectedGamer?.["_id"] === e[Object.keys(e)[0]]._id || e[Object.keys(e)[0]]._id in afreecaInfo;
+          const gamerName = Object.keys(e)[0];
+          return selectedGamer?.["_id"] === e[gamerName]._id || e[gamerName]._id in afreecaInfo;
         });
+        if (searchValue.spon) {
+          copy[key] = copy[key].filter((e: any) => {
+          const gamerName = Object.keys(e)[0];
+            return e[gamerName]._id === selectedGamer["_id"] || afreecaInfo[e[gamerName]._id]["title"].includes("스폰");
+          });
+        }
       }
       if (searchValue.recordExist) {
         copy[key] = copy[key].filter((e: any) => {
           if (selectedGamer?.["_id"]) {
-            return selectedGamer?.["_id"] === e[Object.keys(e)[0]]._id || e[Object.keys(e)[0]]._id in recordInfo;
+            const gamerName = Object.keys(e)[0];
+            return selectedGamer?.["_id"] === e[gamerName]._id || e[gamerName]._id in recordInfo;
           }
           return e;
         });
@@ -439,6 +448,7 @@ export default function University() {
     searchValue.race,
     searchValue.recordExist,
     searchValue.univ,
+    searchValue.spon,
     selectedGamer,
     backgroundClick,
   ]);

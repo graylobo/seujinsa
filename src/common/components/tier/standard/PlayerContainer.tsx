@@ -427,7 +427,7 @@ export default function PlayerContainer() {
     copy = setPriority(copy);
     setGamerList(copy);
     setCount(count);
-  }, [searchValue.race, searchValue.tier, searchValue.univ, searchValue.onair, searchValue.recordExist, selectedGamer, intervalUpdateFlag]);
+  }, [searchValue.race, searchValue.tier, searchValue.univ, searchValue.spon,searchValue.onair, searchValue.recordExist, selectedGamer, intervalUpdateFlag]);
 
   useEffect(() => {
     setShowThumbNail(false);
