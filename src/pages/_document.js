@@ -14,12 +14,12 @@ export default function Document() {
         <meta name="naver-site-verification" content="547764876549458d441fe09377c3fd122d74e96b" />
 
         <meta name="google-site-verification" content="4q1tSg31U51-TgnZXjup14H9acNB7TuV-yHWC9g5X4s" />
+
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1544015487048934"
           crossOrigin="anonymous"
         ></script>
-
         <body>
           <Main />
           <NextScript />

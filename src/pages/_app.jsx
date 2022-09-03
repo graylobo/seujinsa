@@ -35,7 +35,7 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <title>스타티어표</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-       
+
         <link rel="icon" href="/staricon.ico" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
         <link
@@ -44,19 +44,13 @@ function MyApp({ Component, pageProps }) {
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
           crossOrigin="anonymous"
         />
-        <link
-          href="//cdn.jsdelivr.net/npm/katex@0.13.3/dist/katex.min.css"
-          rel="stylesheet"
-        />
-        <link
-          rel="stylesheet"
-          href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/styles/default.min.css"
-        />
+        <link href="//cdn.jsdelivr.net/npm/katex@0.13.3/dist/katex.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/styles/default.min.css" />
         <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css" />
       </Head>
 
       {/* <Script src="../path/to/flowbite/dist/flowbite.bundle.js"></Script> */}
-      
+
       <Script
         type="text/javascript"
         onError={(e) => {
@@ -68,13 +62,20 @@ function MyApp({ Component, pageProps }) {
       <Script src="//cdn.jsdelivr.net/npm/katex@0.13.3/dist/katex.min.js"></Script>
       <Script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/highlight.min.js"></Script>
       <Script src="//cdn.quilljs.com/1.3.6/quill.min.js"></Script>
+      <Script
+        id="Adsense-id"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1544015487048934"
+        crossOrigin="anonymous"
+        strategy="beforeInteractive"
+        onError={(e) => { console.error('AdSence Script failed to load!', e) }}
+      ></Script>
       <RecoilRoot>
         <div className="flex flex-col ">
           <Navigation setMenu={setMenu} />
           <div className=" w-full  min-w-[300px] ">
-            <Loading/>
+            <Loading />
             {!menu ? <Component {...pageProps} /> : <More />}
-            <Popup/>
+            <Popup />
           </div>
           <FooterBar />
         </div>
