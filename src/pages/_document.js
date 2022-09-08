@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import { GA_TRACKING_ID } from "../lib/gtag";
 
 export default function Document() {
   return (
@@ -14,7 +15,23 @@ export default function Document() {
         <meta name="naver-site-verification" content="547764876549458d441fe09377c3fd122d74e96b" />
 
         <meta name="google-site-verification" content="4q1tSg31U51-TgnZXjup14H9acNB7TuV-yHWC9g5X4s" />
+        <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
+            gtag('config', '${GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+            }}
+          />
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1544015487048934"

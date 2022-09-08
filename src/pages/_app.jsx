@@ -12,7 +12,7 @@ import Script from "next/script";
 import Loading from "../common/components/shared/Loading";
 import { loadingState } from "../common/recoil/states";
 import Popup from "../common/components/popup/base/Popup";
-
+import * as gtag from "../lib/gtag"
 function MyApp({ Component, pageProps }) {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
@@ -30,6 +30,18 @@ function MyApp({ Component, pageProps }) {
     }
     setMenu(false);
   }, [router]);
+
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      gtag.pageview(url);
+      
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
+
   return (
     <div className="">
       <Head>
@@ -67,7 +79,9 @@ function MyApp({ Component, pageProps }) {
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1544015487048934"
         crossOrigin="anonymous"
         strategy="beforeInteractive"
-        onError={(e) => { console.error('AdSence Script failed to load!', e) }}
+        onError={(e) => {
+          console.error("AdSence Script failed to load!", e);
+        }}
       ></Script>
       <RecoilRoot>
         <div className="flex flex-col ">
