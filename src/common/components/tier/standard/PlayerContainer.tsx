@@ -315,6 +315,8 @@ export default function PlayerContainer({ gamerListProps, initialGamerList,afree
     } catch (err) {
       console.log(err);
     }
+    setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
+
     let flag = true;
     (async function inner() {
       const liveInfo = await getAfreecaLiveInfo();
@@ -325,7 +327,6 @@ export default function PlayerContainer({ gamerListProps, initialGamerList,afree
         setAfreecaLiveInfo(await getAfreecaLiveInfo());
       }
     })();
-    // setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
 
     return () => {
       flag = false;
