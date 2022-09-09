@@ -308,7 +308,6 @@ export default function PlayerContainer({ gamerListProps, initialGamerList,afree
   const onAirThumbNailRef = useRef<any>();
   const searchGamerDebounce = useCallback(debounce(searchGamer, 100), [initialGamerList]);
   const setLoading = useSetRecoilState(loadingState);
-  setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
 
   useEffect(() => {
     try {

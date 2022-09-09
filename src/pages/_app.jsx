@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 import FooterBar from "../common/components/FooterBar";
 import Script from "next/script";
 import Loading from "../common/components/shared/Loading";
-import { loadingState } from "../common/recoil/states";
 import Popup from "../common/components/popup/base/Popup";
 import * as gtag from "../lib/gtag"
 function MyApp({ Component, pageProps }) {
