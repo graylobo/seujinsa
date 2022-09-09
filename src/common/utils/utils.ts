@@ -1,3 +1,5 @@
+import cloneDeep from "lodash/cloneDeep";
+
 export function sleep(ms: number) {
   return new Promise<void>((resolve, reject) => {
     setTimeout(() => {
@@ -43,3 +45,31 @@ export const switchData: any = {
 export function nickNameSwitch(gamer: string) {
   return switchData[gamer];
 }
+
+export function setPriority(arr: any) {
+  let copy = cloneDeep(arr);
+  const priority: any = { 저그: 1, 테란: 2, 프로토스: 3 };
+  for (const key in copy) {
+    copy[key] = copy[key].sort((a: any, b: any) => {
+      return priority[a.race] - priority[b.race];
+    });
+  }
+  return copy;
+}
+export const initTierValue = {
+  갓: [],
+  킹: [],
+  잭: [],
+  조커: [],
+  "0": [],
+  "1": [],
+  "2": [],
+  "3": [],
+  "4": [],
+  "5": [],
+  "6": [],
+  "7": [],
+  "8": [],
+  아기: [],
+  미지정: [],
+};

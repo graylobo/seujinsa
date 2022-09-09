@@ -4,8 +4,8 @@ import styled from "@emotion/styled";
 import GamerSearchBar from "../../shared/GamerSearchBar";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { isMobileState, loadingState, searchState, themeState } from "../../../recoil/states";
-import _ from "lodash";
-import { debounce, nickNameSwitch, sleep, switchData } from "../../../utils/utils";
+import cloneDeep from "lodash/cloneDeep";
+import { debounce, nickNameSwitch, setPriority, sleep, switchData } from "../../../utils/utils";
 
 const Wrapper = styled.main`
   margin-top: 90px;
@@ -291,65 +291,23 @@ const Wrapper = styled.main`
 
 const tierList = ["갓", "킹", "잭", "조커", "0", "1", "2", "3", "4", "5", "6", "7", "8", "아기", "미지정"];
 
-const initTierValue = {
-  갓: [],
-  킹: [],
-  잭: [],
-  조커: [],
-  "0": [],
-  "1": [],
-  "2": [],
-  "3": [],
-  "4": [],
-  "5": [],
-  "6": [],
-  "7": [],
-  "8": [],
-  아기: [],
-  미지정: [],
-};
-
-export default function PlayerContainer() {
+export default function PlayerContainer({ gamerListProps, initialGamerList,afreecaLiveInfoProps }: any) {
   const [searchValue, setSearchValue] = useRecoilState(searchState);
-  const [gamerList, setGamerList] = useState<any>(initTierValue);
-  const [initialGamerList, setInitialGamerList] = useState<any>(initTierValue); // 서버에서 받아온 초기 데이터 (setGamerList 와 구분짓는 이유: [1] useEffect참고 )
+  const [gamerList, setGamerList] = useState(gamerListProps);
+  const [afreecaLiveInfo, setAfreecaLiveInfo] = useState(afreecaLiveInfoProps);
   const [selectedGamer, setSelectedGamer] = useState<any>({});
   const [mouseOverGamer, setMouseOverGamer] = useState<any>({});
   const [currentGamerRecord, setCurrentGamerRecord] = useState<any>({}); // 현재 클릭한 게이머의 상대전적 정보가 있는 리스트
   const [backgroundClick, setBackgroundClick] = useState(false);
   const [showThumbNail, setShowThumbNail] = useState(false);
   const [count, setCount] = useState(0);
-  const [intervalUpdateFlag, setIntervalUpdateFlag] = useState(false);
   const [gamerCount, setGamerCount] = useState(0); // 필터 > 이름검색시 결과 카운트 변수
-  const [afreecaLiveInfo, setAfreecaLiveInfo] = useState<any>({});
   const theme = useRecoilValue(themeState);
-  const setLoading = useSetRecoilState(loadingState);
   const isMobile = useRecoilValue(isMobileState);
   const selectedRef = useRef<any>();
   const onAirThumbNailRef = useRef<any>();
   const searchGamerDebounce = useCallback(debounce(searchGamer, 100), [initialGamerList]);
-
-  function getWholeGamerInfoWrapper() {
-    return new Promise<void>((resolve, reject) => {
-      getWholeGamerInfo()
-        .then((result) => {
-          let copy: any = _.cloneDeep(initTierValue);
-          // 서버에서 받아온 게이머리스트를 티어별로 분류
-          for (const e of result) {
-            copy[e.standardTier]?.push(e);
-          }
-          copy = setPriority(copy);
-          setInitialGamerList(copy);
-          setGamerList(copy);
-          setIntervalUpdateFlag((e) => !e);
-          resolve();
-        })
-        .catch((err) => {
-          console.log("err", err);
-          reject(err);
-        });
-    });
-  }
+  const setLoading = useSetRecoilState(loadingState);
 
   useEffect(() => {
     try {
@@ -358,9 +316,7 @@ export default function PlayerContainer() {
       console.log(err);
     }
     let flag = true;
-    setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
     (async function inner() {
-      await getWholeGamerInfoWrapper();
       const liveInfo = await getAfreecaLiveInfo();
       setAfreecaLiveInfo(liveInfo);
       setLoading({ loading: false });
@@ -369,6 +325,7 @@ export default function PlayerContainer() {
         setAfreecaLiveInfo(await getAfreecaLiveInfo());
       }
     })();
+    // setLoading({ loading: true, msg: "게이머리스트 가져오는중..." });
 
     return () => {
       flag = false;
@@ -382,7 +339,7 @@ export default function PlayerContainer() {
     // gamerList를 가 아닌 initialGamerList를 전달하는이유: gamerList를 전달했을때 아래 filter함수에서 빈값을 리턴하는 경우 마지막 라인의 setGamerList 가
     // gamerList를 빈값으로 업데이트 되기때문에, 다음 동작에서 빈값에 대해 filter함수를 수행하게 되므로 setGamerList에 영향을 받지않고 서버에서 받아온
     // 초기상태를 보관하고있는 initialGamerList를 전달해주어야함
-    let copy = _.cloneDeep(initialGamerList);
+    let copy = cloneDeep(initialGamerList);
     let count = 0;
     for (const key in copy) {
       // if (searchValue.inputText) {
@@ -427,7 +384,15 @@ export default function PlayerContainer() {
     copy = setPriority(copy);
     setGamerList(copy);
     setCount(count);
-  }, [searchValue.race, searchValue.tier, searchValue.univ, searchValue.spon,searchValue.onair, searchValue.recordExist, selectedGamer, intervalUpdateFlag]);
+  }, [
+    searchValue.race,
+    searchValue.tier,
+    searchValue.univ,
+    searchValue.spon,
+    searchValue.onair,
+    searchValue.recordExist,
+    selectedGamer,
+  ]);
 
   useEffect(() => {
     setShowThumbNail(false);
@@ -501,19 +466,8 @@ export default function PlayerContainer() {
     }
   }, [mouseOverGamer, selectedGamer]);
 
-  function setPriority(arr: any) {
-    let copy = _.cloneDeep(arr);
-    const priority: any = { 저그: 1, 테란: 2, 프로토스: 3 };
-    for (const key in copy) {
-      copy[key] = copy[key].sort((a: any, b: any) => {
-        return priority[a.race] - priority[b.race];
-      });
-    }
-    return copy;
-  }
-
   function searchGamer(value: string) {
-    let copy = _.cloneDeep(initialGamerList);
+    let copy = cloneDeep(initialGamerList);
     let search: any = [];
     for (const key in copy) {
       const find = copy[key].filter((e: any) => e._id.includes(value));
@@ -596,8 +550,6 @@ export default function PlayerContainer() {
           }}
         />
 
-        
-
         <span className={`gamer-name ${gamerInfo.race} ${searchValue.neon ? "neon" : ""} ${theme === "dark" ? "dark" : "light"}`}>
           {gamerInfo._id}
         </span>
@@ -622,8 +574,6 @@ export default function PlayerContainer() {
             }}
             alt=""
           />
-          
-          
         </div>
         <div
           className={`record ${
