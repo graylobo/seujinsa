@@ -5,7 +5,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <meta name="keyword" content="티어표, 스진사, 스타크래프트, 스타티어표, 스타티어, 티어, 스타대학, 스타대학교"></meta>
+        <meta name="keywords" content="티어표, 스진사, 스타크래프트, 스타티어표, 스타티어, 티어, 스타대학, 스타대학교"></meta>
         <meta name="description" content="티어표, 스진사, 스타크래프트, 스타티어표, 스타티어, 티어, 스타대학, 스타대학교"></meta>
 
         <meta property="og:title" content="스진사" />
