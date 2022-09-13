@@ -10,6 +10,7 @@ import UnivInfoPopup from "./popup/UnivInfoPopup";
 import _ from "lodash";
 import GamerSearchBar from "./shared/GamerSearchBar";
 import { debounce, nickNameSwitch, switchData } from "../utils/utils";
+import GoogleAds from "./ad/GoogleAds";
 
 const Wrapper = styled.main`
   .stick-container {
@@ -33,7 +34,7 @@ const Wrapper = styled.main`
   .record-container {
     width: 80px;
     text-align: center;
-    font-size:13px;
+    font-size: 13px;
 
     .record {
     }
@@ -94,7 +95,7 @@ const Wrapper = styled.main`
     }
     .gamer-container {
       position: relative;
-      height:70px;
+      height: 70px;
       .gamer-img-container {
         position: relative;
         .onair {
@@ -184,7 +185,7 @@ const Wrapper = styled.main`
 
   .gamer-name {
     width: 50px;
-    font-weight:600;
+    font-weight: 600;
   }
   .테란 {
     color: skyblue;
@@ -426,7 +427,7 @@ export default function University() {
         });
         if (searchValue.spon) {
           copy[key] = copy[key].filter((e: any) => {
-          const gamerName = Object.keys(e)[0];
+            const gamerName = Object.keys(e)[0];
             return e[gamerName]._id === selectedGamer["_id"] || afreecaInfo[e[gamerName]._id]["title"].includes("스폰");
           });
         }
@@ -552,28 +553,20 @@ export default function University() {
         </div>
       </div>
       <div className="mb-[30px]">
-        {isMobile ? (
-          <aside className="w-[320px] mx-auto">
-            <ins
-              className="kakao_ad_area"
-              style={{ display: "none" }}
-              data-ad-unit="DAN-P7FMffHS9CGq20Bw"
-              data-ad-width="320"
-              data-ad-height="100"
-            ></ins>
-          </aside>
-        ) : (
-          <aside className="w-[728px] mx-auto">
-            <ins
-              className="kakao_ad_area"
-              style={{ display: "none" }}
-              data-ad-unit="DAN-P7FMffHS9CGq20Bw"
-              data-ad-width="320"
-              data-ad-height="100"
-            ></ins>
-          </aside>
-        )}
+        <aside className={`w-[${isMobile ? "320" : "728"}px] mx-auto`}>
+          <ins
+            className="kakao_ad_area"
+            style={{ display: "none" }}
+            data-ad-unit="DAN-P7FMffHS9CGq20Bw"
+            data-ad-width="320"
+            data-ad-height="100"
+          ></ins>
+        </aside>
       </div>
+
+      <aside className={`w-[${isMobile ? "320" : "728"}px] mx-auto`}>
+        <GoogleAds />
+      </aside>
       {universityList.map((university: any, i) => {
         return (
           gamerList?.[university]?.length > 0 && (

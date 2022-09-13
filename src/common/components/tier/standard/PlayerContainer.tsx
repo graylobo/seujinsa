@@ -6,6 +6,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { isMobileState, loadingState, searchState, themeState } from "../../../recoil/states";
 import cloneDeep from "lodash/cloneDeep";
 import { debounce, nickNameSwitch, setPriority, sleep, switchData } from "../../../utils/utils";
+import GoogleAds from "../../ad/GoogleAds";
 
 const Wrapper = styled.main`
   margin-top: 90px;
@@ -310,11 +311,6 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
   const setLoading = useSetRecoilState(loadingState);
 
   useEffect(() => {
-    // try {
-    //   (window.adsbygoogle = window.adsbygoogle || []).push({});
-    // } catch (err) {
-    //   console.log(err);
-    // }
     setLoading({ loading: true, msg: "게이머 리스트 가져오는중.." });
     let flag = true;
     (async function inner() {
@@ -589,16 +585,8 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
       <aside className={`w-[${isMobile ? "320" : "728"}px] mx-auto`}>
         <ins className="kakao_ad_area" style={{ display: "none" }} data-ad-unit="DAN-dpnzA4C94ch8HynZ" data-ad-width="320" data-ad-height="100"></ins>
       </aside>
-
       <aside className={`w-[${isMobile ? "320" : "728"}px] mx-auto`}>
-        <ins
-          className="adsbygoogle"
-          style={{ display: "block" }}
-          data-ad-client="ca-pub-1544015487048934"
-          data-ad-slot="3225843573"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        ></ins>
+        <GoogleAds />
       </aside>
 
       <div className="stick-container">
