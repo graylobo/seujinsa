@@ -473,9 +473,9 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
         onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 200 + "px";
       } else {
         if (showThumbNail && searchValue.thumbnail && gamerInfo in afreecaLiveInfo) {
-          onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 350 + "px";
+          onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 650 + "px";
         } else {
-          onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 100 + "px";
+          onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 400 + "px";
         }
       }
 
@@ -585,8 +585,8 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
       <aside className={`w-[${isMobile ? "320" : "728"}px] mx-auto`}>
         <ins className="kakao_ad_area" style={{ display: "none" }} data-ad-unit="DAN-dpnzA4C94ch8HynZ" data-ad-width="320" data-ad-height="100"></ins>
       </aside>
-      <aside className={`w-[${isMobile ? "320" : "728"}px] mx-auto`}>
-        <GoogleAds />
+      <aside className={`w-[320px] mx-auto`}>
+        <GoogleAds  />
       </aside>
 
       <div className="stick-container">
