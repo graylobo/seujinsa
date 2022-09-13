@@ -15,14 +15,14 @@ import * as gtag from "../lib/gtag"
 function MyApp({ Component, pageProps }) {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
-  // useEffect(() => {
-  //   var ads = document.getElementsByClassName("adsbygoogle").length;
-  //   for (var i = 0; i < ads; i++) {
-  //     try {
-  //       (adsbygoogle = window.adsbygoogle || []).push({});
-  //     } catch (e) {}
-  //   }
-  // }, []);
+  useEffect(() => {
+    var ads = document.getElementsByClassName("adsbygoogle").length;
+    for (var i = 0; i < ads; i++) {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {}
+    }
+  }, []);
   useEffect(() => {
     if (window.adfit) {
       window.adfit() && window.adfit().render();

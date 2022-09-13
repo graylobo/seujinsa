@@ -291,7 +291,7 @@ const Wrapper = styled.main`
 
 const tierList = ["갓", "킹", "잭", "조커", "0", "1", "2", "3", "4", "5", "6", "7", "8", "아기", "미지정"];
 
-export default function PlayerContainer({ gamerListProps, initialGamerList,afreecaLiveInfoProps }: any) {
+export default function PlayerContainer({ gamerListProps, initialGamerList, afreecaLiveInfoProps }: any) {
   const [searchValue, setSearchValue] = useRecoilState(searchState);
   const [gamerList, setGamerList] = useState(gamerListProps);
   const [afreecaLiveInfo, setAfreecaLiveInfo] = useState(afreecaLiveInfoProps);
@@ -310,12 +310,12 @@ export default function PlayerContainer({ gamerListProps, initialGamerList,afree
   const setLoading = useSetRecoilState(loadingState);
 
   useEffect(() => {
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (err) {
-      console.log(err);
-    }
-    setLoading({loading:true,msg:"게이머 리스트 가져오는중.."})
+    // try {
+    //   (window.adsbygoogle = window.adsbygoogle || []).push({});
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    setLoading({ loading: true, msg: "게이머 리스트 가져오는중.." });
     let flag = true;
     (async function inner() {
       const liveInfo = await getAfreecaLiveInfo();
@@ -384,15 +384,7 @@ export default function PlayerContainer({ gamerListProps, initialGamerList,afree
     copy = setPriority(copy);
     setGamerList(copy);
     setCount(count);
-  }, [
-    searchValue.race,
-    searchValue.tier,
-    searchValue.univ,
-    searchValue.spon,
-    searchValue.onair,
-    searchValue.recordExist,
-    selectedGamer,
-  ]);
+  }, [searchValue.race, searchValue.tier, searchValue.univ, searchValue.spon, searchValue.onair, searchValue.recordExist, selectedGamer]);
 
   useEffect(() => {
     setShowThumbNail(false);
@@ -615,15 +607,16 @@ export default function PlayerContainer({ gamerListProps, initialGamerList,afree
           ></ins>
         </aside>
       )}
-
-      <ins
-        className="adsbygoogle"
-        style={{ display: "block" }}
-        data-ad-client="ca-pub-1544015487048934"
-        data-ad-slot="3225843573"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      ></ins>
+      <aside className="w-[320px] mx-auto">
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block" }}
+          data-ad-client="ca-pub-1544015487048934"
+          data-ad-slot="3225843573"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
+      </aside>
 
       <div className="stick-container">
         <div className="search-bar">

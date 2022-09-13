@@ -77,7 +77,16 @@ export default function LeftControl() {
           ></ins>
         </aside>
       )}
-
+      <aside className="w-[320px] mx-auto">
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block" }}
+          data-ad-client="ca-pub-1544015487048934"
+          data-ad-slot="3225843573"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
+      </aside>
      
 
       <div className="relative p-[30px] self-center  flex flex-col w-full max-w-[550px] ">
