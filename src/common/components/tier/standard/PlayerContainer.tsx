@@ -586,28 +586,11 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
   const searchBarProps = { count, gamerCount, selectedGamer };
   return (
     <Wrapper>
-      {isMobile ? (
-        <aside className="w-[320px] mx-auto">
-          <ins
-            className="kakao_ad_area"
-            style={{ display: "none" }}
-            data-ad-unit="DAN-dpnzA4C94ch8HynZ"
-            data-ad-width="320"
-            data-ad-height="100"
-          ></ins>
-        </aside>
-      ) : (
-        <aside className="w-[728px]  mx-auto">
-          <ins
-            className="kakao_ad_area"
-            style={{ display: "none" }}
-            data-ad-unit="DAN-orPlGTMAwqXbMtbn"
-            data-ad-width="320"
-            data-ad-height="100"
-          ></ins>
-        </aside>
-      )}
-      <aside className="w-[320px] mx-auto">
+      <aside className={`w-[${isMobile ? "320" : "728"}px] mx-auto`}>
+        <ins className="kakao_ad_area" style={{ display: "none" }} data-ad-unit="DAN-dpnzA4C94ch8HynZ" data-ad-width="320" data-ad-height="100"></ins>
+      </aside>
+
+      <aside className={`w-[${isMobile ? "320" : "728"}px] mx-auto`}>
         <ins
           className="adsbygoogle"
           style={{ display: "block" }}

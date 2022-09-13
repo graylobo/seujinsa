@@ -56,28 +56,11 @@ export default function LeftControl() {
   return (
     <main className="mt-[96px]  h-[350px]  flex flex-col relative">
       <HeadMeta {...props} />
-      {isMobile ? (
-        <aside className="w-[320px] mx-auto">
-          <ins
-            className="kakao_ad_area"
-            style={{ display: "none" }}
-            data-ad-unit="DAN-aKNS1zqwgWC4KTTv"
-            data-ad-width="320"
-            data-ad-height="100"
-          ></ins>
-        </aside>
-      ) : (
-        <aside className="w-[728px] mx-auto">
-          <ins
-            className="kakao_ad_area"
-            style={{ display: "none" }}
-            data-ad-unit="DAN-aKNS1zqwgWC4KTTv"
-            data-ad-width="320"
-            data-ad-height="100"
-          ></ins>
-        </aside>
-      )}
-      <aside className="w-[320px] mx-auto">
+      <aside className={`w-[${isMobile ? "320" : "728"}px] mx-auto`}>
+        <ins className="kakao_ad_area" style={{ display: "none" }} data-ad-unit="DAN-aKNS1zqwgWC4KTTv" data-ad-width="320" data-ad-height="100"></ins>
+      </aside>
+
+      <aside className={`w-[${isMobile ? "320" : "728"}px] mx-auto`}>
         <ins
           className="adsbygoogle"
           style={{ display: "block" }}
@@ -87,7 +70,6 @@ export default function LeftControl() {
           data-full-width-responsive="true"
         ></ins>
       </aside>
-     
 
       <div className="relative p-[30px] self-center  flex flex-col w-full max-w-[550px] ">
         <div className="relative self-center  w-full ">
@@ -121,10 +103,7 @@ export default function LeftControl() {
           <button
             className="float-right"
             onClick={() => {
-              if (
-                keywordValue.current.value.length < 6 ||
-                keywordValue.current.value.length > 30
-              ) {
+              if (keywordValue.current.value.length < 6 || keywordValue.current.value.length > 30) {
                 alert("키워드는 6자이상 30자 이하로 설정해야 합니다.");
                 keywordValue.current.value = "";
               } else {
@@ -193,9 +172,7 @@ export default function LeftControl() {
 
         <div
           className={`bottom-[15px] self-center  ${
-            comboUp
-              ? " transition-text duration-[0.1s] text-[20px] text-red-600 font-bold"
-              : "transition-text duration-[0.1s] text-[17px] "
+            comboUp ? " transition-text duration-[0.1s] text-[20px] text-red-600 font-bold" : "transition-text duration-[0.1s] text-[17px] "
           }`}
         >
           {combo} Combos
