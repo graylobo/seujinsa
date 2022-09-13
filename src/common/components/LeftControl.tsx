@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { isMobileState } from "../recoil/states";
 import { useRecoilValue } from "recoil";
 import HeadMeta from "./shared/HeadMeta";
+import GoogleAds from "./ad/GoogleAds";
 
 let combo = 0;
 export default function LeftControl() {
@@ -61,14 +62,7 @@ export default function LeftControl() {
       </aside>
 
       <aside className={`w-[${isMobile ? "320" : "728"}px] mx-auto`}>
-        <ins
-          className="adsbygoogle"
-          style={{ display: "block" }}
-          data-ad-client="ca-pub-1544015487048934"
-          data-ad-slot="3225843573"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        ></ins>
+        <GoogleAds/>
       </aside>
 
       <div className="relative p-[30px] self-center  flex flex-col w-full max-w-[550px] ">

@@ -15,14 +15,14 @@ import * as gtag from "../lib/gtag"
 function MyApp({ Component, pageProps }) {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
-  useEffect(() => {
-    var ads = document.getElementsByClassName("adsbygoogle").length;
-    for (var i = 0; i < ads; i++) {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (e) {}
-    }
-  }, []);
+  // useEffect(() => {
+  //   var ads = document.getElementsByClassName("adsbygoogle").length;
+  //   for (var i = 0; i < ads; i++) {
+  //     try {
+  //       (window.adsbygoogle = window.adsbygoogle || []).push({});
+  //     } catch (e) {}
+  //   }
+  // }, []);
   useEffect(() => {
     if (window.adfit) {
       window.adfit() && window.adfit().render();
@@ -60,7 +60,6 @@ function MyApp({ Component, pageProps }) {
         <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css" />
       </Head>
 
-      {/* <Script src="../path/to/flowbite/dist/flowbite.bundle.js"></Script> */}
 
       <Script
         type="text/javascript"
