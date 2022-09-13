@@ -32,11 +32,6 @@ export default function Document() {
           `,
             }}
           />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1544015487048934"
-          crossOrigin="anonymous"
-        ></script>
         <body>
           <Main />
           <NextScript />
