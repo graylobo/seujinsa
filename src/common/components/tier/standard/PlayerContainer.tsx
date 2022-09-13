@@ -315,7 +315,7 @@ export default function PlayerContainer({ gamerListProps, initialGamerList,afree
     } catch (err) {
       console.log(err);
     }
-
+    setLoading({loading:true,msg:"게이머 리스트 가져오는중.."})
     let flag = true;
     (async function inner() {
       const liveInfo = await getAfreecaLiveInfo();

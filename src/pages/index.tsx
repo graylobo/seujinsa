@@ -34,8 +34,7 @@ export const getStaticProps = async () => {
 
 const Home: NextPage = ({ initialGamerList, gamerListProps, afreecaLiveInfoProps }: any) => {
 
-  const setLoading = useSetRecoilState(loadingState);
-  setLoading({loading:true,msg:"게이머 리스트 가져오는중.."})
+
   const props = { gamerListProps, initialGamerList,  afreecaLiveInfoProps};
   return (
     <div>
