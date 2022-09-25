@@ -1,27 +1,30 @@
 @media screen and (min-width: 1024px) {
-  @mixin platformIconMixin($width, $height,$left) {
+  @mixin platformIconMixin($width, $height, $left) {
+    position: relative;
     width: $width;
     height: $height;
-    left:$left;
-    border-radius: 10px;
-    cursor: pointer;
-    bottom: -50px;
+    img {
+      cursor: pointer;
+      bottom: -50px;
+      border-radius: 10px;
+    }
     display: none !important;
+
     &.active {
       display: block !important;
     }
   }
-  .icon-container{
-    top:10px;
+  .icon-container {
+    top: 10px;
     display: flex;
     align-items: center;
+    gap: 10px;
     justify-content: center;
-    text-align: center;
     .elo-icon {
-      @include platformIconMixin(18px, 18px,23px);
+      @include platformIconMixin(18px, 18px, 23px);
     }
     .afreeca-icon {
-      @include platformIconMixin(18px, 18px,0px);
+      @include platformIconMixin(18px, 18px, 0px);
     }
   }
 }
