@@ -7,7 +7,6 @@ import { isMobileState, loadingState, searchState, themeState } from "../../../r
 import cloneDeep from "lodash/cloneDeep";
 import { debounce, nickNameSwitch, setPriority, sleep, switchData } from "../../../utils/utils";
 import GoogleAds from "../../ad/GoogleAds";
-import Image from "next/image";
 
 const Wrapper = styled.main`
   margin-top: 90px;
@@ -45,6 +44,8 @@ const Wrapper = styled.main`
       text-align: center;
       gap: 0 5px;
       .onair {
+        width: 45px;
+        height: 45px;
         position: absolute;
         top: -25px;
         left: 19px;
@@ -128,7 +129,6 @@ const Wrapper = styled.main`
       }
       .thumbnail {
         width: 100%;
-        position: relative;
         border-radius: 10px;
       }
     }
@@ -156,6 +156,8 @@ const Wrapper = styled.main`
       text-align: center;
       gap: 0 5px;
       .onair {
+        width: 45px;
+        height: 45px;
         position: absolute;
         top: -22px;
         left: 16px;
@@ -467,13 +469,13 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
   function changeAfreecaThumbnailPosition(gamerInfo: any, event: any) {
     if (gamerInfo in afreecaLiveInfo) {
       if (!isMobile) {
-        onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetParent.offsetLeft + "px";
-        onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetParent.offsetTop - 200 + "px";
+        onAirThumbNailRef.current.style.left = event.target.offsetParent.offsetLeft + "px";
+        onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 200 + "px";
       } else {
         if (showThumbNail && searchValue.thumbnail && gamerInfo in afreecaLiveInfo) {
-          onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetParent.offsetTop - 650 + "px";
+          onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 650 + "px";
         } else {
-          onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetParent.offsetTop - 400 + "px";
+          onAirThumbNailRef.current.style.top = event.target.offsetParent.offsetTop - 400 + "px";
         }
       }
 
@@ -493,82 +495,73 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
         className={`gamer  ${selectedGamer["_id"] && !backgroundClick && (current || selectedGamer["_id"] === gamerInfo._id ? "" : "no-played")}`}
       >
         {gamerInfo["_id"] in afreecaLiveInfo && (
-          <div className="onair">
-            <Image
-              width={45}
-              height={45}
-              src="/on-air.png"
-              alt=""
-              onClick={() => {
-                window.open(`https://play.afreecatv.com/${afreecaLiveInfo[gamerInfo["_id"]]["bjID"]}`);
-              }}
-            />
-          </div>
-        )}
-        <div className={`${selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? `selected ${gamerInfo.race}` : ""}`}>
-          <Image
-            width={80}
-            height={80}
-            className={`gamer-image gamer-${gamerClassName} `}
-            // ref={selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? selectedRef : null}
-            src={`/images/gamer/${gamerInfo._id}.png`}
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null;
-              currentTarget.src = "/images/gamer/notfound.png";
-            }}
-            onMouseEnter={(event: any) => {
-              if (!isMobile) {
-                setMouseOverGamer(gamerInfo);
-                changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
-              }
-            }}
-            onMouseLeave={() => {
-              if (!isMobile) {
-                setMouseOverGamer("");
-                setShowThumbNail(false);
-              }
-            }}
-            onClick={(event: any) => {
-              if (isMobile) {
-                changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
-              }
-              event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
-              setBackgroundClick(false);
-              setCurrentGamerRecord(gamerInfo.record);
-              setSelectedGamer(gamerInfo);
+          <img
+            className="onair"
+            src="/on-air.png"
+            alt=""
+            onClick={() => {
+              window.open(`https://play.afreecatv.com/${afreecaLiveInfo[gamerInfo["_id"]]["bjID"]}`);
             }}
           />
-        </div>
+        )}
+
+        <img
+          className={`gamer-image gamer-${gamerClassName} ${
+            selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? `selected ${gamerInfo.race}` : ""
+          }`}
+          ref={selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? selectedRef : null}
+          src={`/images/gamer/${gamerInfo._id}.png`}
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null;
+            currentTarget.src = "/images/gamer/notfound.png";
+          }}
+          onMouseEnter={(event: any) => {
+            if (!isMobile) {
+              setMouseOverGamer(gamerInfo);
+              changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!isMobile) {
+              setMouseOverGamer("");
+              setShowThumbNail(false);
+            }
+          }}
+          onClick={(event: any) => {
+            if (isMobile) {
+              changeAfreecaThumbnailPosition(gamerInfo["_id"], event);
+            }
+            event.stopPropagation(); // 해주지않으면 아래에서 setBackgroundClick(false)를 했던것을 다시 상위이벤트에서 setBackgroundClick(true)를 해주게됨
+            setBackgroundClick(false);
+            setCurrentGamerRecord(gamerInfo.record);
+            setSelectedGamer(gamerInfo);
+          }}
+        />
 
         <span className={`gamer-name ${gamerInfo.race} ${searchValue.neon ? "neon" : ""} ${theme === "dark" ? "dark" : "light"}`}>
           {gamerInfo._id}
         </span>
         <div className="icon-container">
-          <div className={`afreeca-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["afreeca"] ? "active" : ""}`}>
-            <Image
-              layout="fill"
-              src="/afreeca.png"
-              onClick={() => {
-                window.open(`https://bj.afreecatv.com/${gamerInfo["platform"]["afreeca"]}`);
-              }}
-              alt=""
-            />
-          </div>
-
-          <div className={`elo-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["elo"] ? "active" : ""}`}>
-            <Image
-              layout="fill"
-              src="/eloboard.png"
-              onClick={() => {
-                window.open(
-                  `http://eloboard.com/${gamerInfo["platform"]?.["elo"].split("|")[0]}/bbs/board.php?bo_table=bj_list&wr_id=${
-                    gamerInfo["platform"]?.["elo"].split("|")[1]
-                  }`
-                );
-              }}
-              alt=""
-            />
-          </div>
+          <img
+            className={`afreeca-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["afreeca"] ? "active" : ""}`}
+            src="/afreeca.png"
+            onClick={() => {
+              window.open(`https://bj.afreecatv.com/${gamerInfo["platform"]["afreeca"]}`);
+            }}
+            alt=""
+          />
+          <img
+            className={`elo-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["elo"] ? "active" : ""}`}
+            src="/eloboard.png"
+            onClick={() => {
+              window.open(
+                `http://eloboard.com/${gamerInfo["platform"]?.["elo"].split("|")[0]}/bbs/board.php?bo_table=bj_list&wr_id=${
+                  gamerInfo["platform"]?.["elo"].split("|")[1]
+                }`
+              );
+            }}
+            alt=""
+          />
         </div>
         <div
           className={`record ${
@@ -593,7 +586,7 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
         <ins className="kakao_ad_area" style={{ display: "none" }} data-ad-unit="DAN-dpnzA4C94ch8HynZ" data-ad-width="320" data-ad-height="100"></ins>
       </aside>
       <aside className={`w-[320px] mx-auto`}>
-        <GoogleAds />
+        <GoogleAds  />
       </aside>
 
       <div className="stick-container">
@@ -615,9 +608,7 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
         <div className="viewers">
           {mouseOverGamer["_id"] ? afreecaLiveInfo[mouseOverGamer["_id"]]?.["viewers"] : afreecaLiveInfo[selectedGamer["_id"]]?.["viewers"]}
         </div>
-        <div className="thumbnail">
-          <Image src={imgPath ? "https:" + imgPath : "/secretroom.png"} layout="fill" />
-        </div>
+        <img className="thumbnail" src={imgPath}></img>
       </div>
       <div
         className="tier-container"

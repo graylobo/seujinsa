@@ -10,8 +10,7 @@ const nextConfig = {
     ];
   },
   images: {
-    domains: ["https://seujinsa.netlify.app/", "localhost", "liveimg.afreecatv.com"],
-    formats: ["image/avif", "image/webp"],
+    domains: ["https://seujinsa.netlify.app/", "localhost"],
   },
 };
 
