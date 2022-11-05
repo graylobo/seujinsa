@@ -499,6 +499,7 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
             className="onair"
             src="/on-air.png"
             alt=""
+            loading="lazy"
             onClick={() => {
               window.open(`https://play.afreecatv.com/${afreecaLiveInfo[gamerInfo["_id"]]["bjID"]}`);
             }}
@@ -586,7 +587,7 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
         <ins className="kakao_ad_area" style={{ display: "none" }} data-ad-unit="DAN-dpnzA4C94ch8HynZ" data-ad-width="320" data-ad-height="100"></ins>
       </aside>
       <aside className={`w-[320px] mx-auto`}>
-        <GoogleAds  />
+        <GoogleAds />
       </aside>
 
       <div className="stick-container">
