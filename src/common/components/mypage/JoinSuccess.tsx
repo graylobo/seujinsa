@@ -10,7 +10,7 @@ export default function JoinSuccess() {
         </div>
         <Link href={"/signin"}>
           <button className="mt-[30px] h-[48px] w-full py-[12px]  rounded-[8px] outline-none transition-colors bg-[#e13431] disabled:bg-gray-50 text-white hover:bg-red-700">
-            로그인 하기
+            로그인 하기 
           </button>
         </Link>
       </div>
