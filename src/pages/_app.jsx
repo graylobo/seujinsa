@@ -11,7 +11,8 @@ import FooterBar from "../common/components/FooterBar";
 import Script from "next/script";
 import Loading from "../common/components/shared/Loading";
 import Popup from "../common/components/popup/base/Popup";
-import * as gtag from "../lib/gtag"
+import * as gtag from "../lib/gtag";
+import "../../public/static/fonts/style.css";
 function MyApp({ Component, pageProps }) {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
@@ -26,7 +27,6 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const handleRouteChange = (url) => {
       gtag.pageview(url);
-      
     };
     router.events.on("routeChangeComplete", handleRouteChange);
     return () => {
@@ -42,17 +42,16 @@ function MyApp({ Component, pageProps }) {
 
         <link rel="icon" href="/staricon.ico" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-        <link
+        {/* <link
           rel="stylesheet"
           type="text/css"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
           crossOrigin="anonymous"
-        />
+        /> */}
         <link href="//cdn.jsdelivr.net/npm/katex@0.13.3/dist/katex.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/styles/default.min.css" />
         <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css" />
       </Head>
-
 
       <Script
         type="text/javascript"

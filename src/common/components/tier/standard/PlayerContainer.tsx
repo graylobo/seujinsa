@@ -286,6 +286,7 @@ const Wrapper = styled.main`
     .search-bar {
       position: absolute;
       right: 5%;
+      font-weight: 400;
     }
   }
 `;
