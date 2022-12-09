@@ -32,7 +32,7 @@ export default function BuildAlert() {
   }
 
   useEffect(() => {
-    if (timerRunning) {
+    if (timerRunning) { 
       let timers: any = setTimeout(() => {
         success("전체 타이머가 종료되었습니다.");
         setTimerRunning(false);
