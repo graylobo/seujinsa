@@ -508,6 +508,7 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
         )}
 
         <img
+          loading="lazy"
           className={`gamer-image gamer-${gamerClassName} ${
             selectedGamer["_id"] === gamerInfo._id && !backgroundClick ? `selected ${gamerInfo.race}` : ""
           }`}
@@ -545,6 +546,7 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
         </span>
         <div className="icon-container">
           <img
+            loading="lazy"
             className={`afreeca-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["afreeca"] ? "active" : ""}`}
             src="/afreeca.png"
             onClick={() => {
@@ -553,6 +555,7 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
             alt=""
           />
           <img
+            loading="lazy"
             className={`elo-icon ${selectedGamer["_id"] === gamerInfo._id && gamerInfo["platform"]?.["elo"] ? "active" : ""}`}
             src="/eloboard.png"
             onClick={() => {
