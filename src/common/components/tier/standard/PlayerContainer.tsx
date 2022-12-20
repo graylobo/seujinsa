@@ -628,7 +628,7 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
             gamerList[e].length !== 0 && (
               <>
                 <div className={`tier-subject ${theme === "dark" ? "dark" : ""}`} key={i}>
-                  {e === "아기" ? "개벌레" : e === "미지정" ? "미지정" : `${e} ${["갓", "킹", "잭", "조커"].includes(e) ? "" : "티어"}`}
+                  {`${e} ${["갓", "킹", "잭", "조커"].includes(e) ? "" : "티어"}`}
                 </div>
 
                 <div className="gamer-container" style={isMobile ? { width: "100%" } : { width: "1000px" }}>
