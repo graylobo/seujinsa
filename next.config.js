@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const withPlugins = require("next-compose-plugins");
+const withPWA = require("next-pwa")({
+  dest: "public",
+});
+
+module.exports = withPWA({
   reactStrictMode: true,
   async rewrites() {
     return [
@@ -12,6 +17,4 @@ const nextConfig = {
   images: {
     domains: ["https://seujinsa.netlify.app/", "localhost"],
   },
-};
-
-module.exports = nextConfig;
+});
