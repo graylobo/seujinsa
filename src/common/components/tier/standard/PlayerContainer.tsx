@@ -437,7 +437,6 @@ export default function PlayerContainer({ gamerListProps, initialGamerList, afre
   useEffect(() => {
     if (backgroundClick) {
       setShowThumbNail(false);
-      setSearchValue({ ...searchValue, inputText: "" });
     }
   }, [backgroundClick]);
 

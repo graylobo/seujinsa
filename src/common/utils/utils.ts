@@ -8,14 +8,14 @@ export function sleep(ms: number) {
   });
 }
 
-export function debounce(callback: (...args: any) => any, delay: number) {
+export function debounce(callback: (value:string) => any, delay: number) {
   let timer: any = null;
 
-  return (...args: any) => {
+  return (value:string) => {
     return new Promise((resolve, reject) => {
       clearTimeout(timer);
       timer = setTimeout(() => {
-        resolve(callback(...args))
+        resolve(callback(value))
       }, delay);
     });
   };
