@@ -1,18 +1,19 @@
-import "../../styles/globals.css";
-import "../../styles/pc.scss";
-import "../../styles/mobile.scss";
-import Navigation from "../common/components/seujinsa/Navigation";
 import Head from "next/head";
-import { RecoilRoot, useRecoilValue } from "recoil";
-import More from "../common/components/seujinsa/More";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import FooterBar from "../common/components/seujinsa/FooterBar";
 import Script from "next/script";
-import Loading from "../common/components/seujinsa/shared/Loading";
-import Popup from "../common/components/seujinsa/popup/base/Popup";
-import * as gtag from "../lib/gtag";
+import { useEffect, useState } from "react";
+import { RecoilRoot } from "recoil";
 import "../../public/static/fonts/style.css";
+import "../../styles/globals.css";
+import "../../styles/mobile.scss";
+import "../../styles/pc.scss";
+import FooterBar from "../common/components/seujinsa/FooterBar";
+import More from "../common/components/seujinsa/More";
+import Navigation from "../common/components/seujinsa/Navigation";
+import Popup from "../common/components/seujinsa/popup/base/Popup";
+import Loading from "../common/components/seujinsa/shared/Loading";
+import * as gtag from "../lib/gtag";
+import { ProSidebarProvider } from "react-pro-sidebar";
 function MyApp({ Component, pageProps }) {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
@@ -73,15 +74,17 @@ function MyApp({ Component, pageProps }) {
         }}
       ></Script>
       <RecoilRoot>
-        <div className="flex flex-col ">
-          <Navigation setMenu={setMenu} />
-          <div className=" w-full  min-w-[300px] ">
-            <Loading />
-            {!menu ? <Component {...pageProps} /> : <More />}
-            <Popup />
+        <ProSidebarProvider>
+          <div className="flex flex-col ">
+            <Navigation setMenu={setMenu} />
+            <div className=" w-full  min-w-[300px] ">
+              <Loading />
+              {!menu ? <Component {...pageProps} /> : <More />}
+              <Popup />
+            </div>
+            <FooterBar />
           </div>
-          <FooterBar />
-        </div>
+        </ProSidebarProvider>
       </RecoilRoot>
     </div>
   );
