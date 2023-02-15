@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { gamerState, isMobileState, themeState, topTenGamerList } from "../../recoil/states";
+import SideBar from "../navigation/SideBar";
 
 export default function Navigation({ setMenu }) {
   const setIsMobile = useSetRecoilState(isMobileState);
@@ -124,6 +125,7 @@ export default function Navigation({ setMenu }) {
             ></path>
           </svg>
         </button>
+        <SideBar className={"material-symbols-outlined cursor-pointer absolute right-[0px] top-[10px] text-[30px]"} />
         <span
           className="material-symbols-outlined cursor-pointer absolute right-[0px] top-[10px] text-[30px] "
           onClick={() => {

@@ -14,7 +14,11 @@ import Popup from "../common/components/seujinsa/popup/base/Popup";
 import Loading from "../common/components/seujinsa/shared/Loading";
 import * as gtag from "../lib/gtag";
 import { ProSidebarProvider } from "react-pro-sidebar";
+import SideBar from "common/components/navigation/SideBar";
+import { QueryClient, QueryClientProvider } from "react-query";
+
 function MyApp({ Component, pageProps }) {
+  const queryClient = new QueryClient();
   const [menu, setMenu] = useState(false);
   const router = useRouter();
 
@@ -73,19 +77,22 @@ function MyApp({ Component, pageProps }) {
           console.error("AdSence Script failed to load!", e);
         }}
       ></Script>
-      <RecoilRoot>
-        <ProSidebarProvider>
-          <div className="flex flex-col ">
-            <Navigation setMenu={setMenu} />
-            <div className=" w-full  min-w-[300px] ">
-              <Loading />
-              <Component {...pageProps} />
-              <Popup />
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <ProSidebarProvider>
+            <div className="flex flex-col ">
+              <Navigation setMenu={setMenu} />
+              <div className=" w-[full]  min-w-[300px] ">
+                <Loading />
+                <SideBar menu={menu} setMenu={setMenu} />
+                <Component {...pageProps} />
+                <Popup />
+              </div>
+              <FooterBar />
             </div>
-            <FooterBar />
-          </div>
-        </ProSidebarProvider>
-      </RecoilRoot>
+          </ProSidebarProvider>
+        </RecoilRoot>
+      </QueryClientProvider>
     </div>
   );
 }

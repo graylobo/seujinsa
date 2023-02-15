@@ -1,24 +1,23 @@
+import { getMenus } from "api/menu";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { Menu, MenuItem, Sidebar, SubMenu, useProSidebar } from "react-pro-sidebar";
-import styled from "styled-components";
+import React from "react";
+import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import { useQuery } from "react-query";
-import { getMenus } from "../../api/menu";
-export default function SideBar() {
+import styled from "styled-components";
+export default function SideBar({ menu, setMenu }: any) {
   const router = useRouter();
-  const [sideBar, setSideBar] = useState(false);
   const { data, isLoading, error } = useQuery("getMenu", getMenus, {
     select: (data) => Object.entries(data.data.data),
   });
 
   function handleModalBackgroundClick(e: React.MouseEvent) {
-    setSideBar(false);
+    setMenu(false);
   }
   return (
-    <Wrapper id={`navbar ${sideBar ? "active" : ""}`}>
+    <Wrapper id={`navbar ${menu ? "active" : ""}`}>
       <div id="nav-container">
-        {sideBar && (
+        {menu && (
           <>
             <Modal onClick={handleModalBackgroundClick} />
             <Sidebar collapsedWidth="0" id="sidebar">
@@ -52,7 +51,7 @@ export default function SideBar() {
           src="/images/more.png"
           alt=""
           onClick={() => {
-            setSideBar((e) => !e);
+            setMenu((e: boolean) => !e);
           }}
         />
       </div>
@@ -70,13 +69,13 @@ const Wrapper = styled.div`
   #more {
     z-index: 99;
     position: absolute;
-    top: 0;
     cursor: pointer;
   }
   #sidebar {
     z-index: 99;
     position: absolute;
-    left: 40px;
+    left: 10vw;
+    top: 10vw;
     border-right: 0;
     .ps-sidebar-container {
       border-radius: 10px;
