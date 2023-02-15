@@ -79,7 +79,7 @@ function MyApp({ Component, pageProps }) {
             <Navigation setMenu={setMenu} />
             <div className=" w-full  min-w-[300px] ">
               <Loading />
-              {!menu ? <Component {...pageProps} /> : <More />}
+              <Component {...pageProps} />
               <Popup />
             </div>
             <FooterBar />
