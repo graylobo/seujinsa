@@ -1,8 +1,8 @@
-import type { NextPage } from "next";
-import PlayerContainer from "../common/components/seujinsa/tier/standard/PlayerContainer";
-import { getAfreecaLiveInfo, getWholeGamerInfo } from "../common/utils/api-util";
+import React from "react";
+import PlayerContainer from "../../../../common/components/seujinsa/tier/standard/PlayerContainer";
 import cloneDeep from "lodash/cloneDeep";
-import { initTierValue, setPriority } from "../common/utils/utils";
+import { getAfreecaLiveInfo, getWholeGamerInfo } from "../../../../common/utils/api-util";
+import { initTierValue, setPriority } from "common/utils/utils";
 
 export const getStaticProps = async () => {
   const gamerInfo = await getWholeGamerInfo();
@@ -27,18 +27,8 @@ export const getStaticProps = async () => {
   };
 };
 
-const Home: NextPage = ({ initialGamerList, gamerListProps, afreecaLiveInfoProps }: any) => {
+export default function index({ initialGamerList, gamerListProps, afreecaLiveInfoProps }: any) {
   const props = { gamerListProps, initialGamerList, afreecaLiveInfoProps };
-  return (
-    <div>
-      <main>
-        <div>
-          <PlayerContainer {...props} />
-        </div>
-      </main>
-      <footer></footer>
-    </div>
-  );
-};
 
-export default Home;
+  return <PlayerContainer {...props} />;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import SignUp from "../common/components/mypage/SignUp";
+import SignUp from "../common/components/seujinsa/mypage/SignUp";
 export default function signup() {
   return <SignUp />;
 }

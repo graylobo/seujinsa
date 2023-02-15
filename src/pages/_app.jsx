@@ -1,16 +1,16 @@
 import "../../styles/globals.css";
 import "../../styles/pc.scss";
 import "../../styles/mobile.scss";
-import Navigation from "../common/components/Navigation";
+import Navigation from "../common/components/seujinsa/Navigation";
 import Head from "next/head";
 import { RecoilRoot, useRecoilValue } from "recoil";
-import More from "../common/components/More";
+import More from "../common/components/seujinsa/More";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import FooterBar from "../common/components/FooterBar";
+import FooterBar from "../common/components/seujinsa/FooterBar";
 import Script from "next/script";
-import Loading from "../common/components/shared/Loading";
-import Popup from "../common/components/popup/base/Popup";
+import Loading from "../common/components/seujinsa/shared/Loading";
+import Popup from "../common/components/seujinsa/popup/base/Popup";
 import * as gtag from "../lib/gtag";
 import "../../public/static/fonts/style.css";
 function MyApp({ Component, pageProps }) {
