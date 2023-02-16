@@ -1,12 +1,15 @@
 import { getMenus } from "api/menu";
+import { themeState } from "common/recoil/states";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import { useQuery } from "react-query";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 export default function SideBar({ menu, setMenu }: any) {
   const router = useRouter();
+  const theme = useRecoilValue(themeState);
   const { data, isLoading, error } = useQuery("getMenu", getMenus, {
     select: (data) => Object.entries(data.data.data),
   });
@@ -15,7 +18,7 @@ export default function SideBar({ menu, setMenu }: any) {
     setMenu(false);
   }
   return (
-    <Wrapper id={`navbar ${menu ? "active" : ""}`}>
+    <Wrapper id={`navbar ${menu ? "active" : ""}`} className={theme}>
       <div id="nav-container">
         {menu && (
           <>
@@ -25,9 +28,10 @@ export default function SideBar({ menu, setMenu }: any) {
                 {data?.map(
                   (menu: any) =>
                     menu[1]["visible"] && (
-                      <SubMenu key={menu[0]} label={menu[0]}>
+                      <SubMenu className="sub-menu" key={menu[0]} label={menu[0]}>
                         {Object.entries(menu[1]["menuItems"]).map((menuItem: any) => (
                           <MenuItem
+                            className="menu-item"
                             onClick={() => {
                               router.push(menuItem[1]["route"]);
                             }}
@@ -61,11 +65,23 @@ export default function SideBar({ menu, setMenu }: any) {
 const Wrapper = styled.div`
   top: 10px;
   padding-bottom: 30px;
+
+  &.dark {
+    .sub-menu {
+      .ps-open {
+        background-color: black;
+      }
+      background-color: black;
+      .menu-item {
+        background-color: darkgray;
+      }
+    }
+  }
+
   #nav-container {
     position: fixed;
     z-index: 99;
   }
-
   #more {
     z-index: 99;
     position: absolute;

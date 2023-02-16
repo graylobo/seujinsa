@@ -1,6 +1,6 @@
 import { NextSeo } from "next-seo";
 import React from "react";
-import Bag from "../../../components/ranking/royal/Bag";
+import Bag from "common/components/rank/royal/Bag";
 
 export default function bag() {
   return (

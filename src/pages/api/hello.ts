@@ -1,16 +1,29 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const dummy = {
+interface IProps {
+  data: {
+    [key: string]: {
+      visible: boolean;
+      menuItems: {
+        [key: string]: {
+          route?: string;
+        };
+      };
+    };
+  };
+}
+
+const dummy: IProps = {
   data: {
     명품: {
       visible: true,
       menuItems: {
         핸드백: {
-          route: "/ranking/royal/bag",
+          route: "/rank/royal/bag",
         },
         시계: {
-          route: "/ranking/royal/watch",
+          route: "/rank/royal/watch",
         },
       },
     },
@@ -18,7 +31,15 @@ const dummy = {
       visible: true,
       menuItems: {
         아프리카: {
-          route: "/ranking/influencer/afreeca",
+          route: "/rank/influencer/afreeca",
+        },
+      },
+    },
+    게임: {
+      visible: true,
+      menuItems: {
+        스타크래프트: {
+          route: "/seujinsa/tier/standard",
         },
       },
     },

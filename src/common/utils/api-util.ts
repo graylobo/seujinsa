@@ -32,6 +32,7 @@ async function getWholeGamerInfo() {
 
 async function getAfreecaLiveInfo() {
   return new Promise(async (resolve, reject) => {
+    alert(process.env.NEXT_PUBLIC_DB_URL);
     const res = await fetch(`${process.env.NEXT_PUBLIC_DB_URL}/live`);
     const json = await res.json();
     resolve(json);

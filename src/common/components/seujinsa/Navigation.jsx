@@ -19,9 +19,9 @@ export default function Navigation({ setMenu }) {
     var themeToggleDarkIcon = document.getElementById("theme-toggle-dark-icon");
     var themeToggleLightIcon = document.getElementById("theme-toggle-light-icon");
 
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("color-theme", "dark");
-    setTheme("dark");
+    document.documentElement.classList.add("light");
+    localStorage.setItem("color-theme", "light");
+    setTheme("light");
     // Change the icons inside the button based on previous settings
     if (
       localStorage.getItem("color-theme") === "dark" ||
@@ -30,7 +30,7 @@ export default function Navigation({ setMenu }) {
       setTheme("dark");
       themeToggleLightIcon?.classList.remove("hidden");
     } else {
-      setTheme("normal");
+      setTheme("light");
       themeToggleDarkIcon?.classList.remove("hidden");
     }
 
@@ -45,12 +45,14 @@ export default function Navigation({ setMenu }) {
       if (localStorage.getItem("color-theme")) {
         if (localStorage.getItem("color-theme") === "light") {
           document.documentElement.classList.add("dark");
+          document.documentElement.classList.remove("light");
           localStorage.setItem("color-theme", "dark");
           setTheme("dark");
         } else {
+          document.documentElement.classList.add("light");
           document.documentElement.classList.remove("dark");
           localStorage.setItem("color-theme", "light");
-          setTheme("normal");
+          setTheme("light");
         }
 
         // if NOT set via local storage previously
@@ -58,7 +60,7 @@ export default function Navigation({ setMenu }) {
         if (document.documentElement.classList.contains("dark")) {
           document.documentElement.classList.remove("dark");
           localStorage.setItem("color-theme", "light");
-          setTheme("normal");
+          setTheme("light");
         } else {
           document.documentElement.classList.add("dark");
           localStorage.setItem("color-theme", "dark");
