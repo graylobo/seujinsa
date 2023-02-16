@@ -11,6 +11,7 @@ function GoogleAds() {
         console.log('googleAd-error',error)
     }
   }, [router]);
+  
   return (
     <ins
       className="adsbygoogle"
