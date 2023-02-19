@@ -18,6 +18,6 @@ module.exports = withPWA({
     ];
   },
   images: {
-    domains: ["https://seujinsa.netlify.app/", "localhost"],
+    domains: ["https://seujinsa.netlify.app/", "adaptimage.cafe24.com", "localhost"],
   },
 });

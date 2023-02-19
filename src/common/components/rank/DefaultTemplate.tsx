@@ -1,11 +1,14 @@
+import { themeState } from "common/recoil/states";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { useProSidebar } from "react-pro-sidebar";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { ITemplateItemProps } from "../lib/createObject";
 
 export default function DefaultTemplate({ rankList, width, height, switchTier }: any) {
+  const theme = useRecoilValue(themeState);
   const tierColor: any = {
     0: "red",
     1: "orange",
@@ -27,28 +30,19 @@ export default function DefaultTemplate({ rankList, width, height, switchTier }:
                 {Object.entries(e[1]).map((e: any, i) => {
                   const items: ITemplateItemProps = e[1];
                   return (
-                    <div className="logo-box" key={i}>
-                      {/* <a href={e[1]["link"]} target="_blank" rel="noopener noreferrer">
-            {e[1]["logo"] && (
-              <LogoImageWrapper
-                x={e[1]["scaleX"] ? e[1]["scaleX"] : 1}
-                y={e[1]["scaleY"] ? e[1]["scaleY"] : 1}
-              >
-                <Image
-                  className="logo-image"
-                  src={e[1]?.["logo"]}
-                  width={width}
-                  height={height}
-                  alt=""
-                />
-              </LogoImageWrapper>
-            )}
-          </a> */}
-                      {items.logo && (
+                    <div className={`logo-box ${theme}`} key={i}>
+                      <a href={e[1]["link"]} target="_blank" rel="noopener noreferrer">
+                        {e[1]["logo"] && (
+                          <LogoImageWrapper x={e[1]["scaleX"] ? e[1]["scaleX"] : 1} y={e[1]["scaleY"] ? e[1]["scaleY"] : 1}>
+                            <Image className="logo-image" src={e[1]?.["logo"]} width={width} height={height} alt="" />
+                          </LogoImageWrapper>
+                        )}
+                      </a>
+                      {/* {items.logo && (
                         <LogoImageWrapper x={items.scaleX ? items.scaleX : 1} y={items.scaleY ? items.scaleY : 1}>
                           <Image className="logo-image" src={items?.logo} width={width} height={height} alt="" />
                         </LogoImageWrapper>
-                      )}
+                      )} */}
                       <span className="brand-name">{items.brandName}</span>
                     </div>
                   );
@@ -67,7 +61,12 @@ const Wrapper = styled.main`
     font-family: "notosans";
     src: url("/assets/fonts/notosans/NotoSansKR-Bold.otf");
   }
+
   padding-top: 100px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-bottom: 200px;
+
   #tier-container {
     display: grid;
     grid-template-columns: 0.1fr 0.9fr;
@@ -101,6 +100,9 @@ const Wrapper = styled.main`
     display: flex;
     flex-direction: column;
     align-items: center;
+    &.dark {
+      filter: invert(1);
+    }
   }
   .brand-name {
     font-weight: bold;
