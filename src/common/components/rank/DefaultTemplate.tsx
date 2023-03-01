@@ -23,7 +23,7 @@ export default function DefaultTemplate({ rankList, width, height, switchTier }:
     <Wrapper>
       <AdsSection>
         <KakaoAds type="horizontal" />
-        <GoogleAds />
+        <GoogleAds type="horizontal" />
       </AdsSection>
       <div id="tier-container">
         {Object.entries(rankList).map((e: any, i) => {
@@ -61,8 +61,11 @@ export default function DefaultTemplate({ rankList, width, height, switchTier }:
   );
 }
 const AdsSection = styled.section`
-  display: flex;
-  justify-content: center;
+  width: 100%;
+  ins {
+    margin: 0 auto;
+    display: block !important;
+  }
 `;
 const Wrapper = styled.main`
   @font-face {

@@ -69,10 +69,9 @@ function MyApp({ Component, pageProps }) {
       <Script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/highlight.min.js"></Script>
       <Script src="//cdn.quilljs.com/1.3.6/quill.min.js"></Script>
       <Script
-        id="Adsense-id"
+        async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1544015487048934"
         crossOrigin="anonymous"
-        strategy="beforeInteractive"
         onError={(e) => {
           console.error("AdSence Script failed to load!", e);
         }}

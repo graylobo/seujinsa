@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import styled from "styled-components";
 
 interface IProps {
   type?: "vertical" | "horizontal";
@@ -9,12 +10,15 @@ function GoogleAds({ type = "horizontal" }: IProps) {
   const router = useRouter();
   useEffect(() => {
     try {
-      window.adsbygoogle = window.adsbygoogle || [];
-      window.adsbygoogle.push({});
+      window.onload = function () {
+        console.log("안드류류");
+        window.adsbygoogle = window.adsbygoogle || [];
+        window.adsbygoogle.push({});
+      };
     } catch (error) {
-      console.log("googleAd-error", error);
+      console.log("구글애드-error", error);
     }
-  }, [router]);
+  }, []);
 
   switch (type) {
     case "vertical":
@@ -44,3 +48,6 @@ function GoogleAds({ type = "horizontal" }: IProps) {
 }
 
 export default GoogleAds;
+const AdsSection = styled.section`
+  width: 100%;
+`;
