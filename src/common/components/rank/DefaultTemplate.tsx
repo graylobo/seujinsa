@@ -1,14 +1,15 @@
-import { themeState } from "common/recoil/states";
+import { isMobileState, themeState } from "common/recoil/states";
+import { ITemplateItemProps } from "lib/createObject";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import React from "react";
-import { useProSidebar } from "react-pro-sidebar";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { ITemplateItemProps } from "../lib/createObject";
+import GoogleAds from "../seujinsa/ad/GoogleAds";
+import KakaoAds from "../seujinsa/ad/KakaoAds";
 
 export default function DefaultTemplate({ rankList, width, height, switchTier }: any) {
   const theme = useRecoilValue(themeState);
+  const isMobile = useRecoilValue(isMobileState);
+
   const tierColor: any = {
     0: "red",
     1: "orange",
@@ -20,6 +21,10 @@ export default function DefaultTemplate({ rankList, width, height, switchTier }:
   };
   return (
     <Wrapper>
+      <AdsSection>
+        <KakaoAds type="horizontal" />
+        <GoogleAds />
+      </AdsSection>
       <div id="tier-container">
         {Object.entries(rankList).map((e: any, i) => {
           const tier = e[0];
@@ -55,7 +60,10 @@ export default function DefaultTemplate({ rankList, width, height, switchTier }:
     </Wrapper>
   );
 }
-
+const AdsSection = styled.section`
+  display: flex;
+  justify-content: center;
+`;
 const Wrapper = styled.main`
   @font-face {
     font-family: "notosans";

@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { logoutState, topTenGamerList, gamerState } from "../recoil/states";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { SyncLoader } from "react-spinners";
-import { getRecord, setGamerTierList } from "../utils/api-util";
-import styled from "@emotion/styled";
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { logoutState, topTenGamerList } from "../../recoil/states";
+import { getRecord } from "../../utils/api-util";
 
 const gridChild = css`
   height: 600px;

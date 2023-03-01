@@ -2,26 +2,13 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import TierComponent from "./TierComponent";
 import { useRecoilValue } from "recoil";
-import { gamerState, isMobileState } from "../../../recoil/states";
+import { gamerState, isMobileState } from "../../../../recoil/states";
 import { SyncLoader } from "react-spinners";
-import { setGamerTierList } from "../../../utils/api-util";
+import { setGamerTierList } from "../../../../utils/api-util";
 import HeadMeta from "../../shared/HeadMeta";
 
 const raceList = ["전체", "저그", "프로토스", "테란"];
-const universityList = [
-  "전체",
-  "무소속",
-  "철기중대",
-  "바스포드",
-  "염석대",
-  "무친대",
-  "우끼끼즈",
-  "캄성여대",
-  "학버드",
-  "CP대",
-  "JSA",
-  "NSU",
-];
+const universityList = ["전체", "무소속", "철기중대", "바스포드", "염석대", "무친대", "우끼끼즈", "캄성여대", "학버드", "CP대", "JSA", "NSU"];
 const Wrapper = styled.main`
   margin-top: 56px;
   .container {
@@ -93,35 +80,16 @@ const Wrapper = styled.main`
   }
 `;
 
-const MemoizedMiddleContainer = React.memo(function MiddleContainer({
-  tierName,
-  gamerList,
-  backGround,
-}) {
+const MemoizedMiddleContainer = React.memo(function MiddleContainer({ tierName, gamerList, backGround }) {
   return (
     <section className={`tier-component ${backGround}`}>
-      <div className="mb-[10px] text-[20px] font-semibold text-black">
-        {tierName}
-      </div>
+      <div className="mb-[10px] text-[20px] font-semibold text-black">{tierName}</div>
       <TierComponent gamerList={gamerList}></TierComponent>
     </section>
   );
 });
 
-const tierList = [
-  "주",
-  "갑",
-  "을",
-  "병",
-  "정",
-  "무",
-  "기",
-  "경",
-  "신",
-  "임",
-  "계",
-  "배치",
-];
+const tierList = ["주", "갑", "을", "병", "정", "무", "기", "경", "신", "임", "계", "배치"];
 export default function TierContainer() {
   const [zeroTier, setZeroTier] = useState([{}]);
   const [oneTier, setOneTier] = useState([{}]);
@@ -177,9 +145,7 @@ export default function TierContainer() {
   }, [race, university, gamerName, loading]);
   useEffect(() => {
     if (filteredGamerArray.length === 1) {
-      const position = document.querySelector(
-        `.gamer-${filteredGamerArray[0]._id}`
-      ).offsetTop;
+      const position = document.querySelector(`.gamer-${filteredGamerArray[0]._id}`).offsetTop;
       scrollTo(0, position);
     }
   }, [filteredGamerArray]);
@@ -266,8 +232,7 @@ export default function TierContainer() {
   }
   const props = {
     title: "스타티어표",
-    description:
-      "스타티어표,스타크래프트 티어,아프리카 스타티어,스타크래프트 bj,스타여캠,스타대학",
+    description: "스타티어표,스타크래프트 티어,아프리카 스타티어,스타크래프트 bj,스타여캠,스타대학",
     url: "https://seujinsa.com/tier",
   };
   return (

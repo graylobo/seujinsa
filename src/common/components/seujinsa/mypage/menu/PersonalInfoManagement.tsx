@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useRecoilValue } from "recoil";
-import { userInfoState } from "../../../recoil/states";
-import { fetchAPI } from "../../../utils/api-util";
-import { fail, success } from "../../../utils/toast";
+import { userInfoState } from "../../../../recoil/states";
+import { fetchAPI } from "../../../../utils/api-util";
+import { fail, success } from "../../../../utils/toast";
 import CommonInput from "../../shared/CommonInput";
 import { isPassword } from "../SignUp";
 export default function PersonalInfoManagement() {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getGamerInfo, getWholeGamerInfo } from "../../utils/api-util";
+import { getGamerInfo, getWholeGamerInfo } from "../../../utils/api-util";
 import styled from "@emotion/styled";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";

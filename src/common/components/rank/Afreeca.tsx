@@ -1,5 +1,5 @@
 import React from "react";
-import DefaultTemplate from "../DefaultTemplate";
+import DefaultTemplate from "./DefaultTemplate";
 
 const rankList = {
   0: {

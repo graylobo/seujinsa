@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { userInfoState } from "../../recoil/states";
+import { userInfoState } from "../../../recoil/states";
 import PersonalInfoManagement from "./menu/PersonalInfoManagement";
 import ProfileManagement from "./menu/ProfileManagement";
 import Withdrawal from "./menu/Withdrawal";

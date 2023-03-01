@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import QuillEditor from "../shared/QuillEditor";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { userInfoState, QnAProps, qnaInfoState } from "../../recoil/states";
+import { userInfoState, QnAProps, qnaInfoState } from "../../../recoil/states";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SyncLoader } from "react-spinners";
 import QnAContent from "../modal/QnAContent";
-import { getDateFormat } from "../../utils/date";
+import { getDateFormat } from "../../../utils/date";
 
 export default function QNA() {
   const [title, setTitle] = useState("");

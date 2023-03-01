@@ -1,6 +1,6 @@
 import React from "react";
 import { ToastContainer } from "react-toastify";
-import { success, fail } from "../../utils/toast";
+import { success, fail } from "../../../utils/toast";
 export default function ConfirmModal({
   action,
   setConfirmModal,

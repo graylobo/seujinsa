@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { userInfoState, isMobileState } from "../../../recoil/states";
+import { userInfoState, isMobileState } from "../../../../recoil/states";
 import ConfirmButton from "../../shared/ConfirmButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import path from "path";
-import { checkNickNameExist } from "../../../utils/api-util";
+import { checkNickNameExist } from "../../../../utils/api-util";
 import { PropagateLoader } from "react-spinners";
 
 export default function ProfileManagement() {

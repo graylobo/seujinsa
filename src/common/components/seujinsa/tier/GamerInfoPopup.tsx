@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { GamerInfoType, gamerState, userInfoState } from "../../recoil/states";
-import { getUserInfo, getGamerInfo } from "../../utils/api-util";
+import { GamerInfoType, gamerState, userInfoState } from "../../../recoil/states";
+import { getUserInfo, getGamerInfo } from "../../../utils/api-util";
 import { SyncLoader } from "react-spinners";
 function convertTierName(tier: string): string {
   let val = "";

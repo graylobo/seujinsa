@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { userInfoState } from "../../../recoil/states";
-import { success, fail, info } from "../../../utils/toast";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import {useRouter} from "next/router";
+import { useRecoilState } from "recoil";
+import { userInfoState } from "../../../../recoil/states";
+import { info } from "../../../../utils/toast";
 export default function Withdrawal() {
   const [password, setPassword] = useState("");
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);

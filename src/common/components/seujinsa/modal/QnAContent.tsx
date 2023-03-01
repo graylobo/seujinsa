@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ConfirmModal from "./ConfirmModal";
 import { useRecoilValue } from "recoil";
-import { userInfoState } from "../../recoil/states";
-import { getDateFormat } from "../../utils/date";
+import { userInfoState } from "../../../recoil/states";
+import { getDateFormat } from "../../../utils/date";
 import { SyncLoader } from "react-spinners";
-import { success, fail, info } from "../../utils/toast";
+import { success, fail, info } from "../../../utils/toast";
 import { ToastContainer } from "react-toastify";
 export default function QnAContent({
   qnaInfo,

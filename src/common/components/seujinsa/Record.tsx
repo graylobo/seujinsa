@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
-import RecordModal from "./modal/RecordModal";
 import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { userInfoState } from "../recoil/states";
-import ConfirmModal from "./modal/ConfirmModal";
-import { getRecord } from "../utils/api-util";
+import { userInfoState } from "../../recoil/states";
+import { getRecord } from "../../utils/api-util";
+import RecordModal from "./modal/RecordModal";
 const header = [
   { 날짜: "date" },
   { 승자: "winner" },

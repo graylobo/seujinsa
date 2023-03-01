@@ -1,5 +1,5 @@
 import React from "react";
-import Afreeca from "../../../components/ranking/influencer/Afreeca";
+import Afreeca from "common/components/rank/influencer/Afreeca";
 
 function afreeca() {
   return <Afreeca />;
