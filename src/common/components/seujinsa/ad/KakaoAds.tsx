@@ -1,12 +1,22 @@
+import { isMobileState } from "common/recoil/states";
 import React from "react";
+import { useRecoilValue } from "recoil";
 interface IProps {
   type?: "vertical" | "horizontal" | "basic";
 }
 function KakaoAds({ type = "basic" }: IProps) {
+  const isMobile = useRecoilValue(isMobileState);
+
   switch (type) {
     case "horizontal":
       return (
-        <ins className="kakao_ad_area" style={{ display: "none" }} data-ad-unit="DAN-orPlGTMAwqXbMtbn" data-ad-width="728" data-ad-height="90"></ins>
+        <ins
+          className="kakao_ad_area"
+          style={{ display: "none" }}
+          data-ad-unit="DAN-orPlGTMAwqXbMtbn"
+          data-ad-width={`${isMobile ? "320" : "728"}`}
+          data-ad-height="90"
+        ></ins>
       );
 
     case "basic":

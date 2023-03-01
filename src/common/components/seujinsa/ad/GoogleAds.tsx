@@ -11,14 +11,13 @@ function GoogleAds({ type = "horizontal" }: IProps) {
   useEffect(() => {
     try {
       window.onload = function () {
-        console.log("안드류류");
         window.adsbygoogle = window.adsbygoogle || [];
         window.adsbygoogle.push({});
       };
     } catch (error) {
       console.log("구글애드-error", error);
     }
-  }, []);
+  }, [router]);
 
   switch (type) {
     case "vertical":
