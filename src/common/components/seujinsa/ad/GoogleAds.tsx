@@ -10,14 +10,12 @@ function GoogleAds({ type = "horizontal" }: IProps) {
   const router = useRouter();
   useEffect(() => {
     try {
-      window.onload = function () {
-        window.adsbygoogle = window.adsbygoogle || [];
-        window.adsbygoogle.push({});
-      };
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      console.log("되냐");
     } catch (error) {
       console.log("구글애드-error", error);
     }
-  }, [router]);
+  }, []);
 
   switch (type) {
     case "vertical":
