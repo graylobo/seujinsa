@@ -287,8 +287,10 @@ export default function TierContainer() {
                   setRace(e.target.value);
                 }}
               >
-                {raceList.map((e) => (
-                  <option value={e}>{e}</option>
+                {raceList.map((e, i) => (
+                  <option key={i} value={e}>
+                    {e}
+                  </option>
                 ))}
               </select>
             </span>
@@ -301,8 +303,10 @@ export default function TierContainer() {
                   setUniversity(e.target.value);
                 }}
               >
-                {universityList.map((e) => (
-                  <option value={e}>{e}</option>
+                {universityList.map((e, i) => (
+                  <option key={i} value={e}>
+                    {e}
+                  </option>
                 ))}
               </select>
             </span>

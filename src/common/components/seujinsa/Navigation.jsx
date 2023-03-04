@@ -74,41 +74,10 @@ export default function Navigation({ setMenu }) {
     };
   }, []);
 
-  useEffect(() => {
-    // setGamerTierList().then((gamerList) => {
-    //   gamerList = gamerList
-    //     .sort((a, b) => {
-    //       return b.totalPoint - a.totalPoint;
-    //     })
-    //     .slice(0, 10)
-    //     .map((e) => {
-    //       let race = "";
-    //       switch (e.race) {
-    //         case "저그":
-    //           race = "Z";
-    //           break;
-    //         case "테란":
-    //           race = "T";
-    //           break;
-    //         case "프로토스":
-    //           race = "P";
-    //           break;
-    //       }
-    //       return { ...e, race };
-    //     });
-    //   setTopTenGamerList(gamerList);
-    // });
-  }, [gamerInfo]);
-
   return (
     <nav className=" h-[56px] px-[20px] fixed w-full justify-center flex  top-0 z-[1000] navigation-container text-black">
       <div className="max-w-[700px] flex items-center w-full justify-around relative">
         <Link href={"/"}>
-          {/* <span className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}>
-          스<span className="text-[18px]">타에</span>진
-          <span className="text-[18px]">심인</span>사
-          <span className="text-[18px]">이트</span>
-        </span> */}
           <span className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}>세상의 모든 등급표</span>
         </Link>
         <button
@@ -127,7 +96,6 @@ export default function Navigation({ setMenu }) {
             ></path>
           </svg>
         </button>
-        <SideBar className={"material-symbols-outlined cursor-pointer absolute right-[0px] top-[10px] text-[30px]"} />
         <span
           className="material-symbols-outlined cursor-pointer absolute right-[0px] top-[10px] text-[30px] "
           onClick={() => {

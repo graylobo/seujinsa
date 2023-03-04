@@ -8,7 +8,6 @@ import KakaoAds from "../seujinsa/ad/KakaoAds";
 
 export default function DefaultTemplate({ rankList, width, height, switchTier }: any) {
   const theme = useRecoilValue(themeState);
-  const isMobile = useRecoilValue(isMobileState);
 
   const tierColor: any = {
     0: "red",
@@ -43,11 +42,6 @@ export default function DefaultTemplate({ rankList, width, height, switchTier }:
                           </LogoImageWrapper>
                         )}
                       </a>
-                      {/* {items.logo && (
-                        <LogoImageWrapper x={items.scaleX ? items.scaleX : 1} y={items.scaleY ? items.scaleY : 1}>
-                          <Image className="logo-image" src={items?.logo} width={width} height={height} alt="" />
-                        </LogoImageWrapper>
-                      )} */}
                       <span className="brand-name">{items.brandName}</span>
                     </div>
                   );

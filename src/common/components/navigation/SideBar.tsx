@@ -89,9 +89,10 @@ const Wrapper = styled.div`
   }
   #sidebar {
     z-index: 99;
-    position: absolute;
-    left: 10vw;
-    top: 10vw;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     border-right: 0;
     .ps-sidebar-container {
       border-radius: 10px;
