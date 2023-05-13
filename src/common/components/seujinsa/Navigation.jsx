@@ -78,7 +78,7 @@ export default function Navigation({ setMenu }) {
     <nav className=" h-[56px] px-[20px] fixed w-full justify-center flex  top-0 z-[1000] navigation-container text-black">
       <div className="max-w-[700px] flex items-center w-full justify-around relative">
         <Link href={"/"}>
-          <span className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}>세상의 모든 등급표</span>
+          <span className={`text-[30px] cursor-pointer subject absolute top-[5px] left-[0px]`}>세상의 모든 계급도</span>
         </Link>
         <button
           id="theme-toggle"

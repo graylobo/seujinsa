@@ -5,7 +5,8 @@ interface IProps {
   data: {
     [key: string]: {
       visible: boolean;
-      menuItems: {
+      route?: string;
+      menuItems?: {
         [key: string]: {
           route?: string;
         };
@@ -18,6 +19,7 @@ const dummy: IProps = {
   data: {
     명품: {
       visible: true,
+
       menuItems: {
         핸드백: {
           route: "/rank/royal/bag",
@@ -48,6 +50,10 @@ const dummy: IProps = {
       menuItems: {
         아이돌: {},
       },
+    },
+    검색: {
+      visible: true,
+      route: "/one-search",
     },
   },
 };

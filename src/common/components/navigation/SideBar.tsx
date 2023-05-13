@@ -28,18 +28,30 @@ export default function SideBar({ menu, setMenu }: any) {
                 {data?.map(
                   (menu: any) =>
                     menu[1]["visible"] && (
-                      <SubMenu className="sub-menu" key={menu[0]} label={menu[0]}>
-                        {Object.entries(menu[1]["menuItems"]).map((menuItem: any) => (
-                          <MenuItem
-                            className="menu-item"
-                            onClick={() => {
-                              router.push(menuItem[1]["route"]);
-                            }}
-                            key={menuItem[0]}
-                          >
-                            {menuItem[0]}
-                          </MenuItem>
-                        ))}
+                      <SubMenu
+                        className="sub-menu"
+                        key={menu[0]}
+                        label={menu[0]}
+                        onclick
+                        {...(menu[1].route && {
+                          id: "샤발",
+                          onClick: () => {
+                            router.push(menu[1]["route"]);
+                          },
+                        })}
+                      >
+                        {menu[1]["menuItems"] &&
+                          Object.entries(menu[1]["menuItems"]).map((menuItem: any) => (
+                            <MenuItem
+                              className="menu-item"
+                              onClick={() => {
+                                router.push(menuItem[1]["route"]);
+                              }}
+                              key={menuItem[0]}
+                            >
+                              {menuItem[0]}
+                            </MenuItem>
+                          ))}
                       </SubMenu>
                     )
                 )}
