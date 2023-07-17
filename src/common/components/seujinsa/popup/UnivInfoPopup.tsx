@@ -55,7 +55,6 @@ export default function UnivInfoPopup() {
   const theme = useRecoilValue(themeState);
 
   const content = popup.content[Object.keys(popup.content)[0]];
-  console.log(content);
   return (
     <Wrapper>
       <div className={`popup-container ${theme === "dark" ? "dark" : "light"}`}>

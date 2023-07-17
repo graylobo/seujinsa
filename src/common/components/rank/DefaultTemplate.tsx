@@ -56,10 +56,9 @@ export default function DefaultTemplate({ rankList, width, height, switchTier }:
 }
 const AdsSection = styled.section`
   width: 100%;
-  ins {
-    margin: 0 auto;
-    display: block !important;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 const Wrapper = styled.main`
   @font-face {

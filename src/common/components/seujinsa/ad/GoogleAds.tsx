@@ -11,40 +11,42 @@ function GoogleAds({ type = "horizontal" }: IProps) {
   useEffect(() => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
-      console.log("되냐");
     } catch (error) {
       console.log("구글애드-error", error);
     }
   }, []);
 
-  switch (type) {
-    case "vertical":
-      return (
-        <ins
+  return (
+    <>
+      {type === "vertical" ? (
+        <AdsContainer
           className="adsbygoogle"
-          style={{ display: "block" }}
           data-ad-client="ca-pub-1544015487048934"
           data-ad-slot="6577096579"
           data-ad-format="auto"
           data-full-width-responsive="true"
-        ></ins>
-      );
-
-    case "horizontal":
-      return (
-        <ins
+        ></AdsContainer>
+      ) : (
+        <AdsContainer
           className="adsbygoogle"
-          style={{ display: "block" }}
           data-ad-client="ca-pub-1544015487048934"
           data-ad-slot="3225843573"
           data-ad-format="auto"
           data-full-width-responsive="true"
-        ></ins>
-      );
-  }
+        ></AdsContainer>
+      )}
+    </>
+  );
 }
 
 export default GoogleAds;
 const AdsSection = styled.section`
+  display: flex;
+  justify-content: center;
+`;
+
+const AdsContainer = styled.ins`
   width: 100%;
+  display: flex;
+  justify-content: center;
 `;

@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import OptionModal from "./OptionModal";
 import KakaoAds from "../seujinsa/ad/KakaoAds";
 import GoogleAds from "../seujinsa/ad/GoogleAds";
+import classNames from "classnames";
+import { searchOptions } from "lib/constants";
+import AdsSection from "../Ads/AdsSection";
 
 interface StyledInterface {
   width?: string;
@@ -10,22 +13,18 @@ interface StyledInterface {
   position?: string;
 }
 
+function textToQuery(link: string, query: string) {
+  const res = link.replace("${query}", query);
+  return res;
+}
+
 export default function OneSearch() {
+  const [isSticky, setSticky] = useState(false);
+  const stickPointRef = useRef<any>();
   const [text, setText] = useState("");
   const [result, setResult] = useState("");
   const [optionModalOpen, setOptionModalOpen] = useState(false);
-  const [marketState, setMarketState] = useState({
-    naver: true,
-    google: true,
-    coupang: true,
-    gmarket: true,
-    auction: true,
-    lotteon: true,
-    eleven: true,
-    homeplus: true,
-    wmp: true,
-    shoppinghow: true,
-  });
+  const [marketState, setMarketState] = useState(searchOptions);
   const [optionState, setOptionState] = useState({
     width: "90",
     height: "90",
@@ -48,148 +47,110 @@ export default function OneSearch() {
     if (optionStateData) {
       setOptionState(JSON.parse(optionStateData));
     }
+
+    let stickyPoint = stickPointRef.current && stickPointRef.current.getBoundingClientRect().top + window.scrollY;
+
+    const scrollHandler = () => {
+      if (!!stickyPoint) {
+        window.scrollY >= stickyPoint ? setSticky(true) : setSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", scrollHandler);
+
+    return () => {
+      window.removeEventListener("scroll", scrollHandler);
+    };
   }, []);
 
+  function handleKeyDown(e: any) {
+    if (e.keyCode === 13) {
+      setResult(text);
+    }
+  }
+  function handleInputChange(e: any) {
+    setText(e.target.value);
+  }
+  function handleSearchButtonClick() {
+    setResult(text);
+  }
+  function handleOptionButtonClick() {
+    setOptionModalOpen(true);
+  }
   return (
     <Wrapper width={optionState.width} height={optionState.height} position={optionState.position}>
       {optionModalOpen && <OptionModal {...propsContainer} />}
-      <AdsSection>
-        <KakaoAds type="horizontal" />
-        <GoogleAds type="horizontal" />
-      </AdsSection>
-      <div id="input-container">
-        <StyledInput
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              setResult(text);
-            }
-          }}
-          onChange={(e) => {
-            setText(e.target.value);
-          }}
-          type="text"
-        />
-        <button
-          onClick={() => {
-            setResult(text);
-          }}
-        >
-          검색
-        </button>
-        <button
-          onClick={() => {
-            setOptionModalOpen(true);
-          }}
-        >
-          옵션
-        </button>
-      </div>
+      <AdsSection />
+      <InputContainer ref={stickPointRef} className={classNames({ sticky: isSticky })}>
+        <InputBox>
+          <SearchBar onKeyDown={handleKeyDown} onChange={handleInputChange} type="text" />
+          <SearchOptionBox>
+            <button onClick={handleSearchButtonClick}>검색</button>
+            <div>|</div>
+            <button onClick={handleOptionButtonClick}>옵션</button>
+          </SearchOptionBox>
+        </InputBox>
+      </InputContainer>
 
       <div id="iframe-container">
-        {marketState.naver && (
-          <div className="frame-box">
-            <div className="market-name">네이버</div>
-            <iframe className="frame" src={`https://search.shopping.naver.com/search/all?query=${result}`}></iframe>
-          </div>
-        )}
-
-        {marketState.shoppinghow && (
-          <div className="frame-box">
-            <div className="market-name">쇼핑하우</div>
-            <iframe className="frame" src={`https://shoppinghow.kakao.com/search/${result}`}></iframe>
-          </div>
-        )}
-
-        {marketState.google && (
-          <div className="frame-box">
-            <div className="market-name">구글</div>
-            <iframe className="frame" src={` https://www.google.com/search?igu=1&query=${result}`}></iframe>
-          </div>
-        )}
-
-        {marketState.coupang && (
-          <div className="frame-box">
-            <div className="market-name">쿠팡</div>
-            <iframe className="frame" src={`https://www.coupang.com/np/search?q=${result}`}></iframe>
-          </div>
-        )}
-
-        {marketState.gmarket && (
-          <div className="frame-box">
-            <div className="market-name">지마켓</div>
-            <iframe className="frame" src={`https://browse.gmarket.co.kr/search?keyword=${result}`}></iframe>
-          </div>
-        )}
-
-        {marketState.auction && (
-          <div className="frame-box">
-            <div className="market-name">옥션</div>
-            <iframe className="frame" src={`https://browse.auction.co.kr/search?keyword=${result}`}></iframe>
-          </div>
-        )}
-
-        {marketState.lotteon && (
-          <div className="frame-box">
-            <div className="market-name">롯데온</div>
-            <iframe
-              className="frame"
-              src={`https://www.lotteon.com/search/search/search.ecn?render=search&platform=pc&q=${result}&mallId=1`}
-            ></iframe>
-          </div>
-        )}
-
-        {marketState.eleven && (
-          <div className="frame-box">
-            <div className="market-name">11번가</div>
-            <iframe className="frame" src={`https://search.11st.co.kr/Search.tmall?kwd=${result}`}></iframe>
-          </div>
-        )}
-
-        {marketState.homeplus && (
-          <div className="frame-box">
-            <div className="market-name">홈플러스</div>
-            <iframe className="frame" src={`https://front.homeplus.co.kr/search?entry=direct&keyword=${result}`}></iframe>
-          </div>
-        )}
-
-        {marketState.wmp && (
-          <div className="frame-box">
-            <div className="market-name">위메프</div>
-            <iframe className="frame" src={`https://search.wemakeprice.com/search?search_cate=top&keyword=${result}`}></iframe>
-          </div>
-        )}
+        {Object.entries(marketState).map(([, { name, link, show }], i) => {
+          if (!link) return;
+          return (
+            show && (
+              <div className="frame-box">
+                <div className="market-name">{name}</div>
+                <iframe className="frame" src={textToQuery(link, result)}></iframe>
+              </div>
+            )
+          );
+        })}
       </div>
     </Wrapper>
   );
 }
 
-const AdsSection = styled.section`
-  width: 100%;
-  ins {
-    margin: 0 auto;
-    display: block !important;
-  }
+const InputBox = styled.div`
+  display: flex;
+  background: lightgray;
+  padding: 10px;
+  border-radius: 10px;
 `;
-const StyledInput = styled.input`
+
+const SearchOptionBox = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
+const SearchBar = styled.input`
   border: 2px solid black;
   border-radius: 5px;
   padding: 10px;
   margin-right: 10px;
 `;
 
+const InputContainer = styled.div`
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
+  z-index: 99;
+  &.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+`;
+
+const FrameBox = styled.div`
+  position: relative;
+  width: max-content;
+  margin: 0 auto;
+`;
+
 const Wrapper = styled.main<StyledInterface>`
   margin-top: 100px;
-  #input-container {
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: center;
-    /* position: fixed; */
-    position: relative;
-    white-space: nowrap;
-    left: 50%;
-    transform: translate(-50%);
-    z-index: 99;
-  }
+
   .divider {
     height: 50px;
   }

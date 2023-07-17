@@ -15,6 +15,7 @@ export default function OptionModal(props: any) {
       setOptionState({ ...optionState, height: "100" });
     }
   }, [optionState]);
+
   return (
     <Wrapper>
       <div id="background"></div>
@@ -77,116 +78,19 @@ export default function OptionModal(props: any) {
             </div>
           </div>
           <div id="market-container">
-            <label htmlFor="naver">
-              <input
-                type="checkbox"
-                id="naver"
-                checked={marketState.naver}
-                onChange={(e) => {
-                  setMarketState({ ...marketState, naver: e.target.checked });
-                }}
-              />
-              네이버
-            </label>
-            <label htmlFor="google">
-              <input
-                type="checkbox"
-                id="google"
-                checked={marketState.google}
-                onChange={(e) => {
-                  setMarketState({ ...marketState, google: e.target.checked });
-                }}
-              />
-              구글
-            </label>
-            <label htmlFor="coupang">
-              <input
-                type="checkbox"
-                id="coupang"
-                checked={marketState.coupang}
-                onChange={(e) => {
-                  setMarketState({ ...marketState, coupang: e.target.checked });
-                }}
-              />
-              쿠팡
-            </label>
-            <label htmlFor="gmarket">
-              <input
-                type="checkbox"
-                id="gmarket"
-                checked={marketState.gmarket}
-                onChange={(e) => {
-                  setMarketState({ ...marketState, gmarket: e.target.checked });
-                }}
-              />
-              지마켓
-            </label>
-            <label htmlFor="auction">
-              <input
-                type="checkbox"
-                id="auction"
-                checked={marketState.auction}
-                onChange={(e) => {
-                  setMarketState({ ...marketState, auction: e.target.checked });
-                }}
-              />
-              옥션
-            </label>
-            <label htmlFor="lotteon">
-              <input
-                type="checkbox"
-                id="lotteon"
-                checked={marketState.lotteon}
-                onChange={(e) => {
-                  setMarketState({ ...marketState, lotteon: e.target.checked });
-                }}
-              />
-              롯데온
-            </label>
-            <label htmlFor="eleven">
-              <input
-                type="checkbox"
-                id="eleven"
-                checked={marketState.eleven}
-                onChange={(e) => {
-                  setMarketState({ ...marketState, eleven: e.target.checked });
-                }}
-              />
-              11번가
-            </label>
-            <label htmlFor="homeplus">
-              <input
-                type="checkbox"
-                id="homeplus"
-                checked={marketState.homeplus}
-                onChange={(e) => {
-                  setMarketState({ ...marketState, homeplus: e.target.checked });
-                }}
-              />
-              홈플러스
-            </label>
-            <label htmlFor="wmp">
-              <input
-                type="checkbox"
-                id="wmp"
-                checked={marketState.wmp}
-                onChange={(e) => {
-                  setMarketState({ ...marketState, wmp: e.target.checked });
-                }}
-              />
-              위메프
-            </label>
-            <label htmlFor="shoppinghow">
-              <input
-                type="checkbox"
-                id="shoppinghow"
-                checked={marketState.shoppinghow}
-                onChange={(e) => {
-                  setMarketState({ ...marketState, shoppinghow: e.target.checked });
-                }}
-              />
-              쇼핑하우
-            </label>
+            {Object.keys(marketState).map((key) => (
+              <label htmlFor={key} key={key}>
+                <input
+                  type="checkbox"
+                  id={key}
+                  checked={marketState[key].show}
+                  onChange={(e) => {
+                    setMarketState({ ...marketState, [key]: { ...marketState[key], show: e.target.checked } });
+                  }}
+                />
+                {marketState[key].name}
+              </label>
+            ))}
           </div>
 
           <div className="save-box">
