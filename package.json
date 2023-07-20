@@ -22,6 +22,7 @@
     "flowbite": "^1.4.7",
     "fs": "^0.0.1-security",
     "globby": "^13.1.2",
+    "immer": "^10.0.2",
     "lodash": "^4.17.21",
     "mongodb": "^4.5.0",
     "next": "^12.1.4",

@@ -1,30 +1,26 @@
+import classNames from "classnames";
+import { marketOption } from "lib/constants";
 import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import OptionModal from "./OptionModal";
-import KakaoAds from "../seujinsa/ad/KakaoAds";
-import GoogleAds from "../seujinsa/ad/GoogleAds";
-import classNames from "classnames";
-import { searchOptions } from "lib/constants";
 import AdsSection from "../Ads/AdsSection";
-
+import OptionModal from "./OptionModal";
+import { produce } from "immer";
 interface StyledInterface {
   width?: string;
   height?: string;
   position?: string;
 }
-
 function textToQuery(link: string, query: string) {
   const res = link.replace("${query}", query);
   return res;
 }
-
 export default function OneSearch() {
   const [isSticky, setSticky] = useState(false);
   const stickPointRef = useRef<any>();
   const [text, setText] = useState("");
   const [result, setResult] = useState("");
   const [optionModalOpen, setOptionModalOpen] = useState(false);
-  const [marketState, setMarketState] = useState(searchOptions);
+  const [marketState, setMarketState] = useState(marketOption);
   const [optionState, setOptionState] = useState({
     width: "90",
     height: "90",
@@ -39,30 +35,69 @@ export default function OneSearch() {
   };
 
   useEffect(() => {
+    console.log("test1", marketState);
+  }, [marketState]);
+  useEffect(() => {
     const marketStateData = localStorage.getItem("marketState");
     const optionStateData = localStorage.getItem("optionState");
+
     if (marketStateData) {
-      setMarketState(JSON.parse(marketStateData));
+      setMarketState(
+        produce((draft: any) => {
+          try {
+            const localStorageData = JSON.parse(marketStateData);
+
+            // 마켓key가 로컬state에는 있는데 로컬스토리지에 없는 경우 추가
+            Object.keys(marketOption).forEach((marketKey) => {
+              if (!localStorageData[marketKey]) {
+                draft[marketKey] = draft[marketKey];
+                return;
+              }
+
+              // 마켓 속성key가 로컬state에는 있는데 로컬스토리지에 없는 경우 추가
+              Object.keys(marketOption[marketKey]).forEach((marketPropsKey) => {
+                if (!(marketPropsKey in localStorageData[marketKey])) {
+                  draft[marketKey][marketPropsKey] = marketOption.marketKey[marketPropsKey];
+                }
+              });
+            });
+
+            // 마켓key가 로컬스토리지에는 있는데 로컬state에는 없는경우 삭제
+            Object.keys(localStorageData).forEach((marketKey) => {
+              if (!marketOption[marketKey]) {
+                delete draft[marketKey];
+                return;
+              }
+              // 마켓 속성key가 로컬스토리지에는 있는데 로컬state에는 없는 경우 삭제
+
+              Object.keys(localStorageData[marketKey]).forEach((marketPropsKey) => {
+                if (!(marketPropsKey in marketOption[marketKey])) {
+                  delete draft[marketKey][marketPropsKey];
+                }
+              });
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        })
+      );
     }
     if (optionStateData) {
       setOptionState(JSON.parse(optionStateData));
     }
-
     let stickyPoint = stickPointRef.current && stickPointRef.current.getBoundingClientRect().top + window.scrollY;
-
     const scrollHandler = () => {
       if (!!stickyPoint) {
         window.scrollY >= stickyPoint ? setSticky(true) : setSticky(false);
       }
     };
-
     window.addEventListener("scroll", scrollHandler);
+    console.log("test2", marketState);
 
     return () => {
       window.removeEventListener("scroll", scrollHandler);
     };
   }, []);
-
   function handleKeyDown(e: any) {
     if (e.keyCode === 13) {
       setResult(text);
@@ -142,12 +177,6 @@ const InputContainer = styled.div`
   }
 `;
 
-const FrameBox = styled.div`
-  position: relative;
-  width: max-content;
-  margin: 0 auto;
-`;
-
 const Wrapper = styled.main<StyledInterface>`
   margin-top: 100px;
 
@@ -158,6 +187,7 @@ const Wrapper = styled.main<StyledInterface>`
     position: relative;
     width: max-content;
     margin: 0 auto;
+    border: 2px dotted darkgray;
   }
   .market-name {
     position: absolute;
@@ -171,10 +201,13 @@ const Wrapper = styled.main<StyledInterface>`
     border-radius: 5px;
   }
   #iframe-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
     ${(props) =>
       props.position === "horizontal" &&
       css`
-        display: flex;
+        flex-direction: row;
         width: max-content;
       `}
   }

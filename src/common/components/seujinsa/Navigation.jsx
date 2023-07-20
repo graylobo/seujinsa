@@ -109,6 +109,7 @@ export default function Navigation({ setMenu }) {
 const Wrapper = styled.nav``;
 const NaviTitle = styled.span`
   font-size: 30px;
+  cursor: pointer;
 `;
 
 const HambergerMenu = styled.img`
