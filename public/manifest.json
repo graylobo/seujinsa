@@ -4,9 +4,9 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "name": "스타티어표",
-  "short_name": "스진사 티어표",
-  "description": "스타크래프트 티어표",
+  "name": "서치원",
+  "short_name": "서치원",
+  "description": "서치원,원서치,계급도",
   "icons": [
     {
       "src": "/icon-48x48.png",

@@ -231,8 +231,8 @@ export default function TierContainer() {
     setElevenTier([...elevenTemp]);
   }
   const props = {
-    title: "스타티어표",
-    description: "스타티어표,스타크래프트 티어,아프리카 스타티어,스타크래프트 bj,스타여캠,스타대학",
+    title: "서치원",
+    description: "서치원,계급도,원서치,티어표",
     url: "https://seujinsa.com/tier",
   };
   return (

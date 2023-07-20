@@ -42,7 +42,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <div className="">
       <Head>
-        <title>스타티어표</title>
+        <title>서치원</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
         <link rel="icon" href="/staricon.ico" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
