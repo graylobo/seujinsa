@@ -87,7 +87,7 @@ function MyApp({ Component, pageProps }) {
                 <Component {...pageProps} />
                 <Popup />
               </div>
-              <FooterBar />
+              {/* <FooterBar /> */}
             </div>
           </ProSidebarProvider>
         </RecoilRoot>
