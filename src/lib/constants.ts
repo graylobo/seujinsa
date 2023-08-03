@@ -60,4 +60,14 @@ export const marketOption: MarketOption = {
     link: `https://shoppinghow.kakao.com/search/\${query}`,
     show: true,
   },
+  danawa: {
+    name: "다나와",
+    link: `https://search.danawa.com/dsearch.php?k1=\${query}`,
+    show: true,
+  },
+  enuri: {
+    name: "에누리닷컴",
+    link: `https://www.enuri.com/search.jsp?keyword=\${query}`,
+    show: true,
+  },
 };

@@ -27,6 +27,7 @@ export default function DefaultTemplate({ rankList, width, height, switchTier }:
       <div id="tier-container">
         {Object.entries(rankList).map((e: any, i) => {
           const tier = e[0];
+          const tierName = e[1];
           return (
             <>
               <Tier color={tierColor[tier]} className="tier-box">{`${switchTier?.[tier] || `${tier} tier`} `}</Tier>

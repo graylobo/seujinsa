@@ -35,7 +35,6 @@ export default function OneSearch() {
   };
 
   useEffect(() => {
-    console.log("test1", marketState);
   }, [marketState]);
   useEffect(() => {
     const marketStateData = localStorage.getItem("marketState");
